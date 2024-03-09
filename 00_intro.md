@@ -1,78 +1,74 @@
 {{meta {load_files: ["code/intro.js"]}}}
 
-# Introduction
+# Uvod
 
-{{quote {author: "Ellen Ullman", title: "Close to the Machine: Technophilia and its Discontents", chapter: true}
+{{quote {author: "Ellen Ullman", title: "Blizu mašine: Tehnofilija i njena nezadovoljstva", chapter: true}
 
-We think we are creating the system for our own purposes. We believe we are making it in our own image... But the computer is not really like us. It is a projection of a very slim part of ourselves: that portion devoted to logic, order, rule, and clarity.
+Mislimo da pravimo sistem za naše potrebe. Verujemo da ga pravimo po svojoj slici... Ali računar nije zaista kao mi. Računar je projekcija veoma malog dela nas samih: onog dela posvećenog logici, redu, pravilima i jasnoći.
 
 quote}}
 
-{{figure {url: "img/chapter_picture_00.jpg", alt: "Illustration of a screwdriver next to a circuit board of about the same size", chapter: "framed"}}}
+{{figure {url: "img/chapter_picture_00.jpg", alt: "Ilustracija šrafcigera pored matične ploče od otprilike iste veličine", chapter: "framed"}}}
 
-This is a book about instructing ((computer))s. Computers are about as common as screwdrivers today, but they are quite a bit more complex, and making them do what you want them to do isn't always easy.
+Ovo je knjiga o upravljanju ((računarima)). Računari su danas skoro jednako uobičajeni kao i šrafcigeri, ali su dosta složeniji, i nije ih uvek lako naterati da rade ono što želite.
 
-If the task you have for your computer is a common, well-understood one, such as showing you your email or acting like a calculator, you can open the appropriate ((application)) and get to work. But for unique or open-ended tasks, there often is no appropriate application.
+Ako je zadatak koji imate za svoj računar uobičajen, dobro razumljiv, kao što je prikazivanje elektronske pošte ili da se ponaša kao kalkulator, možete otvoriti odgovarajuću ((aplikaciju)) i odmah početi raditi. Ali za jedinstvene (unikatne) ili otvorene zadatke, često nema odgovarajuće aplikacije.
 
-That is where ((programming)) may come in. _Programming_ is the act of constructing a _program_—a set of precise instructions telling a computer what to do. Because computers are dumb, pedantic beasts, programming is fundamentally tedious and frustrating.
+Tu negde bi ((programiranje)) moglo doći na red. _Programiranje_ je akt konstruisanja _programa_ — skupa preciznih instrukcija koje računaru govore šta da radi. Zato što su računari glupi, pedantni stvorovi, programiranje je suštinski dosadno i frustrirajuće.
 
-{{index [programming, "joy of"], speed}}
+{{index [programiranje, "radost"], brzina}}
 
-Fortunately, if you can get over that fact—and maybe even enjoy the rigor of thinking in terms that dumb machines can deal with—programming can be rewarding. It allows you to do things in seconds that would take _forever_ by hand. It is a way to make your computer tool do things that it couldn't do before. On top of that, it makes for a wonderful game of puzzle solving and abstract thinking.
+Srećom, ako možete prevazići tu činjenicu — i možda čak i uživati u rigoroznosti razmišljanja u terminima koje glupi uređaji mogu da razumeju — programiranje može biti veoma ispunjavajuće. Ono vam omogućava da uradite stvari u sekundama koje bi trajale _zauvek_ kada bi se radile ručno. To je način da naterate svoj računarski alat da radi stvari koje ranije nije mogao. Osim toga, to je sjajna igra rešavanja zagonetki i apstraktnog razmišljanja.
 
-Most programming is done with ((programming language))s. A _programming language_ is an artificially constructed language used to instruct computers. It is interesting that the most effective way we've found to communicate with a computer borrows so heavily from the way we communicate with each other. Like human languages, computer languages allow words and phrases to be combined in new ways, making it possible to express ever new concepts.
+Većina programiranja se obavlja pomoću ((programskih jezika)). _Programski jezik_ je veštački konstruisani jezik koji se koristi za davanje instrukcija računarima. Interesantno je da je najefikasniji način koji smo pronašli za komunikaciju s računarom u velikoj meri pozajmljen iz načina na koji se komuniciramo međusobno. Slično ljudskim jezicima, računarski jezici omogućavaju da se reči i fraze kombinuju na nove načine, što nam omogućava izražavanje novih pojmova.
 
-{{index [JavaScript, "availability of"], "casual computing"}}
+{{index [JavaScript, "dostupnost"], "opušteno računarstvo"}}
 
-At one point, language-based interfaces, such as the BASIC and DOS prompts of the 1980s and 1990s, were the main method of interacting with computers. For routine computer use, these have largely been replaced with visual interfaces, which are easier to learn but offer less freedom. But if you know where to look, the languages are still there. One of them, _JavaScript_, is built into every modern web ((browser))—and is thus available on almost every device.
+Nekad pre, interfejsi bazirani na jezicima, kao što su BASIC i DOS promptovi iz osamdesetih i devedesetih godina, bili su glavni način interakcije s računarima. Za rutinsku upotrebu računara, ovi interfejsi su uglavnom zamenjeni vizuelnim interfejsima, koji su lakši za učenje ali nude manje slobode. Ali ako znate gde da tražite, jezici su i dalje tu. Jedan od njih, _JavaScript_, ugrađen je u svaki moderni internet ((pretraživač)) — i time je dostupan na skoro svakom uređaju.
 
-{{indexsee "web browser", browser}}
+Ova knjiga će pokušati da vas upozna dovoljno sa ovim jezikom da biste mogli da radite korisne i zabavne stvari s njim.
 
-This book will try to make you familiar enough with this language to do useful and amusing things with it.
+## O programiranju
 
-## On programming
+{{index [programiranje, "težina"]}}
 
-{{index [programming, "difficulty of"]}}
+Pored objašnjavanja JavaScript-a, predstaviću vam osnovne principe programiranja. Programiranje, ispostavlja se, nije lako. Osnovna pravila su jednostavna i jasna, ali programi izgrađeni na osnovu ovih pravila često postaju dovoljno složeni da uvedu svoja vlastita pravila i složenost. U suštini gradite svoj sopstveni lavirint, i lako se možete izgubiti u njemu.
 
-Besides explaining JavaScript, I will introduce the basic principles of programming. Programming, it turns out, is hard. The fundamental rules are simple and clear, but programs built on top of these rules tend to become complex enough to introduce their own rules and complexity. You're building your own maze, in a way, and you can easily get lost in it.
+Biće trenutaka kada će čitanje ove knjige biti izuzetno frustrirajuće. Ako ste novi u programiranju, biće puno novog materijala za svariti. Većina ovog materijala će onda biti _kombinovana_ na načine koji zahtevaju da uspostavite dodatne veze između raličitih koncepata.
 
-{{index learning}}
+Na vama je da uložite potrebni trud. Kada se borite da pratite knjigu, nemojte odmah donositi nikakve zaključke o svojim sposobnostima, ili njihovom nedostatku. Sve je uredu — samo treba da nastavite s radom. Napravite pauzu, ponovo pročitajte neke stranice, i pobrinite se da pročitate i razumete primere programa i ((vežbe)). Učenje je težak posao, ali sve što naučite je vaše i olakšaće dalje učenje.
 
-There will be times when reading this book feels terribly frustrating. If you are new to programming, there will be a lot of new material to digest. Much of this material will then be _combined_ in ways that require you to make additional connections.
-
-It is up to you to make the necessary effort. When you are struggling to follow the book, do not jump to any conclusions about your own capabilities. You are fine—you just need to keep at it. Take a break, reread some material, and make sure you read and understand the example programs and ((exercises)). Learning is hard work, but everything you learn is yours and will make further learning easier.
-
-{{quote {author: "Ursula K. Le Guin", title: "The Left Hand of Darkness"}
+{{quote {author: "Ursula K. Le Guin", title: "Leva ruka tame"}
 
 {{index "Le Guin, Ursula K."}}
 
-When action grows unprofitable, gather information; when information grows unprofitable, sleep.
+Kada radnja postane neprofitabilna, sakupljajte informacije; kada informacije postanu neprofitabilne, spavajte.
 
 quote}}
 
 {{index [program, "nature of"], data}}
 
-A program is many things. It is a piece of text typed by a programmer, it is the directing force that makes the computer do what it does, it is data in the computer's memory, and at the same time it controls the actions performed on this memory. Analogies that try to compare programs to familiar objects tend to fall short. A superficially fitting one is to compare a program to a machine—lots of separate parts tend to be involved, and to make the whole thing tick, we have to consider the ways in which these parts interconnect and contribute to the operation of the whole.
+Program je mnogo stvari. To je parče teksta koje je otkucao programer, to je sila koja čini da računar radi ono što radi, to su podaci u memoriji računara, a istovremeno kontroliše i radnje koje se izvršavaju nad ovim podacima. Analogije koje pokušavaju da uporede programe sa poznatim stvarnim objektima često nisu dovoljne. Površinski odgovarajuća analogija je uporediti program sa mašinom — obično je u njen rad uključeno mnogo odvojenih delova, i da bi cela stvar funkcionisala, moramo razmotriti načine na koje se ti delovi međusobno povezuju i doprinose da mašina radi kao jedna celina.
 
-A ((computer)) is a physical machine that acts as a host for these immaterial machines. Computers themselves can do only stupidly straightforward things. The reason they are so useful is that they do these things at an incredibly high ((speed)). A program can ingeniously combine an enormous number of these simple actions to do very complicated things.
+((Računar)) je fizička mašina koja je domaćin ovim nematerijalnim mašinama koje zovemo programi. Sami računari mogu obavljati samo preglupo jednostavne stvari. Razlog zbog kojeg su tako korisni je taj što ove stvari rade neverovatno brzo. Program može fascinantno kombinovati ogroman broj ovih jednostavnih radnji da bi uradio veoma komplikovane stvari.
 
-{{index [programming, "joy of"]}}
+{{index [programiranje, "radost"]}}
 
-A program is a building of thought. It is costless to build, it is weightless, and it grows easily under our typing hands. But as a program grows, so does its ((complexity)). The skill of programming is the skill of building programs that don't confuse yourself. The best programs are those that manage to do something interesting while still being easy to understand.
+Program je zgrada sačinjena od misli. Besplatno je izgraditi je, nema težine, i lako raste tipkanjem pod našim rukama. Ali kako program raste, tako raste i njegova ((kompleksnost)). Veština programiranja je veština izgradnje programa koji vas ne zbunjuju. Najbolji programi su oni koji uspevaju da urade nešto zanimljivo dok su i dalje lako razumljivi.
 
-{{index "programming style", "best practices"}}
+{{index "stil programiranja", "najbolje prakse"}}
 
-Some programmers believe that this complexity is best managed by using only a small set of well-understood techniques in their programs. They have composed strict rules ("best practices") prescribing the form programs should have and carefully stay within their safe little zone.
+Neki programeri veruju da se ova kompleksnost najbolje održava korišćenjem samo malog skupa dobro razumljivih tehnika u njihovim programima. Oni su sastavili stroga pravila ("najbolje prakse") koja propisuju oblik koji bi programi trebalo da imaju i pažljivo ostaju unutar njihove bezbedne male zone.
 
 {{index experiment}}
 
-This is not only boring, it is ineffective. New problems often require new solutions. The field of programming is young and still developing rapidly, and it is varied enough to have room for wildly different approaches. There are many terrible mistakes to make in program design, and you should go ahead and make them at least once so that you understand them. A sense of what a good program looks like is developed with practice, not learned from a list of rules.
+Ovo ne samo da je dosadno, već je i neefikasno. Novi problemi često zahtevaju nova rešenja. Polje programiranja je mlado i još uvek se brzo razvija, i dovoljno je raznovrsno da ima mesta za potpuno različite pristupe. Postoji mnogo strašnih grešaka koje možete napraviti u dizajnu svog programa, i trebalo bi da ih napravite barem jednom da biste ih pravilno razumeli. Osećaj kako dobar program izgleda razvija se praksom, a ne učeći sa liste pravila.
 
-## Why language matters
+## Zašto je programski jezik bitan
 
-{{index "programming language", "machine code", "binary data"}}
+{{index "programski jezik", "mašinski kod", "binarni podaci"}}
 
-In the beginning, at the birth of computing, there were no programming languages. Programs looked something like this:
+Na samom početku računarstva, nije bilo programskih jezika. Programi su izgledali nešto poput ovoga:
 
 ```{lang: null}
 00110001 00000000 00000000
@@ -88,86 +84,86 @@ In the beginning, at the birth of computing, there were no programming languages
 
 {{index [programming, "history of"], "punch card", complexity}}
 
-This is a program to add the numbers from 1 to 10 together and print the result: `1 + 2 + ... + 10 = 55`. It could run on a simple hypothetical machine. To program early computers, it was necessary to set large arrays of switches in the right position or punch holes in strips of cardboard and feed them to the computer. You can imagine how tedious and error-prone this procedure was. Even writing simple programs required much cleverness and discipline. Complex ones were nearly inconceivable.
+Ovo je program za sabiranje brojeva od 1 do 10 i ispisivanje rezultata: `1 + 2 + ... + 10 = 55`. Mogao bi se izvršiti na jednostavnoj hipotetičkoj mašini. Da biste programirali prve računare, bilo je potrebno postaviti velike nizove prekidača na pravilne pozicije ili probušiti rupe u trakama od kartona i ubaciti ih u računar. Možete zamisliti koliko je ovaj postupak bio dosadan i podložan greškama. Čak i pisanje jednostavnih programa zahtevalo je puno domišljatosti i discipline. Složeni programi su bili skoro nezamislivi.
 
-{{index bit, "wizard (mighty)"}}
+{{index bit, "čarobnjak"}}
 
-Of course, manually entering these arcane patterns of bits (the ones and zeros) did give the programmer a profound sense of being a mighty wizard. And that has to be worth something in terms of job satisfaction.
+Naravno, ručno unošenje ovih mističnih nizova bitova (jedinica i nula) davalo je programeru snažan osećaj da je moćan čarobnjak. I to mora nešto vredeti kada je u pitanju zadovoljstvo poslom.
 
-{{index memory, instruction}}
+{{index memorija, instrukcija}}
 
-Each line of the previous program contains a single instruction. It could be written in English like this:
+Svaka linija prethodnog programa sadrži jednu instrukciju. Može se napisati na engleskom jeziku na sledeći način:
 
- 1. Store the number 0 in memory location 0.
- 2. Store the number 1 in memory location 1.
- 3. Store the value of memory location 1 in memory location 2.
- 4. Subtract the number 11 from the value in memory location 2.
- 5. If the value in memory location 2 is the number 0, continue with instruction 9.
- 6. Add the value of memory location 1 to memory location 0.
- 7. Add the number 1 to the value of memory location 1.
- 8. Continue with instruction 3.
- 9. Output the value of memory location 0.
+ 1. Sačuvaj broj 0 na memorijskoj lokaciji 0.
+ 2. Sačuvaj broj 1 na memorijskoj lokaciji 1.
+ 3. Sačuvaj vrednost memorijske lokacije 1 na memorijsku lokaciju 2.
+ 4. Oduzmi broj 11 od vrednosti u memorijskoj lokaciji 2.
+ 5. Ako je vrednost u memorijskoj lokaciji 2 broj 0, nastavi sa instrukcijom 9.
+ 6. Dodaj vrednost memorijske lokacije 1 na vrednost memorijske lokacije 0.
+ 7. Dodaj broj 1 na vrednost memorijske lokacije 1.
+ 8. Nastavi sa instrukcijom 3.
+ 9. Ispiši vrednost lokacije 0.
 
-{{index readability, naming, binding}}
+{{index citljivost, imenovanje, povezivanje}}
 
-Although that is already more readable than the soup of bits, it is still rather obscure. Using names instead of numbers for the instructions and memory locations helps:
+Iako je ovaj tekst već čitljiviji od one gore supe od bitova, i dalje je prilično nejasno. Korišćenje imena umesto brojeva za instrukcije i lokacije u memoriji pomaže:
 
 ```{lang: "null"}
- Set “total” to 0.
- Set “count” to 1.
-[loop]
- Set “compare” to “count”.
- Subtract 11 from “compare”.
- If “compare” is zero, continue at [end].
- Add “count” to “total”.
- Add 1 to “count”.
- Continue at [loop].
-[end]
- Output “total”.
+ Postavi “ukupno” na 0.
+ Postavi “brojač” na 1.
+[petlja]
+ Postavi “poređenje” na “brojač”.
+ Oduzmi 11 od “poređenje”.
+ Ako je “poređenje” nula, nastavi na [kraj].
+ Dodaj “brojač” na “ukupno”.
+ Dodaj 1 na “brojač”.
+ Nastavi na [petlja].
+[kraj]
+ Ispiši “ukupno”.
 ```
 
-{{index loop, jump, "summing example"}}
+{{index petlja, skok, "primer sabiranja"}}
 
-Can you see how the program works at this point? The first two lines give two memory locations their starting values: `total` will be used to build up the result of the computation, and `count` will keep track of the number that we are currently looking at. The lines using `compare` are probably the most confusing ones. The program wants to see whether `count` is equal to 11 to decide whether it can stop running. Because our hypothetical machine is rather primitive, it can only test whether a number is zero and make a decision based on that. It therefore uses the memory location labeled `compare` to compute the value of `count - 11` and makes a decision based on that value. The next two lines add the value of `count` to the result and increment `count` by 1 every time the program decides that `count` is not 11 yet.
+Možete li videti kako program funkcioniše u ovom trenutku? Prve dve linije daju dvema lokacijama u memoriji njihove početne vrednosti: `ukupno` će se koristiti za čuvanje rezultata računanja, a `brojač` će pratiti broj koji trenutno posmatramo. Linije koje koriste `poređenje` verovatno su najviše zbunjujuće. Program želi da proveri da li je `brojač` jednak broju 11 da bi odlučio da li može prestati sa radom. Zato što je naša hipotetička mašina na kojoj se izvršava ovaj program prilično primitivna, može samo da proveri da li je broj nula i da donese odluku na osnovu te vrednosti. Zatim slede dve linije koje dodaju vrednost iz `brojač`a na rezultat i uvećavaju brojač za 1 svaki put kada program odluči da brojač još uvek nije 11.
 
-Here is the same program in JavaScript:
+Evo istog programa u JavaScript-u:
 
 ```
-let total = 0, count = 1;
-while (count <= 10) {
-  total += count;
-  count += 1;
+let ukupno = 0, brojac = 1;
+while (brojac <= 10) {
+  ukupno += brojac;
+  brojac += 1;
 }
-console.log(total);
+console.log(ukupno);
 // → 55
 ```
 
-{{index "while loop", loop, [braces, block]}}
+{{index "while petlja", petlja, [zagrade, blok]}}
 
-This version gives us a few more improvements. Most importantly, there is no need to specify the way we want the program to jump back and forth anymore—the `while` construct takes care of that. It continues executing the block (wrapped in braces) below it as long as the condition it was given holds. That condition is `count <= 10`, which means “the count is less than or equal to 10”. We no longer have to create a temporary value and compare that to zero, which was just an uninteresting detail. Part of the power of programming languages is that they can take care of uninteresting details for us.
+Ova verzija sadrži nekoliko poboljšanja. Ono najvažnije, više nije potrebno specificirati način na koji želimo da program skače napred-nazad `while` petlja se brine o tome. Ova petlja nastavlja izvršavanje bloka ispod (obavijenog zagradama) sve dok uslov koji je dobila važi. Taj uslov je `brojac <= 10`, što znači “brojač je manji ili jednak 10”. Više nam nije potrebno kreirati privremenu vrednost i porediti je sa nulom. Deo snage programskih jezika je u tome što mogu brinuti o takvim detaljima umesto nas.
 
 {{index "console.log"}}
 
-At the end of the program, after the `while` construct has finished, the `console.log` operation is used to write out the result.
+Na kraju programa, nakon što je `while` petlja završila, operacija `console.log` se koristi za ispisivanje rezultata.
 
-{{index "sum function", "range function", abstraction, function}}
+{{index "funkcija sabiranja", "funkcija opsega", apstrakcija, funkcija}}
 
-Finally, here is what the program could look like if we happened to have the convenient operations `range` and `sum` available, which respectively create a ((collection)) of numbers within a range and compute the sum of a collection of numbers:
+Konačno, evo kako bi program izgledao da imamo na raspolaganju korisne operacije `opseg` i `suma`, koje redom kreiraju ((kolekciju)) brojeva unutar opsega i računaju zbir kolekcije brojeva:
 
 ```{startCode: true}
-console.log(sum(range(1, 10)));
+console.log(suma(opseg(1, 10)));
 // → 55
 ```
 
-{{index readability}}
+{{index citljivost}}
 
-The moral of this story is that the same program can be expressed in both long and short, unreadable and readable ways. The first version of the program was extremely obscure, whereas this last one is almost English: `log` the `sum` of the `range` of numbers from 1 to 10. (We will see in [later chapters](data) how to define operations like `sum` and `range`.)
+Pouka ove priče je da isti program može biti izražen na dug i kratak, čitak i nečitak način. Prva verzija programa bila je izuzetno nejasna, dok je ova poslednja gotovo ljudski jezik: `log`uj `ukupno` `opsega` brojeva od 1 do 10. (Videćemo u kasnijim poglavljima kako definisati operacije poput `suma` i `opseg`.)
 
 {{index ["programming language", "power of"], composability}}
 
-A good programming language helps the programmer by allowing them to talk about the actions that the computer has to perform on a higher level. It helps omit details, provides convenient building blocks (such as `while` and `console.log`), allows you to define your own building blocks (such as `sum` and `range`), and makes those blocks easy to compose.
+Dobar programski jezik pomaže programeru tako što mu omogućava da razgovara na višem nivou o komandama koje računar mora izvršiti. Pomaže u izostavljanju detalja, pruža prikladne gradivne blokove (poput `while` i `console.log`), omogućava vam da definišete sopstvene gradivne blokove (poput `suma` i `opseg`), i olakšava vam da te blokove komponujete.
 
-## What is JavaScript?
+## Šta je JavaScript?
 
 {{index history, Netscape, browser, "web application", JavaScript, [JavaScript, "history of"], "World Wide Web"}}
 
@@ -175,47 +171,47 @@ A good programming language helps the programmer by allowing them to talk about 
 
 {{indexsee Web, "World Wide Web"}}
 
-JavaScript was introduced in 1995 as a way to add programs to web pages in the Netscape Navigator browser. The language has since been adopted by all other major graphical web browsers. It has made modern web applications possible—that is, applications with which you can interact directly without doing a page reload for every action. JavaScript is also used in more traditional websites to provide various forms of interactivity and cleverness.
+JavaScript je programski jezik koji je predstavljen 1995. godine od strane Netscape Navigator-a kao način dodavanja programa veb stranicama. Od tada je usvojen od strane svih glavnih grafičkih web pretraživača i postao je ključan u stvaranju modernih web aplikacija, omogućavajući korisnicima direktnu interakciju sa web sadržajem bez potrebe za ponovnim učitavanjem stranica nakon svake interakcije. JavaScript se takođe koristi i na tradicionalnim veb sajtovima kako bi pružio različite oblike interaktivnosti.
 
 {{index Java, naming}}
 
-It is important to note that JavaScript has almost nothing to do with the programming language named Java. The similar name was inspired by marketing considerations rather than good judgment. When JavaScript was being introduced, the Java language was being heavily marketed and was gaining popularity. Someone thought it was a good idea to try to ride along on this success. Now we are stuck with the name.
+Važno je napomenuti da JavaScript nema skoro ništa zajedničko sa programskim jezikom koji se zove Java. Slično ime inspirisano je marketinškim trikovima. Kada je JavaScript bio predstavljen, programski jezik Java se snažno reklamirao i sticao popularnost. Neko je smatrao da je dobra ideja pokušati se osloniti na taj uspeh. Sada smo zaglavili sa tim imenom.
 
-{{index ECMAScript, compatibility}}
+{{index ECMAScript, kompatibilnost}}
 
-After its adoption outside of Netscape, a ((standard)) document was written to describe the way the JavaScript language should work so that the various pieces of software that claimed to support JavaScript could make sure they actually provided the same language. This is called the ECMAScript standard, after the Ecma International organization that conducted the standardization. In practice, the terms ECMAScript and JavaScript can be used interchangeably—they are two names for the same language.
+Nakon što je usvojen izvan Netscape-a, napisan je dokument o ((standardu)) koji opisuje način na koji bi JavaScript trebalo da funkcioniše kako bi različiti softveri koji  podržavaju JavaScript mogli da se uvere da zapravo pružaju isti jezik. To se naziva ECMAScript standard, po organizaciji Ecma International koja je sprovela standardizaciju. U praksi, termini ECMAScript i JavaScript se mogu koristiti zamjenjivo - to su dva imena za isti jezik.
 
-{{index [JavaScript, "weaknesses of"], debugging}}
+{{index [JavaScript, "slabosti"], debagovanje}}
 
-There are those who will say _terrible_ things about JavaScript. Many of these things are true. When I was required to write something in JavaScript for the first time, I quickly came to despise it. It would accept almost anything I typed but interpret it in a way that was completely different from what I meant. This had a lot to do with the fact that I did not have a clue what I was doing, of course, but there is a real issue here: JavaScript is ridiculously liberal in what it allows. The idea behind this design was that it would make programming in JavaScript easier for beginners. In actuality, it mostly makes finding problems in your programs harder because the system will not point them out to you.
+Neki ljudi će reći _strašno loše_ stvari o JavaScript-u. I mnoge od tih stvari su istinite. Kada sam prvi put trebao da nešto napišem u JavaScript-u, brzo sam počeo da ga prezirem. Prihvatao je skoro sve što sam otkucao, ali bi izvršio to na potpuno drugačiji način od onoga što sam zamislio. To je imalo veze s činjenicom da nisam imao pojma šta radim, naravno, ali ovde postoji stvarni problem: JavaScript je ultra ležeran u onome što dozvoljava. Ideja iza ovog dizajna bila je da programiranje u JavaScript-u bude lakše za početnike. Međutim, to većinom otežava pronalaženje problema u vašim programima jer sistem neće ukazati na njih.
 
-{{index [JavaScript, "flexibility of"], flexibility}}
+{{index [JavaScript, "fleksibilnost"], fleksibilnost}}
 
-This flexibility also has its advantages, though. It leaves room for techniques that are impossible in more rigid languages and makes for a pleasant, informal style of programming. After ((learning)) the language properly and working with it for a while, I have come to actually _like_ JavaScript.
+Ova fleksibilnost ipak ima i svoje prednosti. Ostavlja nam prostora za tehnike koje su nemoguće u strožijim jezicima i omogućava prijatan, neformalan stil programiranja. Nakon što sam pravilno ((naučio)) jezik i radio s njim neko vreme, počeo sam zaista _voleti_ JavaScript.
 
-{{index future, [JavaScript, "versions of"], ECMAScript, "ECMAScript 6"}}
+{{index buducnost, [JavaScript, "verzije"], ECMAScript, "ECMAScript 6"}}
 
-There have been several versions of JavaScript. ECMAScript version 3 was the widely supported version during JavaScript's ascent to dominance, roughly between 2000 and 2010. During this time, work was underway on an ambitious version 4, which planned a number of radical improvements and extensions to the language. Changing a living, widely used language in such a radical way turned out to be politically difficult, and work on the version 4 was abandoned in 2008. A much less ambitious version 5, which made only some uncontroversial improvements, came out in 2009. In 2015, version 6 came out, a major update that included some of the ideas planned for version 4. Since then we've had new, small updates every year.
+Postojalo je nekoliko verzija JavaScript-a. ECMAScript verzija 3 je bila široko podržana verzija tokom uspona JavaScript-a, otprilike između 2000. i 2010. U ovom periodu, radilo se na ambicioznoj verziji 4, u kojoj je planirano nekoliko radikalnih poboljšanja i proširenja jezika. Ovakva promena jednog živog, široko korišćenog jezika na tako radikalan način pokazala se kontroverznom, i rad na verziji 4 je napušten 2008. godine. Mnogo manje ambiciozna verzija 5, koja je napravila samo neka politički nesporna poboljšanja, izašla je 2009. godine. U 2015. godini, izašla je verzija 6, jedan od najvećih update-a, koje je uključilo neke ideje planirane za verziju 4. Od tada imamo nove, male promene svake godine.
 
-The fact that JavaScript is evolving means that browsers have to constantly keep up. If you're using an older browser, it may not support every feature. The language designers are careful to not make any changes that could break existing programs, so new browsers can still run old programs. In this book, I'm using the 2023 version of JavaScript.
+Činjenica da se JavaScript razvija znači da web pretraživači moraju stalno da ga prate u korak. Ako koristite stariji pretraživač, on možda neće podržavati svaku funkciju jezika. Dizajneri jezika paze da ne prave promene koje bi mogle da pokvare postojeće programe, tako da novi pretraživači još uvijek mogu pokretati stare programe. U ovoj knjizi, koristićemo verziju JavaScript-a iz 2023. godine.
 
 {{index [JavaScript, "uses of"]}}
 
-Web browsers are not the only platforms on which JavaScript is used. Some databases, such as MongoDB and CouchDB, use JavaScript as their scripting and query language. Several platforms for desktop and server programming, most notably the ((Node.js)) project (the subject of [Chapter ?](node)), provide an environment for programming JavaScript outside of the browser.
+Web pretraživači nisu jedine platforme na kojima se koristi JavaScript. Neke baze podataka, poput MongoDB-a i CouchDB-a, koriste JavaScript kao svoj skriptni i query jezik. Nekoliko platformi za desktop i serversko programiranje, posebno projekat ((Node.js)) (tema [Poglavlja ?](node)), pružaju okruženje za programiranje JavaScript-a van pretraživača (browsera).
 
-## Code, and what to do with it
+## Kod, i šta s njim raditi
 
-{{index "reading code", "writing code"}}
+{{index "čitanje koda", "pisanje koda"}}
 
-_Code_ is the text that makes up programs. Most chapters in this book contain quite a lot of code. I believe reading code and writing ((code)) are indispensable parts of ((learning)) to program. Try to not just glance over the examples—read them attentively and understand them. This may be slow and confusing at first, but I promise that you'll quickly get the hang of it. The same goes for the ((exercises)). Don't assume you understand them until you've actually written a working solution.
+_Kod_ je tekst koji čini programe. Većina poglavlja u ovoj knjizi sadrži dosta koda. Verujem da je čitanje i pisanje ((koda)) nezamenjiv deo učenja programiranja. Pokušajte ne samo da preletite očima preko primera - pažljivo ih pročitajte i razumite. To može biti sporo i zbunjujuće u početku, ali obećavam da ćete brzo postati upraksani u tome. Isto važi i za ((vežbe)). Ne pretpostavljajte da ih razumete dok stvarno ne napišete funkcionalno i tačno rešenje.
 
-{{index interpretation}}
+{{index interpretacija}}
 
-I recommend you try your solutions to exercises in an actual JavaScript interpreter. That way, you'll get immediate feedback on whether what you are doing is working, and, I hope, you'll be tempted to ((experiment)) and go beyond the exercises.
+Preporučujem da isprobate vaša rešenja za vežbe u stvarnom JavaScript interpretatoru. Na taj način ćete odmah dobiti povratnu informaciju o tome da li ono što radite funkcioniše, i, nadam se, bićete motivisani da ((eksperimentišete)) i da idete dalje i šire od vežbi.
 
 {{if interactive
 
-When reading this book in your browser, you can edit (and run) all example programs by clicking them.
+Kada čitate ovu knjigu u pretraživaču, možete promeniti (i pokrenuti) sve primere programa klikom na njih.
 
 if}}
 
@@ -223,37 +219,37 @@ if}}
 
 {{index download, sandbox, "running code"}}
 
-The easiest way to run the example code in the book—and to experiment with it—is to look it up in the online version of the book at [_https://eloquentjavascript.net_](https://eloquentjavascript.net/). There, you can click any code example to edit and run it and to see the output it produces. To work on the exercises, go to [_https://eloquentjavascript.net/code_](https://eloquentjavascript.net/code), which provides starting code for each coding exercise and allows you to look at the solutions.
+Najlakši način za pokretanje koda u knjizi - i za eksperimentisanje s njim - je da ga potražite u online verziji knjige na [_https://eloquentjavascript.net_](https://eloquentjavascript.net). Tamo možete kliknuti na bilo koji primer koda da biste ga editovali i pokrenuli, i videli rezultat koji proizvodi. Za rad na vežbama, idite na [_https://eloquentjavascript.net/code_](https://eloquentjavascript.net/code), gde su dati početni kodovi za svaku vežbu i gde možete videti rešenja.
 
 if}}
 
-{{index "developer tools", "JavaScript console"}}
+{{index "developer tools", "JavaScript konzola"}}
 
-Running the programs defined in this book outside of the book's website requires some care. Many examples stand on their own and should work in any JavaScript environment. But code in later chapters is often written for a specific environment (the browser or Node.js) and can run only there. In addition, many chapters define bigger programs, and the pieces of code that appear in them depend on each other or on external files. The [sandbox](https://eloquentjavascript.net/code) on the website provides links to ZIP files containing all the scripts and data files necessary to run the code for a given chapter.
+Pokretanje programa napisanih u ovoj knjizi izvan web lokacije knjige zahteva određenu pažnju. Mnogi primeri bi trebalo bi da rade u bilo kojem JavaScript okruženju. Medjutim, kod u kasnijim poglavljima često je napisan za određeno okruženje (pretraživač ili Node.js) i može se pokrenuti samo tamo. Pored toga, mnoga poglavlja definišu veće programe, a delovi koda koji se pojavljuju u njima zavise jedni od drugih ili od spoljnih datoteka. [Sandbox](https://eloquentjavascript.net/code) na veb lokaciji pruža linkove do ZIP datoteka koje sadrže sve skripte i datoteke potrebne za pokretanje koda za određeno poglavlje.
 
-## Overview of this book
+## Pregled ove knjige
 
-This book contains roughly three parts. The first 12 chapters discuss the JavaScript language. The next seven chapters are about web ((browsers)) and the way JavaScript is used to program them. Finally, two chapters are devoted to ((Node.js)), another environment to program JavaScript in. There are five _project chapters_ in the book that describe larger example programs to give you a taste of actual programming.
+Ova knjiga otprilike sadrži tri dela. Prvih 12 poglavlja govore o JavaScript jeziku. Sledećih sedam poglavlja govore o web pretraživačima i načinu na koji se JavaScript koristi za njihovo programiranje. Na kraju, dva poglavlja su posvećena ((Node.js)), još jednom okruženju za programiranje u JavaScript-u. U knjizi postoji pet projektnih poglavlja koja prikazuju veće programe kako bi vam pružili ukus pravog programiranja.
 
-The language part of the book starts with four chapters that introduce the basic structure of the JavaScript language. They discuss [control structures](program_structure) (such as the `while` word you saw in this introduction), [functions](functions) (writing your own building blocks), and [data structures](data). After these, you will be able to write basic programs. Next, Chapters [?](higher_order) and [?](object) introduce techniques to use functions and objects to write more _abstract_ code and keep complexity under control.
+Deo knjige koji govori o JavaScript jeziku, počinje sa četiri poglavlja koja predstavljaju osnovnu strukturu JavaScript-a. Ova poglavlja objašnjavaju kontrolne strukture (poput `while` ključne reči koju ste videli u ovom uvodu), [funkcije](functions) (pisanje vaših sopstvenih gradivnih blokova) i [strukture podataka](data). Nakon što pročitate ova poglavlja, moći ćete da napišete osnovne programe. Zatim, Poglavlja [?](higher_order) i [?](object) uvode tehnike korišćenja funkcija i objekata za pisanje _apstraktnog_ koda i držanje kompleksnosti pod kontrolom.
 
-After a [first project chapter](robot) that builds a crude delivery robot, the language part of the book continues with chapters on [error handling and bug fixing](error), [regular expressions](regexp) (an important tool for working with text), [modularity](modules) (another defense against complexity), and [asynchronous programming](async) (dealing with events that take time). The [second project chapter](language), where we implement a programming language, concludes the first part of the book.
+Nakon [prvog projektnog poglavlja](robot) u kojem pravimo dostavljačkog robota, deo o JavaScript jeziku nastavlja se poglavljima o [hvatanju i ispravljanju grešaka](error), [regular expressions](regexp) (važan alat za rad sa tekstom), [modularnosti](modules) (još jedna odbrana od kompleksnosti) i [asinhronog programiranja](async) (rad sa događajima kojim je potrebno neko vreme da zavrse). [Drugo projektno poglavlje](language), gde implementiramo programski jezik, završava prvi deo knjige.
 
-The second part of the book, Chapters [?](browser) to [?](paint), describes the tools that browser JavaScript has access to. You'll learn to display things on the screen (Chapters [?](dom) and [?](canvas)), respond to user input ([Chapter ?](event)), and communicate over the network ([Chapter ?](http)). There are again two project chapters in this part, building a [platform game](game) and a [pixel paint program](paint).
+Drugi deo knjige, poglavlja od [?](browser) do [?](paint), opisuje alate u pretrazivacu kojima JavaScript ima pristup. Naučićete kako da prikažete stvari na ekranu (Poglavlja [?](dom) i [?](canvas)), reagujete na korisnički unos ([Poglavlje ?](event)) i komunicirate preko mreže ([Poglavlje ?](http)). I u ovom delu postoje dva projektna poglavlja, koja prave [platformer igru](game) i [program za crtanje](paint).
 
-[Chapter ?](node) describes Node.js, and [Chapter ?](skillsharing) builds a small website using that tool.
+[Poglavlje ?](node) opisuje Node.js, a [Poglavlje ?](skillsharing) gradi malu veb stranicu koristeći Node.
 
 {{if commercial
 
-Finally, [Chapter ?](fast) describes some of the considerations that come up when optimizing JavaScript programs for speed.
+Konačno, [Poglavlje ?](fast) opisuje neke od stvari koje je potrebno razmotriti prilikom optimizacije brzine JavaScript programa.
 
 if}}
 
-## Typographic conventions
+## Tipografske konvencije
 
-{{index "factorial function"}}
+{{index "faktorijel funkcija"}}
 
-In this book, text written in a `monospaced` font will represent elements of programs. Sometimes these are self-sufficient fragments, and sometimes they just refer to part of a nearby program. Programs (of which you have already seen a few) are written as follows:
+U ovoj knjizi, tekst napisan u `monospaced` fontu će predstavljati elemente programa. Ponekad su to samostalni fragmenti, a ponekad samo se odnose na deo neposrednog programa. Programi (od kojih ste već videli nekoliko) su napisani na sledeći način:
 
 ```
 function factorial(n) {
@@ -267,11 +263,11 @@ function factorial(n) {
 
 {{index "console.log"}}
 
-Sometimes, to show the output that a program produces, the expected output is written after it, with two slashes and an arrow in front.
+Ponekad, da biste prikazali rezultat koji program proizvodi, očekivani rezultat se piše posle njega, sa dva kosmička i strelicom ispred.
 
 ```
 console.log(factorial(8));
 // → 40320
 ```
 
-Good luck!
+Srećno!
