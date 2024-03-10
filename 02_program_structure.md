@@ -1,56 +1,56 @@
-# Program Structure
+# Struktura programa
 
 {{quote {author: "_why", title: "Why's (Poignant) Guide to Ruby", chapter: true}
 
-And my heart glows bright red under my filmy, translucent skin and they have to administer 10cc of JavaScript to get me to come back. (I respond well to toxins in the blood.) Man, that stuff will kick the peaches right out your gills!
+I moje srce sija jarko crveno ispod mog prozirnog kožnog filma i moraju mi dati 10cc JavaScript-a da se vratim. (Dobro reagujem na toksine u krvi.)
 
 quote}}
 
 {{index why, "Poignant Guide"}}
 
-{{figure {url: "img/chapter_picture_2.jpg", alt: "Illustration showing a number of tentacles holding chess pieces", chapter: framed}}}
+{{figure {url: "img/chapter_picture_2.jpg", alt: "Ilustracija pokazuje pipke hobotnice kako drze razne sahovske figure", chapter: framed}}}
 
-In this chapter, we will start to do things that can actually be called _programming_. We will expand our command of the JavaScript language beyond the nouns and sentence fragments we've seen so far to the point where we can express meaningful prose.
+U ovom poglavlju, počećemo da radimo stvari koje se zapravo mogu nazvati _programiranjem_. Proširićemo naše poznavanje JavaScript-a izvan imenica i prostih rečenica koje smo dosad videli do tačke gde možemo pisati značajne proze.
 
-## Expressions and statements
+## Expressions i statements
 
 {{index grammar, [syntax, expression], [code, "structure of"], grammar, [JavaScript, syntax]}}
 
-In [Chapter ?](values), we made values and applied operators to them to get new values. Creating values like this is the main substance of any JavaScript program. But that substance has to be framed in a larger structure to be useful. That's what we'll cover in this chapter.
+U [Poglavlju ?](values), kreirali smo vrednosti i primenili operatore na njih da bismo dobili nove vrednosti. Kreiranje vrednosti na ovaj način je osnovna suština svakog JavaScript programa. Međutim, ta suština mora biti oblikovana u veću strukturu da bi bila korisna. To ćemo obraditi u ovom poglavlju.
 
 {{index "literal expression", [parentheses, expression]}}
 
-A fragment of code that produces a value is called an _((expression))_. Every value that is written literally (such as `22` or `"psychoanalysis"`) is an expression. An expression between parentheses is also an expression, as is a ((binary operator)) applied to two expressions or a ((unary operator)) applied to one.
+Deo koda koji proizvodi vrednost naziva se _((izraz))_ (_expression_). Svaka vrednost koja je napisana doslovno (kao što su `22` ili `"psihoanaliza"`) je izraz. Izraz između zagrada takođe je izraz, kao i ((binarni operator)) primenjen na dva izraza ili ((unarni operator)) primenjen na jedan.
 
 {{index [nesting, "of expressions"], "human language"}}
 
-This shows part of the beauty of a language-based interface. Expressions can contain other expressions in a way similar to how subsentences in human languages are nested—a subsentence can contain its own subsentences, and so on. This allows us to build expressions that describe arbitrarily complex computations.
+Ovo pokazuje deo lepote jezičkog interfejsa. Izrazi mogu sadržavati druge izraze na način sličan kao rečenice u ljudskim jezicima - jedna rečenica može sadržati više manjih rečenica u sebi, koje takođe mogu imati još manje rečenice u sebi i tako dalje. To nam omogućava da izgradimo izraze koji opisuju proizvoljno kompleksna računanja.
 
 {{index statement, semicolon, program}}
 
-If an expression corresponds to a sentence fragment, a JavaScript _statement_ corresponds to a full sentence. A program is a list of statements.
+Ako izraz analogno odgovara delu rečenice, onda je _statement_ (izjava) u JavaScript-u puna rečenica. Program je zapravo lista izjava tj. statementa.
 
 {{index [syntax, statement]}}
 
-The simplest kind of statement is an expression with a semicolon after it. This is a program:
+Najjednostavnija vrsta statementa je izraz koji završava sa tačka-zapeta(;). Ovo je program:
 
 ```
 1;
 !false;
 ```
 
-It is a useless program, though. An ((expression)) can be content to just produce a value, which can then be used by the enclosing code. However, a ((statement)) stands on its own, so if it doesn't affect the world, it's useless. It may display something on the screen, as with `console.log`, or change the state of the machine in a way that will affect the statements that come after it. These changes are called _((side effect))s_. The statements in the previous example just produce the values `1` and `true` and then immediately throw them away. This leaves no impression on the world at all. When you run this program, nothing observable happens.
+Doduše, ovo je beskoristan program. Izraz može biti samo da proizvede vrednost, koja se zatim može koristiti od strane drugog koda. Međutim, statement stoji sama za sebe, pa ako ne utiče na svet oko sebe, beskorisna je. Može prikazati nešto na ekranu, kao npr. `console.log`, ili promeniti stanje mašine na način koji će uticati na izjave koje dolaze nakon nje. Ove promene se nazivaju _((sporedni efekti))_. Izjave u prethodnom primeru samo proizvode vrednosti `1` i `true`, a zatim ih odmah odbacuju. To uopšte ne ostavlja efekat na svet oko sebe. Kada pokrenete ovaj program, ništa konkretno se ne dešava.
 
 {{index "programming style", "automatic semicolon insertion", semicolon}}
 
-In some cases, JavaScript allows you to omit the semicolon at the end of a statement. In other cases, it has to be there, or the next ((line)) will be treated as part of the same statement. The rules for when it can be safely omitted are somewhat complex and error-prone. So in this book, every statement that needs a semicolon will always get one. I recommend you do the same, at least until you've learned more about the subtleties of missing semicolons.
+U nekim slučajevima, JavaScript vam dozvoljava da izostavite tačku-zarez na kraju izjave. U drugim slučajevima, ona mora biti prisutna, ili će sledeći ((red)) biti tretiran kao deo iste izjave. Pravila kada je možete bezbedno izostaviti su prilično složena i podložna greškama. Stoga, u ovoj knjizi, svaka izjava koja zahteva tačku-zarez na kraju. Preporučujem vam da učinite isto, barem dok ne naučite više o suptilnostima nedostajućih tačaka-zareza.
 
 ## Bindings
 
 {{indexsee variable, binding}}
 {{index [syntax, statement], [binding, definition], "side effect", [memory, organization], [state, in binding]}}
 
-How does a program keep an internal state? How does it remember things? We have seen how to produce new values from old values, but this does not change the old values, and the new value must be used immediately or it will dissipate again. To catch and hold values, JavaScript provides a thing called a _binding_, or _variable_:
+Kako program održava interno stanje? Kako pamti stvari? Videli smo kako da proizvedemo nove vrednosti iz starih vrednosti, ali ovo ne menja stare vrednosti, i nova vrednost mora odmah da se koristi ili će opet nestati. Da sačuva vrednosti, JavaScript pruža nešto što se zove _binding_, ili _promenljiva_ tj _varijabla_:
 
 ```
 let caught = 5 * 5;
@@ -58,21 +58,21 @@ let caught = 5 * 5;
 
 {{index "let keyword"}}
 
-That gives us a second kind of ((statement)). The special word (_((keyword))_) `let` indicates that this sentence is going to define a binding. It is followed by the name of the binding and, if we want to immediately give it a value, by an `=` operator and an expression.
+Ovo nam daje drugu vrstu ((izjave)). Posebna reč (_((ključna reč))_) `let` ukazuje da će ova rečenica definisati varijablu. Za njom sledi ime varijable i, ako želimo odmah da joj damo vrednost, operator `=` i izraz.
 
-The example creates a binding called `caught` and uses it to grab hold of the number that is produced by multiplying 5 by 5.
+Primer kreira varijablu nazvanu `caught` i koristi je da sačuva broj koji se dobija množenjem 5 sa 5.
 
-After a binding has been defined, its name can be used as an ((expression)). The value of such an expression is the value the binding currently holds. Here's an example:
+Kada je varijabla definisana, njeno ime može biti korišćeno kao ((izraz)). Vrednost takvog izraza je vrednost koju trenutno drži vrijabla. Evo primera:
 
 ```
-let ten = 10;
-console.log(ten * ten);
+let deset = 10;
+console.log(deset * deset);
 // → 100
 ```
 
 {{index "= operator", assignment, [binding, assignment]}}
 
-When a binding points at a value, that does not mean it is tied to that value forever. The `=` operator can be used at any time on existing bindings to disconnect them from their current value and have them point to a new one:
+Kada varijabla pokazuje na vrednost, to ne znači da je vezana za tu vrednost zauvek. Operator `=` može biti korišćen u bilo kom trenutku na postojećim varijablama da bi ih odvojio od njihove trenutne vrednosti i usmerio ih na novu:
 
 ```
 let mood = "light";
@@ -85,9 +85,9 @@ console.log(mood);
 
 {{index [binding, "model of"], "tentacle (analogy)"}}
 
-You should imagine bindings as tentacles rather than boxes. They do not _contain_ values; they _grasp_ them—two bindings can refer to the same value. A program can access only the values to which it still has a reference. When you need to remember something, you either grow a tentacle to hold on to it or reattach one of your existing tentacles to it.
+Trebalo bi da zamislite varijable kao pipke umesto kutija u kojima se čuvaju stvari. One ne _sadrže_ vrednosti; one ih _vežu_ — dva vezanja tj varijable mogu se odnositi na istu vrednost. Program može pristupiti samo vrednostima na koje još uvek ima referencu. Kada treba da zapamtite nešto, ili napravite nove pipke da biste se vezali za to što pamtite ili ponovo prikačite jedan od vaših postojećih pipaka za to.
 
-Let's look at another example. To remember the number of dollars that Luigi still owes you, you create a binding. When he pays back $35, you give this binding a new value:
+Pogledajmo još jedan primer. Da biste zapamtili koliko vam dolara Luigi još uvek duguje, napravite varijablu. Kada vam vrati $35, dajete ovoj varijabli novu vrednost:
 
 ```
 let luigisDebt = 140;
@@ -98,11 +98,11 @@ console.log(luigisDebt);
 
 {{index undefined}}
 
-When you define a binding without giving it a value, the tentacle has nothing to grasp, so it ends in thin air. If you ask for the value of an empty binding, you'll get the value `undefined`.
+Kada definišete varijablu ne dajući joj vrednost, pipak nema ništa čega bi se uhvatio, tako da ostaje praznih ruku. Ako zatražite vrednost praznog pipka, dobićete vrednost `undefined`.
 
 {{index "let keyword"}}
 
-A single `let` statement may define multiple bindings. The definitions must be separated by commas:
+Jedna `let` izjava može definisati više varijabli. Definicije moraju biti odvojene zarezima:
 
 ```
 let one = 1, two = 2;
@@ -110,7 +110,7 @@ console.log(one + two);
 // → 3
 ```
 
-The words `var` and `const` can also be used to create bindings, in a similar fashion to `let`:
+Reči `var` i `const` takođe se mogu koristiti za kreiranje binding-a, na sličan način kao i `let`:
 
 ```
 var name = "Ayda";
@@ -121,21 +121,21 @@ console.log(greeting + name);
 
 {{index "var keyword"}}
 
-The first of these, `var` (short for "variable"), is the way bindings were declared in pre-2015 JavaScript, when `let` didn't exist yet. I'll get back to the precise way it differs from `let` in the [next chapter](functions). For now, remember that it mostly does the same thing, but we'll rarely use it in this book because it behaves oddly in some situations.
+`var` (skraćeno za "promenljiva" tj. varijabla), je način na koji su vezanja (bindings) deklarisana u JavaScriptu pre 2015. godine, kada `let` još nije postojao. Precizno ćemo opisati kako se razlikuje od `let` u [sledećem poglavlju](functions). Za sada, zapamtite da uglavnom radi istu stvar, ali ćemo je retko koristiti u ovoj knjizi jer se ponaša čudno u nekim situacijama.
 
 {{index "const keyword", naming}}
 
-The word `const` stands for _((constant))_. It defines a constant binding, which points at the same value for as long as it lives. This is useful for bindings that just give a name to a value so that you can easily refer to it later.
+Reč `const` predstavlja _((konstantu))_. Ona definiše konstantan binding, i pokazuje na istu vrednost dok god postoji. Ovo je korisno za vezanja koja samo daju ime vrednosti kako biste je kasnije lako mogli koristiti.
 
-## Binding names
+## Vezivanje imena
 
 {{index "underscore character", "dollar sign", [binding, naming]}}
 
-Binding names can be any sequence of one or more letters. Digits can be part of binding names—`catch22` is a valid name, for example—but the name must not start with a digit. A binding name may include dollar signs (`$`) or underscores (`_`) but no other punctuation or special characters.
+Imena binding-a mogu biti bilo koji niz od jednog ili više slova. Cifre mogu biti deo imena varijable — `catch22` je validno ime, na primer — ali ime ne sme početi cifrom. Ime varijable može uključivati dolarske znakove (`$`) ili donje crte (`_`), ali ne i druge interpunkcijske ili posebne znakove.
 
 {{index [syntax, identifier], "implements (reserved word)", "interface (reserved word)", "package (reserved word)", "private (reserved word)", "protected (reserved word)", "public (reserved word)", "static (reserved word)", "void operator", "yield (reserved word)", "enum (reserved word)", "reserved word", [binding, naming]}}
 
-Words with a special meaning, such as `let`, are _((keyword))s_, and may not be used as binding names. There are also a number of words that are "reserved for use" in ((future)) versions of JavaScript, which also can't be used as binding names. The full list of keywords and reserved words is rather long:
+Reči sa posebnim značenjem, poput `let`, su _((ključne reči))_, i ne mogu se koristiti kao imena varijable. Postoji i niz reči koje su "rezervisane za korišćenje" u ((budućim)) verzijama JavaScripta, koje takođe ne mogu biti korišćene kao imena varijable. Kompletna lista ključnih reči i rezervisanih reči je prilično duga:
 
 ```{lang: "null"}
 break case catch class const continue debugger default
@@ -147,44 +147,44 @@ switch this throw true try typeof var void while with yield
 
 {{index [syntax, error]}}
 
-Don't worry about memorizing this list. When creating a binding produces an unexpected syntax error, check whether you're trying to define a reserved word.
+Nemojte se brinuti oko pamćenja ove liste. Kada kreiranje binding-a proizvede neočekivanu sintaksnu grešku, samo proverite da li pokušavate da definišete rezervisanu reč.
 
-## The environment
+## Okruženje
 
 {{index "standard environment", [browser, environment]}}
 
-The collection of bindings and their values that exist at a given time is called the _((environment))_. When a program starts up, this environment is not empty. It always contains bindings that are part of the language ((standard)), and most of the time, it also has bindings that provide ways to interact with the surrounding system. For example, in a browser, there are functions to interact with the currently loaded website and to read ((mouse)) and ((keyboard)) input.
+Skup svih varijabli i njihovih vrednosti koji postoje u datom trenutku naziva se _((okruženje))_. Kada program počne, ovo okruženje nije prazno. Uvek sadrži varijable koja su deo jezičkog ((standarda)), i većinu vremena, takođe ima varijable koje pružaju načine za interakciju sa okolnim sistemom. Na primer, u pretraživaču postoje funkcije za interakciju sa trenutno učitanom veb stranicom i za čitanje ((miša)) i ((tastature)).
 
-## Functions
+## Funkcije
 
 {{indexsee "application (of functions)", [function, application]}}
 {{indexsee "invoking (of functions)", [function, application]}}
 {{indexsee "calling (of functions)", [function, application]}}
 {{index output, function, [function, application], [browser, environment]}}
 
-A lot of the values provided in the default environment have the type _((function))_. A function is a piece of program wrapped in a value. Such values can be _applied_ in order to run the wrapped program. For example, in a browser environment, the binding `prompt` holds a function that shows a little ((dialog box)) asking for user input. It is used like this:
+Mnoge vrednosti koje se pružaju u podrazumevanom okruženju imaju tip _((funkcije))_. Funkcija je deo programa sačuvan u vrednost. Takve vrednosti se mogu _primeniti_ (aplicirati) kako bi se pokrenuo sačuvani program. Na primer, u pretraživaču, binding `prompt` sadrži funkciju koja prikazuje mali ((dijalog)) koji traži korisnički unos. Koristi se na sledeći način:
 
 ```
 prompt("Enter passcode");
 ```
 
-{{figure {url: "img/prompt.png", alt: "A prompt dialog that says 'enter passcode'", width: "8cm"}}}
+{{figure {url: "img/prompt.png", alt: "Dijalog koji prikazuje tekst 'enter passcode'", width: "8cm"}}}
 
 {{index parameter, [function, application], [parentheses, arguments]}}
 
-Executing a function is called _invoking_, _calling_, or _applying_ it. You can call a function by putting parentheses after an expression that produces a function value. Usually you'll directly use the name of the binding that holds the function. The values between the parentheses are given to the program inside the function. In the example, the `prompt` function uses the string that we give it as the text to show in the dialog box. Values given to functions are called _((argument))s_. Different functions might need a different number or different types of arguments.
+Izvršavanje funkcije se naziva _pozivanje_, ili _primena_. Funkciju možete pozvati tako što ćete staviti zagrade nakon izraza koji proizvodi vrednost funkcije. Obično ćete direktno koristiti ime binding-a koji drži funkciju. Vrednosti između zagrada se prosleđuju programu unutar funkcije. U prethodnom primeru, funkcija `prompt` koristi string koji joj dajemo kao tekst koji treba prikazati u dijalogu. Vrednosti prosleđene funkcijama se nazivaju _((argumenti))_. Funkcije mogu zahtevati različit broj ili različite tipove argumenata.
 
-The `prompt` function isn't used much in modern web programming, mostly because you have no control over the way the resulting dialog looks, but it can be helpful in toy programs and experiments.
+Funkcija `prompt` se ne koristi mnogo u modernom veb programiranju, uglavnom zato što nemate kontrolu nad izgledom dijaloga koji ona pravi, ali može biti korisna u igricama i eksperimentima.
 
-## The console.log function
+## console.log funkcija
 
 {{index "JavaScript console", "developer tools", "Node.js", "console.log", output, [browser, environment]}}
 
-In the examples, I used `console.log` to output values. Most JavaScript systems (including all modern web browsers and Node.js) provide a `console.log` function that writes out its arguments to _some_ text output device. In browsers, the output lands in the ((JavaScript console)). This part of the browser interface is hidden by default, but most browsers open it when you press F12 or, on a Mac, [command]{keyname}-[option]{keyname}-I. If that does not work, search through the menus for an item named Developer Tools or similar.
+U nekim primerima, koristio sam `console.log` da bih ispisao vrednosti. Većina JavaScript sistema (uključujući sve moderne veb pretraživače i Node.js) pruža funkciju `console.log` koja ispisuje svoje argumente na _neki_ uređaj za tekstualni izlaz. U pretraživačima, izlaz završava u ((JavaScript konzoli)). Ovaj deo browser interfejsa je podrazumevano sakriven, ali većina pretraživača ga otvara kada pritisnete F12 ili, na Mac-u, [command]{keyname}-[option]{keyname}-I. Ako to ne radi, potražite kroz meni stavku nazvanu Developer Tools ili slično.
 
 {{if interactive
 
-When running the examples (or your own code) on the pages of this book, `console.log` output will be shown after the example, instead of in the browser's JavaScript console.
+Kada pokrećete primere (ili svoj sopstveni kod) na stranicama ove knjige, izlaz `console.log` će biti prikazan odmah ispod primera, umesto u konzoli za JavaScript pregledača.
 
 ```
 let x = 30;
@@ -196,14 +196,14 @@ if}}
 
 {{index [object, property], [property, access]}}
 
-Though binding names cannot contain ((period character))s, `console.log` does have one. This is because `console.log` isn't a simple binding, but an expression that retrieves the `log` property from the value held by the `console` binding. We'll find out exactly what this means in [Chapter ?](data#properties).
+Iako imena binding-a (varijabli) ne mogu sadržavati ((tačku)), `console.log` izgleda da sadrži jednu. To je zato što `console.log` nije jednostavna varijabla, već izraz koji poziva svojstvo `log` iz vrednosti koju drži varijabla `console`. Saznaćemo šta to tačno znači u [Poglavlju ?](data#properties).
 
 {{id return_values}}
 ## Return values
 
 {{index [comparison, "of numbers"], "return value", "Math.max function", maximum}}
 
-Showing a dialog box or writing text to the screen is a _((side effect))_. Many functions are useful because of the side effects they produce. Functions may also produce values, in which case they don't need to have a side effect to be useful. For example, the function `Math.max` takes any amount of number arguments and gives back the greatest:
+Prikazivanje dijaloga ili pisanje teksta na ekran je _((sporedni efekat))_. Mnoge funkcije su korisne zbog sporednih efekata koje proizvode. Funkcije takođe mogu proizvoditi vrednosti, u tom slučaju im nije potreban sporedni efekat da bi bile korisne. Na primer, funkcija `Math.max` uzima bilo koji broj argumenata i vraća najveći:
 
 ```
 console.log(Math.max(2, 4));
@@ -212,46 +212,46 @@ console.log(Math.max(2, 4));
 
 {{index [function, application], minimum, "Math.min function"}}
 
-When a function produces a value, it is said to _return_ that value. Anything that produces a value is an ((expression)) in JavaScript, which means that function calls can be used within larger expressions. In the following code, a call to `Math.min`, which is the opposite of `Math.max`, is used as part of a plus expression:
+Kada funkcija proizvode vrednost, kaže se da ona _vraća_ tu vrednost. Bilo šta što proizvodi vrednost je ((izraz)) u JavaScriptu, što znači da pozivi funkcija mogu biti korišćeni unutar većih izraza. U sledećem kodu, poziv funkcije `Math.min`, koji je suprotan od `Math.max`, koristi se kao deo izraza za sabiranje:
 
 ```
 console.log(Math.min(2, 4) + 100);
 // → 102
 ```
 
-[Chapter ?](functions) will explain how to write your own functions.
+[Poglavlje ?](functions) će objasniti kako da pišete svoje funkcije.
 
-## Control flow
+## Kontrola toka programa
 
 {{index "execution order", program, "control flow"}}
 
-When your program contains more than one ((statement)), the statements are executed as though they were a story, from top to bottom. For example, the following program has two statements. The first asks the user for a number, and the second, which is executed after the first, shows the ((square)) of that number:
+Kada vaš program sadrži više od jedne ((izjave)), izjave se izvršavaju kao da su priča, od vrha do dna. Na primer, sledeći program ima dve izjave. Prva traži broj od korisnika, a druga, koja se izvršava nakon prve, prikazuje kvadrat tog broja:
 
 ```
-let theNumber = Number(prompt("Pick a number"));
-console.log("Your number is the square root of " +
+let theNumber = Number(prompt("Odaberite broj"));
+console.log("Broj koji ste izabrali je kvadratni koren broja " +
             theNumber * theNumber);
 ```
 
 {{index [number, "conversion to"], "type coercion", "Number function", "String function", "Boolean function", [Boolean, "conversion to"]}}
 
-The function `Number` converts a value to a number. We need that conversion because the result of `prompt` is a string value, and we want a number. There are similar functions called `String` and `Boolean` that convert values to those types.
+Funkcija `Number` pretvara vrednost u broj. Potrebna nam je ta konverzija jer je rezultat `prompt` funkcije string vrednost, a mi želimo broj. Postoje slične funkcije nazvane `String` i `Boolean` koje pretvaraju vrednosti u te tipove.
 
-Here is the rather trivial schematic representation of straight-line control flow:
+Evo prilično trivijalne shematske reprezentacije kontrolnog toka u ravnoj liniji:
 
-{{figure {url: "img/controlflow-straight.svg", alt: "Diagram showing a straight arrow", width: "4cm"}}}
+{{figure {url: "img/controlflow-straight.svg", alt: "Dijagram koji prikazuje ravnu strelicu", width: "4cm"}}}
 
-## Conditional execution
+## Uslovno izvršavanje (conditionals)
 
 {{index Boolean, ["control flow", conditional]}}
 
-Not all programs are straight roads. We may, for example, want to create a branching road where the program takes the proper branch based on the situation at hand. This is called _((conditional execution))_.
+Nisu svi programi ravne linije. Možda želimo da kreiramo granajuću stazu gde program ide na odgovarajuću granu na osnovu situacije koja je na vidiku. Ovo se naziva _((uslovno izvršavanje))_ ili _conditional_.
 
 {{figure {url: "img/controlflow-if.svg", alt: "Diagram of an arrow that splits in two, and then rejoins again",width: "4cm"}}}
 
 {{index [syntax, statement], "Number function", "if keyword"}}
 
-Conditional execution is created with the `if` keyword in JavaScript. In the simple case, we want some code to be executed if, and only if, a certain condition holds. We might, for example, want to show the square of the input only if the input is actually a number:
+Uslovno izvršavanje se kreira pomoću `if` ključne reči u JavaScriptu. U jednostavnom slučaju, želimo da određeni kod bude izvršen ako, i samo ako, određeni uslov važi. Na primer, možda želimo da prikažemo kvadrat ulaza samo ako je ulaz zaista broj:
 
 ```{test: wrap}
 let theNumber = Number(prompt("Pick a number"));
@@ -261,19 +261,19 @@ if (!Number.isNaN(theNumber)) {
 }
 ```
 
-With this modification, if you enter "parrot", no output is shown.
+Uz ovu promenu, ako unesete "papagaj", nikakav rezultat neće biti prikazan.
 
 {{index [parentheses, statement]}}
 
-The `if` keyword executes or skips a statement depending on the value of a Boolean expression. The deciding expression is written after the keyword, between parentheses, followed by the statement to execute.
+Ključna reč `if` izvršava ili preskače izjavu u zavisnosti od vrednosti boolean izraza. Conditional izraz se piše nakon ključne reči, između zagrada, a zatim sledi izjava koju treba izvršiti.
 
 {{index "Number.isNaN function"}}
 
-The `Number.isNaN` function is a standard JavaScript function that returns `true` only if the argument it is given is `NaN`. The `Number` function happens to return `NaN` when you give it a string that doesn't represent a valid number. Thus, the condition translates to "unless `theNumber` is not-a-number, do this".
+Funkcija `Number.isNaN` je standardna JavaScript funkcija koja vraća `true` samo ako je argument koji joj je dat `NaN`. Funkcija `Number` vraća `NaN` kada joj date string koji ne predstavlja validan broj. Dakle, uslov se prevodi kao "ako `theNumber` nije broj, uradi ovo".
 
 {{index grouping, "{} (block)", [braces, "block"]}}
 
-The statement after the `if` is wrapped in braces (`{` and `}`) in this example. The braces can be used to group any number of statements into a single statement, called a _((block))_. You could also have omitted them in this case, since they hold only a single statement, but to avoid having to think about whether they are needed, most JavaScript programmers use them in every wrapped statement like this. We'll mostly follow that convention in this book, except for the occasional one-liner.
+Izjava posle `if` je obavijena zagradama (`{` i `}`) u ovom primeru. Zagrade se mogu koristiti da grupišu bilo koji broj izjava u jednu izjavu, nazvanu _((blok))_. Takođe biste ih mogli izostaviti u ovom slučaju, pošto sadrže samo jednu izjavu, ali da biste izbegli razmišljanje o tome da li su potrebne, većina JavaScript programera ih koristi u svakoj blok izjavi poput ove. Većinom ćemo pratiti tu konvenciju u ovoj knjizi, osim za povremene jednolinijske izjave.
 
 ```
 if (1 + 1 == 2) console.log("It's true");
@@ -282,7 +282,7 @@ if (1 + 1 == 2) console.log("It's true");
 
 {{index "else keyword"}}
 
-You often won't just have code that executes when a condition holds true, but also code that handles the other case. This alternate path is represented by the second arrow in the diagram. You can use the `else` keyword, together with `if`, to create two separate, alternative execution paths:
+Često ćete imati kod koji se izvršava ne samo kada uslov važi, već i kod koji obrađuje drugi slučaj. Ovaj alternativni put predstavljen je drugom strelicom na dijagramu. Možete koristiti `else` ključnu reč, zajedno sa `if`, da biste kreirali dva odvojena, alternativna puta izvršavanja:
 
 ```{test: wrap}
 let theNumber = Number(prompt("Pick a number"));
@@ -296,7 +296,7 @@ if (!Number.isNaN(theNumber)) {
 
 {{index ["if keyword", chaining]}}
 
-If you have more than two paths to choose from, you can "chain" multiple `if`/`else` pairs together. Here's an example:
+Ako imate više od dva puta za biranje, možete "vezati" više `if`/`else` izjava zajedno. Evo primera:
 
 ```
 let num = Number(prompt("Pick a number"));
@@ -310,16 +310,16 @@ if (num < 10) {
 }
 ```
 
-The program will first check whether `num` is less than 10. If it is, it chooses that branch, shows `"Small"`, and is done. If it isn't, it takes the `else` branch, which itself contains a second `if`. If the second condition (`< 100`) holds, that means the number is at least 10 but below 100, and `"Medium"` is shown. If it doesn't, the second and last `else` branch is chosen.
+Program će prvo proveriti da li je `num` manje od 10. Ako jeste, izabraće tu granu, prikazati `"Small"`, i to je to. Ako nije, uzima `else` granu, koja sama sadrži drugi `if`. Ako drugi uslov (`< 100`) važi, to znači da je broj barem 10 ali ispod 100, i prikazuje se `"Medium"`. Ako nije, birana je druga i poslednja `else` grana.
 
-The schema for this program looks something like this:
+Šema za ovaj program izgleda otprilike ovako:
 
-{{figure {url: "img/controlflow-nested-if.svg", alt: "Diagram showing arrow that splits in two, with on the branches splitting again, before all branches rejoin again", width: "4cm"}}}
+{{figure {url: "img/controlflow-nested-if.svg", alt: "Dijagram prikazuje strelicu koja se razdvaja na dve strane, jedna grana se dodatno razdvaja, a onda se sve grane opet spajaju u jednu", width: "4cm"}}}
 
 {{id loops}}
-## while and do loops
+## while i do petlje
 
-Consider a program that outputs all ((even number))s from 0 to 12. One way to write this is as follows:
+Razmotrite program koji ispisuje sve ((parne brojeve)) od 0 do 12. Jedan način da se to napiše je sledeći:
 
 ```
 console.log(0);
@@ -333,13 +333,13 @@ console.log(12);
 
 {{index ["control flow", loop]}}
 
-That works, but the idea of writing a program is to make something _less_ work, not more. If we needed all even numbers less than 1,000, this approach would be unworkable. What we need is a way to run a piece of code multiple times. This form of control flow is called a _((loop))_.
+To funkcioniše, ali ideja pisanja programa je da se napravi _manje_ posla, ne više. Ako su nam potrebni svi parni brojevi manji od 1.000, ovaj pristup bi bio neizvodljiv. Ono što nam treba je način da izvršimo komad koda, više puta. Ova forma kontrolnog toka se naziva _((petlja))_.
 
-{{figure {url: "img/controlflow-loop.svg", alt: "Diagram showing an arrow to a point which has a cyclic arrow going back to itself and another arrow going further", width: "4cm"}}}
+{{figure {url: "img/controlflow-loop.svg", alt: "Dijagram koji pokazuje strelicu ka tački koja ima cikličnu strelicu koja se vraća na sebe i još jednu strelicu koja ide dalje.", width: "4cm"}}}
 
 {{index [syntax, statement], "counter variable"}}
 
-Looping control flow allows us to go back to some point in the program where we were before and repeat it with our current program state. If we combine this with a binding that counts, we can do something like this:
+Petlja nam omogućava da se vratimo na neku tačku u programu gde smo bili pre i ponovimo je sa našim trenutnim stanjem programa. Ako to kombinujemo sa varijablom koja broji, možemo uraditi nešto poput ovoga:
 
 ```
 let number = 0;
@@ -349,20 +349,20 @@ while (number <= 12) {
 }
 // → 0
 // → 2
-//   … etcetera
+//   … itd
 ```
 
 {{index "while loop", Boolean, [parentheses, statement]}}
 
-A ((statement)) starting with the keyword `while` creates a loop. The word `while` is followed by an ((expression)) in parentheses and then a statement, much like `if`. The loop keeps entering that statement as long as the expression produces a value that gives `true` when converted to Boolean.
+((Izjava)) koja počinje ključnom rečju `while` kreira petlju. Reč `while` je praćena ((izrazom)) u zagradama, a zatim izjavom, slično kao `if`. Petlja nastavlja da izvršava tu izjavu sve dok izraz proizvodi vrednost koja daje `true` kada se konvertuje u Boolean.
 
 {{index [state, in binding], [binding, as state]}}
 
-The `number` binding demonstrates the way a ((binding)) can track the progress of a program. Every time the loop repeats, `number` gets a value that is 2 more than its previous value. At the beginning of every repetition, it is compared with the number 12 to decide whether the program's work is finished.
+Varijabla `number` pokazuje kako varijabla može pratiti tok programa. Svaki put kada se petlja ponavlja, `number` dobija vrednost koja je za 2 veća od njene prethodne vrednosti. Na početku svake iteracije, upoređuje se sa brojem 12 da bi se odlučilo da li je završen rad programa.
 
 {{index exponentiation}}
 
-As an example that actually does something useful, we can now write a program that calculates and shows the value of 2^10^ (2 to the 10th power). We use two bindings: one to keep track of our result and one to count how often we have multiplied this result by 2. The loop tests whether the second binding has reached 10 yet and, if not, updates both bindings.
+Kao primer koji zaista nešto radi korisno, sada možemo napisati program koji izračunava i prikazuje vrednost 2^10^ (2 na 10-ti stepen). Koristimo dve varijable: jednu da pratimo naš rezultat, a drugu da brojimo koliko smo puta pomnožili taj rezultat sa 2. Petlja testira da li je druga varijabla već dostigla 10, i ako nije, ažurira obe.
 
 ```
 let result = 1;
@@ -375,35 +375,35 @@ console.log(result);
 // → 1024
 ```
 
-The counter could also have started at `1` and checked for `<= 10`, but for reasons that will become apparent in [Chapter ?](data#array_indexing), it is a good idea to get used to counting from 0.
+Brojač takođe može početi od `1` i proveriti da li je `<= 10`, ali iz razloga koji će postati očigledni u [Poglavlju ?](data#array_indexing), dobra je ideja naviknuti se na brojanje od 0.
 
 {{index "** operator"}}
 
-Note that JavaScript also has an operator for exponentiation (`2 ** 10`), which you would use to compute this in real code—but that would have ruined the example.
+Napomena da JavaScript takođe ima operator za stepenovanje (`2 ** 10`), što biste koristili da izračunate ovo u stvarnom kodu — ali to bi nam pokvarilo primer.
 
 {{index "loop body", "do loop", ["control flow", loop]}}
 
-A `do` loop is a control structure similar to a `while` loop. It differs only on one point: a `do` loop always executes its body at least once, and it starts testing whether it should stop only after that first execution. To reflect this, the test appears after the body of the loop:
+`do` petlja je kontrolna struktura slična `while` petlji. Razlikuje se samo po jednoj tački: `do` petlja uvek izvršava svoj blok barem jednom, i počinje testiranje da li treba da se zaustavi tek nakon te prve izvršene iteracije. Dakle, test se pojavljuje nakon tela petlje:
 
 ```
-let yourName;
+let ime;
 do {
-  yourName = prompt("Who are you?");
-} while (!yourName);
-console.log("Hello " + yourName);
+  ime = prompt("Ko ste vi?");
+} while (!ime);
+console.log("Hello " + ime);
 ```
 
 {{index [Boolean, "conversion to"], "! operator"}}
 
-This program will force you to enter a name. It will ask again and again until it gets something that is not an empty string. Applying the `!` operator will convert a value to Boolean type before negating it, and all strings except `""` convert to `true`. This means the loop continues going round until you provide a non-empty name.
+Ovaj program će vas primorati da unesete ime. Pitaće stalno iznova dok ne dobije nešto što nije prazan string. Primena operatora `!` će pretvoriti vrednost koju ste uneli u Boolean tip pre negiranja, a svi stringovi osim `""` se pretvaraju u `true`. Ovo znači da petlja nastavlja da se vrti dok ne unesete ime koje nije prazno.
 
-## Indenting Code
+## Formatiranje koda
 
 {{index [code, "structure of"], [whitespace, indentation], "programming style"}}
 
-In the examples, I've been adding spaces in front of statements that are part of some larger statement. These spaces are not required—the computer will accept the program just fine without them. In fact, even the ((line)) breaks in programs are optional. You could write a program as a single long line if you felt like it.
+U dosadašnjim primerima, dodavao sam razmake ispred izjava u kodu koje su deo neke veće izjave. Ti razmaci nisu obavezni — računar će prihvatiti program i bez njih. Zapravo, čak su i ((nove linije)) u programima opcionalni. Mogli biste napisati program kao jednu dugu liniju ako baš želite.
 
-The role of this ((indentation)) inside ((block))s is to make the structure of the code stand out to human readers. In code where new blocks are opened inside other blocks, it can become hard to see where one block ends and another begins. With proper indentation, the visual shape of a program corresponds to the shape of the blocks inside it. I like to use two spaces for every open block, but tastes differ—some people use four spaces, and some people use ((tab character))s. The important thing is that each new block adds the same amount of space.
+Uloga ovog ((uvlačenja)) koda unutar ((blokova)) je da istakne strukturu koda čitaocima. U kodu gde se novi blokovi otvaraju unutar drugih blokova, može postati teško videti gde se jedan blok završava, a drugi počinje. Sa odgovarajućim uvlačenjem, vizuelni oblik programa odgovara obliku blokova unutar njega. Volim da koristim dva razmaka za svaki otvoreni blok, ali ukusi se razlikuju — neki ljudi koriste četiri razmaka, a neki koriste ((tab karakter))e. Važno je da svaki novi blok dodaje istu količinu prostora.
 
 ```
 if (false != true) {
@@ -414,17 +414,17 @@ if (false != true) {
 }
 ```
 
-Most code ((editor)) programs[ (including the one in this book)]{if interactive} will help by automatically indenting new lines the proper amount.
+Većina programa za uređivanje koda[ (uključujući i ovaj u knjizi)]{if interactive} pomažu automatskim uvlačenjem novih linija u odgovarajućoj meri.
 
-## for loops
+## for petlje
 
 {{index [syntax, statement], "while loop", "counter variable"}}
 
-Many loops follow the pattern shown in the `while` examples. First a "counter" binding is created to track the progress of the loop. Then comes a `while` loop, usually with a test expression that checks whether the counter has reached its end value. At the end of the loop body, the counter is updated to track progress.
+Mnoge petlje prate obrazac prikazan u primerima sa `while` petljama. Prvo se kreira "brojač" varijabla kako bi se pratila progresija petlje. Zatim dolazi `while` petlja, obično sa testnim izrazom koji proverava da li je brojač dostigao svoju krajnju vrednost. Na kraju tela petlje, brojač se ažurira kako bi se pratio progres.
 
 {{index "for loop", loop}}
 
-Because this pattern is so common, JavaScript and similar languages provide a slightly shorter and more comprehensive form, the `for` loop:
+Pošto je ovaj obrazac tako čest, JavaScript i slični jezici pružaju nešto kraću i sveobuhvatniju formu petlji, `for` petlju:
 
 ```
 for (let number = 0; number <= 12; number = number + 2) {
@@ -432,20 +432,20 @@ for (let number = 0; number <= 12; number = number + 2) {
 }
 // → 0
 // → 2
-//   … etcetera
+//   … itd
 ```
 
 {{index ["control flow", loop], state}}
 
-This program is exactly equivalent to the [earlier](program_structure#loops) even-number-printing example. The only change is that all the ((statement))s that are related to the "state" of the loop are grouped together after `for`.
+Ovaj program je potpuno ekvivalentan [ranijem](program_structure#loops) primeru ispisa parnih brojeva. Jedina promena je što su sve ((izjave)) koje su vezane za "stanje" petlje grupisane zajedno nakon `for`.
 
 {{index [binding, as state], [parentheses, statement]}}
 
-The parentheses after a `for` keyword must contain two ((semicolon))s. The part before the first semicolon _initializes_ the loop, usually by defining a binding. The second part is the ((expression)) that _checks_ whether the loop must continue. The final part _updates_ the state of the loop after every iteration. In most cases, this is shorter and clearer than a `while` construct.
+Zagrade nakon ključne reči `for` moraju sadržati dva ((tačka-zarez)) znaka. Deo pre prvog tačka-zareza _inicijalizuje_ petlju, obično definisanjem varijable. Drugi deo je ((izraz)) koji _proverava_ da li petlja treba da se nastavi. Poslednji deo _ažurira_ stanje petlje nakon svake iteracije. U većini slučajeva, ovo je kraće i jasnije od konstrukcije `while`.
 
 {{index exponentiation}}
 
-This is the code that computes 2^10^ using `for` instead of `while`:
+Ovo je kod koji računa 2^10^ koristeći `for` umesto `while` petlje:
 
 ```{test: wrap}
 let result = 1;
@@ -456,11 +456,11 @@ console.log(result);
 // → 1024
 ```
 
-## Breaking Out of a Loop
+## Prekid petlje, ili, iskakanje iz petlje
 
 {{index [loop, "termination of"], "break keyword"}}
 
-Having the looping condition produce `false` is not the only way a loop can finish. The `break` statement has the effect of immediately jumping out of the enclosing loop. Its use is demonstrated in the following program, which finds the first number that is both greater than or equal to 20 and divisible by 7:
+Cekanje da uslov petlje postane `false` nije jedini način na koji petlja može završiti. Kljucna reč `break` ima efekat direktnog izlaska iz  petlje u kojoj se nalazi. Njena upotreba je prikazana u sledećem programu, koji pronalazi prvi broj koji je veći ili jednak 20 i deljiv sa 7:
 
 ```
 for (let current = 20; ; current = current + 1) {
@@ -474,43 +474,43 @@ for (let current = 20; ; current = current + 1) {
 
 {{index "remainder operator", "% operator"}}
 
-Using the remainder (`%`) operator is an easy way to test whether a number is divisible by another number. If it is, the remainder of their division is zero.
+Korišćenje modulo operatora (`%`) je jednostavan način da se testira da li je broj deljiv drugim brojem. Ako jeste, ostatak njihovog deljenja je nula.
 
 {{index "for loop"}}
 
-The `for` construct in the example does not have a part that checks for the end of the loop. This means that the loop will never stop unless the `break` statement inside is executed.
+`for` petlja u prethodnom primeru nema deo koji proverava kraj petlje. To znači da će petlja nastaviti da se izvršava sve dok se `break` izjava unutar nje ne izvrši.
 
-If you were to remove that `break` statement or you accidentally write an end condition that always produces `true`, your program would get stuck in an _((infinite loop))_. A program stuck in an infinite loop will never finish running, which is usually a bad thing.
+Ako biste uklonili tu `break` izjavu ili slučajno napisali uslov koji uvek proizvodi `true`, vaš program bi zaglavio u _((beskonačnoj petlji))_. Program zaglavljen u beskonačnoj petlji nikada neće prekinuti izvršavanje, što je obično loša stvar.
 
 {{if interactive
 
-If you create an infinite loop in one of the examples on these pages, you'll usually be asked whether you want to stop the script after a few seconds. If that fails, you will have to close the tab that you're working in to recover.
+Ako napravite beskonačnu petlju u jednom od primera na ovim stranicama, obično će vam biti rečeno da zaustavite skriptu nakon nekoliko sekundi. Ako to ne uspe, moraćete da zatvorite tab na kojem radite da biste je prekinuli.
 
 if}}
 
 {{index "continue keyword"}}
 
-The `continue` keyword is similar to `break` in that it influences the progress of a loop. When `continue` is encountered in a loop body, control jumps out of the body and continues with the loop's next iteration.
+Ključna reč `continue` je slična kao `break` jer utiče na napredak petlje. Kada se `continue` naže u telu petlje, kontrola izlazi iz tela i nastavlja sa sledećom iteracijom petlje.
 
-## Updating bindings succinctly
+## Kraći način ažuriranja varijabli
 
 {{index assignment, "+= operator", "-= operator", "/= operator", "*= operator", [state, in binding], "side effect"}}
 
-Especially when looping, a program often needs to "update" a binding to hold a value based on that binding's previous value.
+Posebno unutar petlji, program često treba "ažurirati" varijable kako bi zadržao vrednost na osnovu prethodne vrednosti te varijable.
 
 ```{test: no}
 counter = counter + 1;
 ```
 
-JavaScript provides a shortcut for this:
+JavaScript nudi prečicu za ovaj tip izjave
 
 ```{test: no}
 counter += 1;
 ```
 
-Similar shortcuts work for many other operators, such as `result *= 2` to double `result` or `counter -= 1` to count downward.
+Slični prečaci rade i za mnoge druge operatore, kao što je `rezultat *= 2` da se udvostruči `rezultat` ili `brojač -= 1` da se broji unazad.
 
-This allows us to further shorten our counting example:
+Ovo nam omogućava da dalje skratimo naš primer brojanja:
 
 ```
 for (let number = 0; number <= 12; number += 2) {
@@ -520,13 +520,13 @@ for (let number = 0; number <= 12; number += 2) {
 
 {{index "++ operator", "-- operator"}}
 
-For `counter += 1` and `counter -= 1`, there are even shorter equivalents: `counter++` and `counter--`.
+Za `brojač += 1` i `brojač -= 1`, postoje još kraći ekvivalenti: `brojač++` i `brojač--`.
 
-## Dispatching on a value with switch
+## Raspodela na vrednosti pomoću `switch`
 
 {{index [syntax, statement], "conditional execution", dispatch, ["if keyword", chaining]}}
 
-It is not uncommon for code to look like this:
+Neretko će kod izgledati ovako:
 
 ```{test: no}
 if (x == "value1") action1();
@@ -537,33 +537,33 @@ else defaultAction();
 
 {{index "colon character", "switch keyword"}}
 
-There is a construct called `switch` that is intended to express such a "dispatch" in a more direct way. Unfortunately, the syntax JavaScript uses for this (which it inherited from the C/Java line of programming languages) is somewhat awkward—a chain of `if` statements may look better. Here is an example:
+Postoji konstrukt nazvan `switch` koji je namenjen izražavanju takve "raspodele" na direktniji način. Nažalost, sintaksa koju JavaScript koristi za ovo (koja je nasleđena od programskih jezika poput C/Java) je pomalo nezgrapna — lanac `if` izjava može izgledati bolje. Evo primera:
 
 ```
-switch (prompt("What is the weather like?")) {
-  case "rainy":
-    console.log("Remember to bring an umbrella.");
+switch (prompt("Kakvo je vreme?")) {
+  case "kisa":
+    console.log("Seti se da poneses kisobran.");
     break;
-  case "sunny":
-    console.log("Dress lightly.");
-  case "cloudy":
-    console.log("Go outside.");
+  case "sunce":
+    console.log("Obuci se lagano.");
+  case "oblacno":
+    console.log("Izadji u setnju.");
     break;
   default:
-    console.log("Unknown weather type!");
+    console.log("Nepoznat tip vremena!");
     break;
 }
 ```
 
 {{index fallthrough, "break keyword", "case keyword", "default keyword"}}
 
-You may put any number of `case` labels inside the block opened by `switch`. The program will start executing at the label that corresponds to the value that `switch` was given, or at `default` if no matching value is found. It will continue executing, even across other labels, until it reaches a `break` statement. In some cases, such as the `"sunny"` case in the example, this can be used to share some code between cases (it recommends going outside for both sunny and cloudy weather). Be careful, though—it is easy to forget such a `break`, which will cause the program to execute code you do not want executed.
+Možete staviti bilo koji broj `case` oznaka unutar bloka otvorenog sa `switch`. Program će početi izvršavanje na oznaci koja odgovara vrednosti koju je `switch` dobio, ili na `default` ako nije pronađena odgovarajuća vrednost. Nastaviće izvršavanje, čak i preko drugih oznaka, sve dok ne stigne do `break` izjave. U nekim slučajevima, kao što je slučaj `"sunce"` u primeru, ovo se može koristiti da se podeli neki kod između slučajeva (preporučuje se izlazak napolje i za sunčano i za oblačno vreme). Ipak, budite oprezni—lako je zaboraviti `break`, što će uzrokovati da program izvrši kod koji ne želite da se izvrši.
 
-## Capitalization
+## Velika početna slova
 
 {{index capitalization, [binding, naming], [whitespace, syntax]}}
 
-Binding names may not contain spaces, yet it is often helpful to use multiple words to clearly describe what the binding represents. These are pretty much your choices for writing a binding name with several words in it:
+Imena varijabli ne smeju sadržati razmake, ali često je korisno koristiti više reči kako bi jasno opisali šta varijabla predstavlja. Ovo su skoro sve opcije koje imate za pisanje imena varijabli sa više reči u njima:
 
 ```{lang: null}
 fuzzylittleturtle
@@ -574,21 +574,21 @@ fuzzyLittleTurtle
 
 {{index "camel case", "programming style", "underscore character"}}
 
-The first style can be hard to read. I rather like the look of the underscores, though that style is a little painful to type. The ((standard)) JavaScript functions, and most JavaScript programmers, follow the final style—they capitalize every word except the first. It is not hard to get used to little things like that, and code with mixed naming styles can be jarring to read, so we follow this ((convention)).
+Prvi stil može biti teško čitljiv. Meni se sviđa izgled donjih crta, iako je taj stil malo naporan za kucanje. ((Standardne)) JavaScript funkcije, i većina JavaScript programera, prate poslednji stil — svaku reč osim prve pišu velikim početnim slovom. Nije teško naviknuti se na male stvari poput toga, a kod sa mešanim stilovima imenovanja može biti težak za čitanje, pa zato pratimo ovu ((konvenciju)).
 
 {{index "Number function", constructor}}
 
-In a few cases, such as the `Number` function, the first letter of a binding is also capitalized. This was done to mark this function as a constructor. It will become clear what a constructor is in [Chapter ?](object#constructors). For now, the important thing is not to be bothered by this apparent lack of ((consistency)).
+U nekoliko slučajeva, kao što je funkcija `Number`, i prvo slovo varijable je takođe veliko. To je urađeno da bi se označilo ovu funkciju kao konstruktor. Biće jasno šta je konstruktor u [Poglavlje ?](object#constructors). Za sada, važno je da vas ne muči ovaj očigledan nedostatak ((konzistentnost)).
 
-## Comments
+## Komentari
 
 {{index readability}}
 
-Often, raw code does not convey all the information you want a program to convey to human readers, or it conveys it in such a cryptic way that people might not understand it. At other times, you might just want to include some related thoughts as part of your program. This is what _((comment))s_ are for.
+Često, sam kod ne prenosi sve informacije koje želite da program prenese ljudskim čitaocima, ili to čini na tako kriptičan način da ljudi možda neće razumeti šta zapravo znači. U ostalim slučajevima, možda samo želite da zapišete neke misli kao deo vašeg programa. Za takve stvari tu su _((komentari))_.
 
 {{index "slash character", "line comment"}}
 
-A comment is a piece of text that is part of a program but is completely ignored by the computer. JavaScript has two ways of writing comments. To write a single-line comment, you can use two slash characters (`//`) and then the comment text after it:
+Komentar je deo teksta koji je deo teksta programa, ali ga računar potpuno ignoriše. JavaScript ima dva načina pisanja komentara. Da biste napisali komentar u jednom redu, možete koristiti dve kose crte (`//`) i zatim tekst komentara:
 
 ```{test: no}
 let accountBalance = calculateBalance(account);
@@ -603,41 +603,41 @@ addToReport(accountBalance, report);
 
 {{index "block comment"}}
 
-A `//` comment goes only to the end of the line. A section of text between `/*` and `*/` will be ignored in its entirety, regardless of whether it contains line breaks. This is useful for adding blocks of information about a file or a chunk of program:
+`//` komentar ide samo do kraja jedne linije. Odeljak teksta između `/*` i `*/` biće potpuno ignorisan, bez obzira na to da li sadrži prelome linije. Ovo je korisno za dodavanje blokova informacija o datoteci ili delu programa:
 
 ```
 /*
-  I first found this number scrawled on the back of an old
-  notebook. Since then, it has often dropped by, showing up in
-  phone numbers and the serial numbers of products that I've
-  bought. It obviously likes me, so I've decided to keep it.
+  Ovaj broj sam prvi put pronašao napisan na poleđini stare knjige. 
+  Od tada, često sam ga viđao, pojavljujući se u telefonskim brojevima
+  i serijskim brojevima proizvoda koje sam kupio. 
+  Veoma mi se sviđa, pa sam odlučio da ga zadržim.
 */
 const myNumber = 11213;
 ```
 
-## Summary
+## Da rezimiramo
 
-You now know that a program is built out of statements, which themselves sometimes contain more statements. Statements tend to contain expressions, which themselves can be built out of smaller expressions.
+Sada znate da je program sastavljen od izjava, koje se ponekad i same sastoje od drugih izjava. Izjave na engleskom zovemo _statements_. Izjave obično sadrže izraze (expressions), koji se mogu sastojati od manjih izraza.
 
-Putting statements after one another gives you a program that is executed from top to bottom. You can introduce disturbances in the flow of control by using conditional (`if`, `else`, and `switch`) and looping (`while`, `do`, and `for`) statements.
+Stavljanje izjava jednu za drugom daje vam program koji se izvršava od vrha prema dnu. Možete uvesti promene u tok kontrole korišćenjem uslovnih konstrukata (`if`, `else` i `switch`) i petlji (`while`, `do` i `for`).
 
-Bindings can be used to file pieces of data under a name, and they are useful for tracking state in your program. The environment is the set of bindings that are defined. JavaScript systems always put a number of useful standard bindings into your environment.
+Varijable se mogu koristiti za čuvanje komada podataka pod nekim imenom, i korisne su za praćenje stanja u vašem programu. Okruženje je skup varijabli koje su definisane. JavaScript sistemi uvek postavljaju brojne korisne standardne varijable u vaše okruženje.
 
-Functions are special values that encapsulate a piece of program. You can invoke them by writing `functionName(argument1, argument2)`. Such a function call is an expression and may produce a value.
+Funkcije su posebne vrednosti koje enkapsuliraju deo programa. Možete ih pozivati tako što ćete napisati `nazivFunkcije(argument1, argument2)`. Takav poziv funkcije je izraz i može proizvesti vrednost.
 
-## Exercises
+## Vežbe
 
 {{index exercises}}
 
-If you are unsure how to test your solutions to the exercises, refer to the [Introduction](intro).
+Ako niste sigurni kako da testirate vaša rešenja vežbi, pogledajte [Uvod](intro).
 
-Each exercise starts with a problem description. Read this description and try to solve the exercise. If you run into problems, consider reading the hints [after the exercise]{if interactive}[at the [end of the book](hints)]{if book}. You can find full solutions to the exercises online at [_https://eloquentjavascript.net/code_](https://eloquentjavascript.net/code#2). If you want to learn something from the exercises, I recommend looking at the solutions only after you've solved the exercise, or at least after you've attacked it long and hard enough to have a slight headache.
+Svaka vežba počinje sa opisom problema. Pročitajte opis i pokušajte da rešite vežbu. Ako naiđete na probleme, razmislite o čitanju sugestija [nakon vežbe]{if interactive}[na [kraju knjige](hints)]{if book}. Mnoga rešenja možete pronaći online na [_https://eloquentjavascript.net/code_](https://eloquentjavascript.net/code#2). Ako želite nešto da naučite iz vežbi, preporučujem da pogledate rešenja tek nakon što rešite vežbu, ili bar nakon što se dovoljno dugo borite sa njom da vas malo zaboli glava.
 
-### Looping a triangle
+### Petlja za trougao
 
 {{index "triangle (exercise)"}}
 
-Write a ((loop)) that makes seven calls to `console.log` to output the following triangle:
+Napišite petlju koja poziva `console.log` 7 puta, i ispisuje sledeći trougao:
 
 ```{lang: null}
 #
@@ -651,7 +651,7 @@ Write a ((loop)) that makes seven calls to `console.log` to output the following
 
 {{index [string, length]}}
 
-It may be useful to know that you can find the length of a string by writing `.length` after it.
+Može vam biti korisno da znate da možete naći dužinu stringa tako sto ćete napisati `.length` nakon stringa. Primer:
 
 ```
 let abc = "abc";
@@ -661,10 +661,10 @@ console.log(abc.length);
 
 {{if interactive
 
-Most exercises contain a piece of code that you can modify to solve the exercise. Remember that you can click code blocks to edit them.
+Većina vežbi sastoji deo koda koji možete modifikovati da biste rešili tu vežbu. Zapamtite da možete kliknuti na blokove koda da ih editujete (izmenite).
 
 ```
-// Your code here.
+// Vaš kod ovde.
 ```
 if}}
 
@@ -682,15 +682,15 @@ hint}}
 
 {{index "FizzBuzz (exercise)", loop, "conditional execution"}}
 
-Write a program that uses `console.log` to print all the numbers from 1 to 100, with two exceptions. For numbers divisible by 3, print `"Fizz"` instead of the number, and for numbers divisible by 5 (and not 3), print `"Buzz"` instead.
+Napišite program koji koristi `console.log` da ispiše sve brojeve od 1 do 100, sa dva izuzetka. Za brojeve deljive sa 3, umesto broja ispišite `"Fizz"`, a za brojeve deljive sa 5 (ali ne sa 3), ispišite `"Buzz"`.
 
-When you have that working, modify your program to print `"FizzBuzz"` for numbers that are divisible by both 3 and 5 (and still print `"Fizz"` or `"Buzz"` for numbers divisible by only one of those).
+Kada to uradite, izmenite program tako da ispiše `"FizzBuzz"` za brojeve koji su deljivi i sa 3 i sa 5 (a i dalje ispišite `"Fizz"` ili `"Buzz"` za brojeve koji su deljivi samo jednim od njih).
 
-(This is actually an ((interview question)) that has been claimed to weed out a significant percentage of programmer candidates. So if you solved it, your labor market value just went up.)
+(Ovo je zapravo veoma često pitanje za ((intervju)) koje je navodno korisno za eliminaciju značajnog procenta kandidata za programera. Dakle, ako ste ga rešili, vaša vrednost na tržištu rada upravo je porasla.)
 
 {{if interactive
 ```
-// Your code here.
+// Vaš kod ovde.
 ```
 if}}
 
@@ -698,13 +698,13 @@ if}}
 
 {{index "FizzBuzz (exercise)", "remainder operator", "% operator"}}
 
-Going over the numbers is clearly a looping job, and selecting what to print is a matter of conditional execution. Remember the trick of using the remainder (`%`) operator for checking whether a number is divisible by another number (has a remainder of zero).
+Prolazak kroz brojeve je očigledno posao za petlje, a odabir šta ispisati je stvar uslovnih izjava. Zapamtite trik korišćenja modulo operatora(`%`) za proveru da li je broj deljiv drugim brojem (ima ostatak nula).
 
-In the first version, there are three possible outcomes for every number, so you'll have to create an `if`/`else if`/`else` chain.
+U prvoj verziji, za svaki broj postoje tri moguća ishoda, tako da ćete morati napraviti lanac `if`/`else if`/`else`.
 
 {{index "|| operator", ["if keyword", chaining]}}
 
-The second version of the program has a straightforward solution and a clever one. The simple solution is to add another conditional "branch" to precisely test the given condition. For the clever solution, build up a string containing the word or words to output and print either this word or the number if there is no word, potentially by making good use of the `||` operator.
+Druga verzija programa ima jedno jednostavno rešenje i jedno pametno rešenje. Jednostavno rešenje je dodavanje još jedne uslovne "grane" kako bi se precizno testirao dati uslov. Za pametno rešenje, izgradite string koji sadrži reč ili reči za ispis i ispišite ili tu reč ili broj ako nema reči, potencijalno koristeći `||` operator.
 
 hint}}
 
@@ -712,9 +712,9 @@ hint}}
 
 {{index "chessboard (exercise)", loop, [nesting, "of loops"], "newline character"}}
 
-Write a program that creates a string that represents an 8×8 grid, using newline characters to separate lines. At each position of the grid there is either a space or a "#" character. The characters should form a chessboard.
+Napišite program koji kreira string koji predstavlja tablu 8×8, koristeći znakove za novi red kako biste prešli u novu liniju. Na svakoj poziciji table nalazi se ili prazno mesto (spejs) ili znak "#" . Znakovi bi trebalo da formiraju šahovsku tablu.
 
-Passing this string to `console.log` should show something like this:
+Prosleđivanje ovog stringa funkciji `console.log` trebalo bi da prikaže nešto poput ovoga:
 
 ```{lang: null}
  # # # #
@@ -727,11 +727,11 @@ Passing this string to `console.log` should show something like this:
 # # # # 
 ```
 
-When you have a program that generates this pattern, define a binding `size = 8` and change the program so that it works for any `size`, outputting a grid of the given width and height.
+Kada napravite program koji generiše ovaj obrazac, definišite varijablu `size = 8` i promenite program tako da funkcioniše za bilo koju vrednost `size` varijable, tako što će ispisivati tablu zadate dužine i širine.
 
 {{if interactive
 ```
-// Your code here.
+// Vaš kod ovde.
 ```
 if}}
 
@@ -739,16 +739,16 @@ if}}
 
 {{index "chess board (exercise)"}}
 
-You can build the string by starting with an empty one (`""`) and repeatedly adding characters. A newline character is written `"\n"`.
+String možete kreirati počevši sa praznim (`""`) i konstantno dodavati nove znakovove u njega. Novi red se piše `"\n"`.
 
 {{index [nesting, "of loops"], [braces, "block"]}}
 
-To work with two ((dimensions)), you will need a ((loop)) inside of a loop. Put braces around the bodies of both loops to make it easy to see where they start and end. Try to properly indent these bodies. The order of the loops must follow the order in which we build up the string (line by line, left to right, top to bottom). So the outer loop handles the lines, and the inner loop handles the characters on a line.
+Da biste radili sa dve ((dimenzije)), trebaće vam ((petlja)) unutar petlje. Stavite zagrade oko tela obe petlje kako biste lakše videli gde počinju i završavaju. Pokušajte da pravilno uvučete ta tela da vam kod bude čitak. Redosled petlji mora pratiti redosled u kojem gradimo string (red po red, sleva nadesno, odozgo nadole). Dakle, spoljašnja petlja upravlja linijama, a unutrašnja petlja upravlja znakovima na liniji.
 
 {{index "counter variable", "remainder operator", "% operator"}}
 
-You'll need two bindings to track your progress. To know whether to put a space or a hash sign at a given position, you could test whether the sum of the two counters is even (`% 2`).
+Trebaće vam dve varijable da pratite napredak petlji. Varijabla da biste znali da li treba staviti razmak ili "#" na određenoj poziciji, možete testirati da li je zbir dva brojača za petlje paran (`% 2`).
 
-Terminating a line by adding a newline character must happen after the line has been built up, so do this after the inner loop but inside the outer loop.
+Završavanje linije dodavanjem znaka novog reda `"\n"`, mora se desiti nakon što je red izgrađen, tako da to uradite posle unutrašnje petlje ali unutar spoljne petlje.
 
 hint}}
