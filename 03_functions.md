@@ -1,8 +1,8 @@
-# Functions
+# Funkcije
 
 {{quote {author: "Donald Knuth", chapter: true}
 
-People think that computer science is the art of geniuses but the actual reality is the opposite, just many people doing things that build on each other, like a wall of mini stones.
+Ljudi misle da je računarstvo umetnost za genije, ali zapravo je totalno drugačije, to je samo mnogo ljudi koji grade stvari na ono što je prethodno izgrađeno, kao zid on malih kamenčića.
 
 quote}}
 
@@ -12,37 +12,37 @@ quote}}
 
 {{index function, [code, "structure of"]}}
 
-Functions are one of the most central tools in JavaScript programming. The concept of wrapping a piece of program in a value has many uses. It gives us a way to structure larger programs, to reduce repetition, to associate names with subprograms, and to isolate these subprograms from each other.
+Funkcije su jedan od centralnih alata u JavaScript programiranju. Koncept čuvanja dela programa u neku varijably ima mnogo primena. Pruža nam način da strukturišemo veće programe, smanjimo ponavljanje koda, povežemo imena sa podprogramima i izolujemo ove podprograme jedan od drugog.
 
-The most obvious application of functions is defining new ((vocabulary)). Creating new words in prose is usually bad style, but in programming, it is indispensable.
+Najjasnija primena funkcija je definisanje novog ((vokabulara)). Stvaranje novih reči u prozi obično nije toliko poželjno, ali u programiranju je neophodno.
 
 {{index abstraction, vocabulary}}
 
-Typical adult English speakers have some 20,000 words in their vocabulary. Few programming languages come with 20,000 commands built in. And the vocabulary that _is_ available tends to be more precisely defined, and thus less flexible, than in human language. Therefore, we _have_ to introduce new words to avoid excessive verbosity.
+Tipični odrasli govornici engleskog jezika imaju oko 20.000 reči u svom vokabularu. Malo programskih jezika dolazi sa 20.000 ugrađenih komandi. I vokabular koji jeste dostupan obično je preciznije definisan, i samim tim manje fleksibilan, nego u ljudskom jeziku. Zbog toga moramo uvesti nove reči da bismo izbegli preteranu opširnost.
 
-## Defining a function
+## Definisanje funkcije
 
 {{index "square example", [function, definition], [binding, definition]}}
 
-A function definition is a regular binding where the value of the binding is a function. For example, this code defines `square` to refer to a function that produces the square of a given number:
+Definicija funkcije je obična varijabla čija je vrednost funkcija. Na primer, ovaj kod definiše `kvadrat` i odnosi se na funkciju koja proizvodi kvadrat datog broja:
 
 ```
-const square = function(x) {
+const kvadrat = function(x) {
   return x * x;
 };
 
-console.log(square(12));
+console.log(kvadrat(12));
 // → 144
 ```
 
 {{indexsee "curly braces", braces}}
 {{index [braces, "function body"], block, [syntax, function], "function keyword", [function, body], [function, "as value"], [parentheses, arguments]}}
 
-A function is created with an expression that starts with the keyword `function`. Functions have a set of _((parameter))s_ (in this case, only `x`) and a _body_, which contains the statements that are to be executed when the function is called. The body of a function created this way must always be wrapped in braces, even when it consists of only a single ((statement)).
+Funkcija se kreira izrazom koji počinje ključnom rečju `function`. Funkcije imaju skup _((parametara))_ (u prethodnom slučaju, samo `x`) i _telo_, koje sadrži izjave koje treba izvršiti kada se funkcija pozove. Telo funkcije kreirane na ovaj način uvek mora biti obavijeno vitičastim zagradama, čak i kada se sastoji samo od jedne ((izjave)).
 
 {{index "roundTo example"}}
 
-A function can have multiple parameters or no parameters at all. In the following example, `makeNoise` does not list any parameter names, whereas `roundTo` (which rounds `n` to the nearest multiple of `step`) lists two:
+Funkcija može imati više parametara ili uopšte ne mora imati parametre. U sledećem primeru, `makeNoise` ne navodi imena parametara, dok `roundTo` (koji zaokružuje `n` na najbliži višekratnik `step`) navodi dva:
 
 ```
 const makeNoise = function() {
@@ -63,38 +63,40 @@ console.log(roundTo(23, 10));
 
 {{index "return value", "return keyword", undefined}}
 
-Some functions, such as `roundTo` and `square`, produce a value, and some don't, such as `makeNoise`, whose only result is a ((side effect)). A `return` statement determines the value the function returns. When control comes across such a statement, it immediately jumps out of the current function and gives the returned value to the code that called the function. A `return` keyword without an expression after it will cause the function to return `undefined`. Functions that don't have a `return` statement at all, such as `makeNoise`, similarly return `undefined`.
+Neke funkcije, kao što su `roundTo` and `kvadrat` proizvode vrednost, a neke ne, kao na primer `makeNoise`, čiji je jedini rezultat sporedni efekat. `return` izjava određuje vrednost koju funkcija vraća. Kada kontrolni tok naiđe na takvu izjavu, on automatski iskače van trenutne funckije i vraća vrednost kodu koji je pozvao tu funkciju. `return` ključna reč bez ikakvog izraza posle nje, napraviće da funkcija vrati `undefined`. Funkcije koje nemaju `return` izjavu uopšte, kao na primer `makeNoise`, takođe vraćaju `undefined`.
 
 {{index parameter, [function, application], [binding, "from parameter"]}}
 
-Parameters to a function behave like regular bindings, but their initial values are given by the _caller_ of the function, not the code in the function itself.
+Parametri funkcije se ponašaju kao obične varijable, ali njihove početne vrednosti daje pozivaoc funkcije, a ne kod u samoj funkciji.
 
-## Bindings and scopes
+## Bindings i skoup (eng. scope)
 
 {{indexsee "top-level scope", "global scope"}}
 {{index "var keyword", "global scope", [binding, global], [binding, "scope of"]}}
 
-Each binding has a _((scope))_, which is the part of the program in which the binding is visible. For bindings defined outside of any function, block, or module (see [Chapter ?](modules)), the scope is the whole program—you can refer to such bindings wherever you want. These are called _global_.
+Skoup ćemo ugrubo prevesti kao domen, ali ćemo u tekstu koristiti reč skoup.
+
+Svaki binding ima _((skoup))_, što predstavlja deo programa u kojem je taj binding vidljiv i iskoristiv. Za bindinge definisane van bilo koje funkcije, bloka ili modula (vidi [Poglavlje ?](modules)), skoup je čitav program - možete se pozivati na taj binding gde god želite. Oni se zovu _globalni_.
 
 {{index "local scope", [binding, local]}}
 
-Bindings created for function ((parameter))s or declared inside a function can be referenced only in that function, so they are known as _local_ bindings. Every time the function is called, new instances of these bindings are created. This provides some isolation between functions—each function call acts in its own little world (its local environment) and can often be understood without knowing a lot about what's going on in the global environment.
+Bindingovi koji su kreirani za ((parametre)) funkcije ili deklarisani unutar funkcije mogu se pozivati samo unutar te funkcije, pa se nazivaju lokalnim bindingovima. Svaki put kada se funkcija pozove, kreiraju se nove instance ovih bindingova. Ovo pruža određenu izolaciju između funkcija - svaki poziv funkcije postoji u svojem malom svetu (svojem lokalnom okruženju) i često se može razumeti bez poznavanja mnogo toga o tome šta se dešava u globalnom okruženju.
 
 {{index "let keyword", "const keyword", "var keyword"}}
 
-Bindings declared with `let` and `const` are in fact local to the _((block))_ in which they are declared, so if you create one of those inside of a loop, the code before and after the loop cannot "see" it. In pre-2015 JavaScript, only functions created new scopes, so old-style bindings, created with the `var` keyword, are visible throughout the whole function in which they appear—or throughout the global scope, if they are not in a function.
+Bindingovi tj varijable deklarisane sa `let` i `const` su zapravo lokalni za _((blok))_ u kojem su deklarisani, tako da ako kreirate jedan od njih unutar petlje, kôd pre i posle petlje ne može ga "videti". U JavaScriptu pre 2015. godine, samo su funkcije stvarale nove opsege, tako da su varijable starog stila, kreirane sa ključnom rečju `var`, vidljive u celoj funkciji u kojoj se pojavljuju - ili u celom globalnom opsegu, ako nisu u funkciji.
 
 ```
 let x = 10;   // global
 if (true) {
-  let y = 20; // local to block
-  var z = 30; // also global
+  let y = 20; // lokalna za ovaj blok
+  var z = 30; // takodje global
 }
 ```
 
 {{index [binding, visibility]}}
 
-Each ((scope)) can "look out" into the scope around it, so `x` is visible inside the block in the example. The exception is when multiple bindings have the same name—in that case, code can see only the innermost one. For example, when the code inside the `halve` function refers to `n`, it is seeing its _own_ `n`, not the global `n`.
+Svaki ((skoup)) može "pogledati" u opseg oko sebe, tako da je `x` vidljiv unutar bloka u primeru. Izuzetak je kada više varijabli ima isto ime - u tom slučaju, kôd može videti samo najunutrašniji. Na primer, kada se kôd unutar funkcije `halve` poziva na `n`, taj kod vidi svoj _sopstveni_ `n`, a ne globalni `n`.
 
 ```
 const halve = function(n) {
@@ -110,68 +112,68 @@ console.log(n);
 
 {{id scoping}}
 
-## Nested scope
+## Ugnežđeni skoup
 
 {{index [nesting, "of functions"], [nesting, "of scope"], scope, "inner function", "lexical scoping"}}
 
-JavaScript distinguishes not just global and local bindings. Blocks and functions can be created inside other blocks and functions, producing multiple degrees of locality.
+JavaScript ne pravi samo razliku između globalnih i lokalnih varijabli. Blokovi i funkcije mogu biti kreirani unutar drugih blokova i funkcija, što proizvodi nekoliko novih stepeni lokaliteta.
 
 {{index "landscape example"}}
 
-For example, this function—which outputs the ingredients needed to make a batch of hummus—has another function inside it:
+Na primer, ova funkcija - čiji izlaz daje sastojke potrebne za pravljenje humusa - ima još jednu funkciju unutar sebe:
 
 ```
-const hummus = function(factor) {
-  const ingredient = function(amount, unit, name) {
-    let ingredientAmount = amount * factor;
-    if (ingredientAmount > 1) {
-      unit += "s";
+const hummus = function(faktor) {
+  const sastojak = function(kolicina, mernaJedinica, ime) {
+    let kolicinaSastojka = kolicina * faktor;
+    if (kolicinaSastojka > 1) {
+      mernaJedinica += "s";
     }
-    console.log(`${ingredientAmount} ${unit} ${name}`);
+    console.log(`${kolicinaSastojka} ${mernaJedinica} ${ime}`);
   };
-  ingredient(1, "can", "chickpeas");
-  ingredient(0.25, "cup", "tahini");
-  ingredient(0.25, "cup", "lemon juice");
-  ingredient(1, "clove", "garlic");
-  ingredient(2, "tablespoon", "olive oil");
-  ingredient(0.5, "teaspoon", "cumin");
+  sastojak(1, "konzerva", "leblebija");
+  sastojak(0.25, "čaša", "tahini");
+  sastojak(0.25, "čaša", "sok od limuna");
+  sastojak(1, "glavica", "beli luk");
+  sastojak(2, "supena kašika", "maslinovo ulje");
+  sastojak(0.5, "kašičica", "kumin");
 };
 ```
 
 {{index [function, scope], scope}}
 
-The code inside the `ingredient` function can see the `factor` binding from the outer function, but its local bindings, such as `unit` or `ingredientAmount`, are not visible in the outer function.
+Kôd unutar funckije `sastojak` može videti `faktor` varijablu iz vanjske funkcije, ali njene lokalne varijable, kao što su `mernaJedinica` ili `kolicinaSastojka` nisu vidljive vanjskoj funkciji.
 
-The set of bindings visible inside a block is determined by the place of that block in the program text. Each local scope can also see all the local scopes that contain it, and all scopes can see the global scope. This approach to binding visibility is called _((lexical scoping))_.
+Skup varijabli vidljivih unutar bloka određen je mestom tog bloka u programskom tekstu. Svaki lokalni opseg takođe može videti sve lokalne opsege koji ga sadrže, dok svi opsezi mogu videti globalni opseg. Ovaj pristup vidljivosti varijabli naziva se _((leksičko opsegovanje))_ tj. _((lexical scoping))_.
 
-## Functions as values
+## Funkcije kao vrednosti
 
 {{index [function, "as value"], [binding, definition]}}
 
-A function binding usually simply acts as a name for a specific piece of the program. Such a binding is defined once and never changed. This makes it easy to confuse the function and its name.
+Binding funkcije obično funkcioniše kao ime za određeni deo programa. Takav binding se definiše jednom i nikada se ne menja. To često dovodi do zabune između funkcije i njenog imena.
 
 {{index [binding, assignment]}}
 
-But the two are different. A function value can do all the things that other values can do—you can use it in arbitrary ((expression))s, not just call it. It is possible to store a function value in a new binding, pass it as an argument to a function, and so on. Similarly, a binding that holds a function is still just a regular binding and can, if not constant, be assigned a new value, like so:
+Ali ovo dvoje zapravo predstavljaju različite stvari. Vrednost koja je tip funkcije može raditi sve što i druge vrednosti - možete je koristiti u proizvoljnim ((izrazima)), a ne samo je pozvati. Moguće je sačuvati vrednost funkcije u novi binding tj varijablu, proslediti je kao argument funkciji, i tako dalje. Slično tome, binding koji sadrži funkciju je i dalje samo običan binding i može, ako nije konstantan, dobiti novu vrednost, na primer:
 
 ```{test: no}
-let launchMissiles = function() {
-  missileSystem.launch("now");
+let lansirajRakete = function() {
+  raketniSistem.lansiraj("sada");
 };
 if (safeMode) {
-  launchMissiles = function() {/* do nothing */};
+  lansirajRakete = function() {/* ne radi nista */};
 }
 ```
 
 {{index [function, "higher-order"]}}
 
-In [Chapter ?](higher_order), we'll discuss the interesting things that we can do by passing around function values to other functions.
+U [Poglavlju ?](higher_order), razgovaraćemo o zanimljivim stvarima koje možemo postići slanjem vrednosti koje su tipa funkcija drugim funkcijama.
 
-## Declaration notation
+## Notacija deklaracije
 
 {{index [syntax, function], "function keyword", "square example", [function, definition], [function, declaration]}}
 
-There is a slightly shorter way to create a function binding. When the `function` keyword is used at the start of a statement, it works differently:
+Postoji nešto kraći način za kreiranje funkcije. Kada se ključna reč `function` koristi na početku izjave, ona radi na drugačiji način:
 
 ```{test: wrap}
 function square(x) {
@@ -181,9 +183,9 @@ function square(x) {
 
 {{index future, "execution order"}}
 
-This is a function _declaration_. The statement defines the binding `square` and points it at the given function. It is slightly easier to write and doesn't require a semicolon after the function.
+Ovo je _deklaracija_ funkcije. Ova izjava vezuje ime `square` za funkciju. Upravo smo definisali funkciju koja se zove `square`. Malo je lakše za pisanje i ne zahteva tačku-zarez nakon funkcije.
 
-There is one subtlety with this form of function definition.
+Postoji jedna suptilnost kod ove forme definisanja funkcije.
 
 ```
 console.log("The future says:", future());
@@ -193,13 +195,13 @@ function future() {
 }
 ```
 
-The preceding code works, even though the function is defined _below_ the code that uses it. Function declarations are not part of the regular top-to-bottom flow of control. They are conceptually moved to the top of their scope and can be used by all the code in that scope. This is sometimes useful because it offers the freedom to order code in a way that seems the clearest, without worrying about having to define all functions before they are used.
+Prethodni kôd radi, iako je funkcija definisana _ispod_, što znači _nakon_, koda koji je koristi. Deklaracije funkcija nisu deo redovnog toka kontrole od vrha ka dnu. Konceptualno se pomeraju na vrh svog opsega i mogu se koristiti od strane celog koda u tom opsegu. Ovo je ponekad korisno jer pruža slobodu da se kôd uređuje na način koji deluje najjasnije, bez brige o tome da li su sve funkcije definisane pre nego što budu korišćene.
 
-## Arrow functions
+## Strelica funkcije
 
 {{index function, "arrow function"}}
 
-There's a third notation for functions, which looks very different from the others. Instead of the `function` keyword, it uses an arrow (`=>`) made up of an equal sign and a greater-than character (not to be confused with the greater-than-or-equal operator, which is written `>=`):
+Postoji i treća notacija za funkcije koja izgleda veoma drukčije od ostalih. Umesto ključne reči `function`, ova notacija koristi strelicu (`=>`) koja se sastoji od znaka jednakosti i znaka za "veće od" (nemojte ovo pomešati sa operatorom "veće ili jednako" koji se piše `>=`):
 
 ```{test: wrap}
 const roundTo = (n, step) => {
@@ -210,11 +212,11 @@ const roundTo = (n, step) => {
 
 {{index [function, body]}}
 
-The arrow comes _after_ the list of parameters and is followed by the function's body. It expresses something like "this input (the ((parameter))s) produces this result (the body)".
+Strelica dolazi _posle_ liste parametara a zatim sledi telo funkcije. Možete to čitati otprilike na ovaj način: "ovaj ulaz (parametri) proizvodi ovaj rezultat (telo funkcije)".
 
 {{index [braces, "function body"], "square example", [parentheses, arguments]}}
 
-When there is only one parameter name, you can omit the parentheses around the parameter list. If the body is a single expression, rather than a ((block)) in braces, that expression will be returned from the function. So, these two definitions of `square` do the same thing:
+Kada postoji samo jedno ime parametra, možete izostaviti zagrade oko liste parametara. Ako je telo funkcije samo jedan izraz, umesto bloka u vitičastim zagradama, taj izraz će biti vraćen iz funkcije. Dakle, ove dve definicije `square` funkcije rade isto:
 
 ```
 const square1 = (x) => { return x * x; };
@@ -223,7 +225,7 @@ const square2 = x => x * x;
 
 {{index [parentheses, arguments]}}
 
-When an arrow function has no parameters at all, its parameter list is just an empty set of parentheses.
+Kada streličasta funkcija uopšte nema parametre, lista njenih parametara je samo prazan set zagrada.
 
 ```
 const horn = () => {
@@ -233,16 +235,16 @@ const horn = () => {
 
 {{index verbosity}}
 
-There's no deep reason to have both arrow functions and `function` expressions in the language. Apart from a minor detail, which we'll discuss in [Chapter ?](object), they do the same thing. Arrow functions were added in 2015, mostly to make it possible to write small function expressions in a less verbose way. We'll use them often in [Chapter ?](higher_order).
+Nema nekog posebnog razloga za postojanje i streličaste funkcije i `function` izraza u jeziku. Osim jednog sitnog detalja, o kojem ćemo raspravljati u [Poglavlju ?](object), one rade isto. Streličaste funkcije su dodate 2015. godine, uglavnom kako bi omogućile pisanje malih funkcionalnih izraza na kraći način. Često ćemo ih koristiti u [Poglavlju ?](higher_order).
 
 {{id stack}}
 
-## The call stack
+## Call stack
 
 {{indexsee stack, "call stack"}}
 {{index "call stack", [function, application]}}
 
-The way control flows through functions is somewhat involved. Let's take a closer look at it. Here is a simple program that makes a few function calls:
+Način na koji programska kontrola teče kroz funkcije je pomalo složen. Hajde da ga detaljnije pogledamo. Evo jednostavnog programa koji vrši nekoliko poziva funkcija:
 
 ```
 function greet(who) {
@@ -254,29 +256,29 @@ console.log("Bye");
 
 {{index ["control flow", functions], "execution order", "console.log"}}
 
-A run through this program goes roughly like this: the call to `greet` causes control to jump to the start of that function (line 2). The function calls `console.log`, which takes control, does its job, and then returns control to line 2. There, it reaches the end of the `greet` function, so it returns to the place that called it—line 4. The line after that calls `console.log` again. After that returns, the program reaches its end.
+Izvršavanje ovog programa ide otprilike ovako: poziv funkcije `greet` uzrokuje skok reda izvršavanja koda na početak te funkcije (linija 2). Funkcija poziva `console.log`, koji preuzima kontrolu, obavlja svoj posao, a zatim vraća kontrolu na liniju 2. Tamo stiže na kraj funkcije `greet`, pa se vraća na mesto koje ju je pozvalo - liniju 4. Linija nakon toga ponovo poziva `console.log`. Nakon što se to vrati, program dostiže kraj.
 
-We could show the flow of control schematically like this:
+Tok kontrole možemo prikazati šematski na sledeći način:
 
 ```{lang: null}
-not in function
-   in greet
-        in console.log
-   in greet
-not in function
-   in console.log
-not in function
+nismo unutar funkcije
+   u funkciji greet
+        u funkciji console.log
+   u funkciji greet
+nismo unutar funkcije
+   u funkciji console.log
+nismo unutar funkcije
 ```
 
 {{index "return keyword", [memory, call stack]}}
 
-Because a function has to jump back to the place that called it when it returns, the computer must remember the context from which the call happened. In one case, `console.log` has to return to the `greet` function when it is done. In the other case, it returns to the end of the program.
+Zato što funkcija mora da se vrati na mesto koje ju je pozvalo, kada se vrati, računar mora da zapamti kontekst iz kojeg je poziv nastao. U prvom slučaju, `console.log` mora da se vrati u funkciju `greet` kada završi. U drugom slučaju, vraća se na kraj programa. Funkcija se uvek vraća na mesto koje ju je originalno pozvalo.
 
-The place where the computer stores this context is the _((call stack))_. Every time a function is called, the current context is stored on top of this stack. When a function returns, it removes the top context from the stack and uses that context to continue execution.
+Mesto gde računar čuva ovaj kontekst zove se _((stek poziva))_ tj _((call stack))_. Svaki put kada se funkcija pozove, trenutni kontekst se čuva na vrhu ovog steka. Kada funkcija vrati vrednost, uklanja se poslednji kontekst sa steka i koristi taj kontekst za nastavak izvršavanja.
 
 {{index "infinite loop", "stack overflow", recursion}}
 
-Storing this stack requires space in the computer's memory. When the stack grows too big, the computer will fail with a message like "out of stack space" or "too much recursion". The following code illustrates this by asking the computer a really hard question that causes an infinite back-and-forth between two functions. Or rather, it _would_ be infinite, if the computer had an infinite stack. As it is, we will run out of space, or "blow the stack".
+Čuvanje ovog steka zahteva prostor u memoriji računara. Kada stek postane prevelik, program će se srušiti sa porukom poput "nedostatak prostora na steku" ili "previše rekurzije". Sledeći kod to ilustruje tako što računaru postavlja veoma teško pitanje koje uzrokuje beskonačno odlazak i vraćanje između dve funkcije. Ili bolje rečeno, _bilo bi_ beskonačno, da računar ima beskonačan stek. Potrošićemo sav prostor ili "premašiti stek".
 
 ```{test: no}
 function chicken() {
@@ -289,25 +291,25 @@ console.log(chicken() + " came first.");
 // → ??
 ```
 
-## Optional Arguments
+## Opcioni argumenti
 
 {{index argument, [function, application]}}
 
-The following code is allowed and executes without any problem:
+Sledeći kod je potpuno validan i izvršava se bez ikakvih problema:
 
 ```
 function square(x) { return x * x; }
-console.log(square(4, true, "hedgehog"));
+console.log(square(4, true, "Pero"));
 // → 16
 ```
 
-We defined `square` with only one ((parameter)). Yet when we call it with three, the language doesn't complain. It ignores the extra arguments and computes the square of the first one.
+Definisali smo funkciju `square` sa samo jednim ((parametrom)). Ipak, kada je pozovemo sa tri, jezik ne pravi problem. Ignoriše dodatne argumente i računa kvadrat prvog.
 
 {{index undefined}}
 
-JavaScript is extremely broad-minded about the number of arguments you can pass to a function. If you pass too many, the extra ones are ignored. If you pass too few, the missing parameters are assigned the value `undefined`.
+JavaScript je izuzetno ležeran jezik kada je u pitanju broj argumenata koje možete proslediti funkciji. Ako prosledite previše njih, dodatni će biti ignorisani. Ako prosledite premalo, nedostajući parametri će dobiti vrednost `undefined`.
 
-The downside of this is that it is possible—likely, even—that you'll accidentally pass the wrong number of arguments to functions. And no one will tell you about it. The upside is that you can use this behavior to allow a function to be called with different numbers of arguments. For example, this `minus` function tries to imitate the `-` operator by acting on either one or two arguments:
+Nedostatak ovoga je što je moguće - čak i veoma verovatno - da ćete slučajno proslediti pogrešan broj argumenata funkcijama. I niko vam neće reći ništa o tome. Prednost je što možete koristiti ovako ponašanje da biste omogućili pozivanje funkcije sa različitim brojevima argumenata. Na primer, ova funkcija `minus` pokušava da imitira `-` operator delovanjem na jedan ili dva argumenta:
 
 ```
 function minus(a, b) {
@@ -324,7 +326,7 @@ console.log(minus(10, 5));
 {{id roundTo}}
 {{index "optional argument", "default value", parameter, ["= operator", "for default value"] "roundTo example"}}
 
-If you write an `=` operator after a parameter, followed by an expression, the value of that expression will replace the argument when it is not given. For example, this version of `roundTo` makes its second argument optional. If you don't provide it or pass the value `undefined`, it will default to one:
+Ako napišete `=` operator praćen nekim izrazom posle parametra, vrednost tog izraza će zameniti argument kada nije dat. Na primer, ova verzija `roundTo` funkcije pravi njen drugi argument opcionalnim. Ako ne dostavite drugi argument pri pozivu funkcije ili prosledite vrednost `undefined`, podrazumevana vrednost parametra step će biti 1:
 
 ```{test: wrap}
 function roundTo(n, step = 1) {
@@ -340,20 +342,20 @@ console.log(roundTo(4.5, 2));
 
 {{index "console.log"}}
 
-The [next chapter](data#rest_parameters) will introduce a way in which a function body can get at the whole list of arguments it was passed. This is helpful because it allows a function to accept any number of arguments. For example, `console.log` does this, outputting all the values it is given:
+[U sledećem poglavlju](data#rest_parameters) će biti predstavljen način na koji telo funkcije može da pristupi celokupnoj listi argumenata koji su joj prosleđeni. Ovo je korisno jer omogućava funkciji da prihvati bilo koji broj argumenata. Na primer, `console.log` to radi, prikazujući sve vrednosti koje su joj prosleđene:
 
 ```
 console.log("C", "O", 2);
 // → C O 2
 ```
 
-## Closure
+## Closure (čitaj kloužr)
 
 {{index "call stack", "local binding", [function, "as value"], scope}}
 
-The ability to treat functions as values, combined with the fact that local bindings are recreated every time a function is called, brings up an interesting question: what happens to local bindings when the function call that created them is no longer active?
+Mogućnost da funkcije tretiramo kao vrednosti, zajedno sa činjenicom da se lokalne varijable rekreiraju svaki put kada se funkcija pozove, postavlja interesantno pitanje: šta se dešava sa lokalnim varijablama kada poziv funkcije koji ih je stvorio više nije aktivan?
 
-The following code shows an example of this. It defines a function, `wrapValue`, that creates a local binding. It then returns a function that accesses and returns this local binding:
+Sledeći kôd prikazuje primer ovoga. Definiše funkciju, `wrapValue`, koja kreira lokalnu varijablu `local`. Zatim vraća novu funkciju koja pristupa toj varijabli i vraća ovu lokalnu varijablu:
 
 ```
 function wrapValue(n) {
@@ -369,39 +371,39 @@ console.log(wrap2());
 // → 2
 ```
 
-This is allowed and works as you'd hope—both instances of the binding can still be accessed. This situation is a good demonstration of the fact that local bindings are created anew for every call, and different calls don't affect each other's local bindings.
+Ovo je dozvoljeno i radi kao što biste se nadali - obe instance varijable i dalje mogu biti pristupljene. Ova situacija je dobra demonstracija činjenice da se lokalna vezivanja stvaraju iznova za svaki poziv, i različiti pozivi ne utiču na lokalne varijable jedni drugih.
 
-This feature—being able to reference a specific instance of a local binding in an enclosing scope—is called _((closure))_. A function that references bindings from local scopes around it is called _a_ closure. This behavior not only frees you from having to worry about the lifetimes of bindings but also makes it possible to use function values in some creative ways.
+Ova osobina - mogućnost pozivanja na određenu instancu lokalnog vezivanja u spoljašnjem opsegu - naziva se _((closure))_. Funkcija koja referiše na varijable iz lokalnih opsega oko nje naziva se _closure_. Ovo ponašanje ne samo što vas oslobađa brige o vremenu trajanja varijable, već takođe omogućava kreativnu upotrebu vrednosti koje su tipa funkcije.
 
 {{index "multiplier function"}}
 
-With a slight change, we can turn the previous example into a way to create functions that multiply by an arbitrary amount:
+Uz malu promenu, možemo promeniti prošli primer u način kreiranja funkcija koje množe argument nekom nasumičnom vrednošću:
 
 ```
-function multiplier(factor) {
-  return number => number * factor;
+function multiplikator(faktor) {
+  return broj => broj * faktor;
 }
 
-let twice = multiplier(2);
-console.log(twice(5));
+let duplo = multiplikator(2);
+console.log(duplo(5));
 // → 10
 ```
 
 {{index [binding, "from parameter"]}}
 
-The explicit `local` binding from the `wrapValue` example isn't really needed, since a parameter is itself a local binding.
+Eksplicitna `local` varijabla iz primera `wrapValue` zapravo nije ni potrebna, jer je sam parametar lokalna varijabla.
 
 {{index [function, "model of"]}}
 
-Thinking about programs like this takes some practice. A good mental model is to think of function values as containing both the code in their body and the environment in which they are created. When called, the function body sees the environment in which it was created, not the environment in which it is called.
+Razmišljanje o programima poput ovih zahteva vežbanje. Dobar mentalni model za ovo je da razmišljate o vrednostima koje su tipa funkcija, kao o nečemu što sadrži kôd te funkcije, ali i okruženje u kojem su kreirane. Kada se pozove, telo funkcije vidi okruženje u kojem je kreirano, a ne okruženje u kojem je pozvano.
 
-In the previous example, `multiplier` is called and creates an environment in which its `factor` parameter is bound to 2. The function value it returns, which is stored in `twice`, remembers this environment so that when that is called, it multiplies its argument by 2.
+U prethodnom primeru, `multiplikator` funkcija je pozvana i pravi okruženje u kojem njen `faktor` parametar postaje 2. Vrednost, koji je tipa funkcija, koju `multiplikator` vraća, a koja je sačuvana u `duplo` varijabli, pamti ovo okruženje tako da kad je pozovemo, množi argument brojem 2.
 
-## Recursion
+## Rekurzija
 
 {{index "power example", "stack overflow", recursion, [function, application]}}
 
-It is perfectly okay for a function to call itself, as long as it doesn't do it so often that it overflows the stack. A function that calls itself is called _recursive_. Recursion allows some functions to be written in a different style. Take, for example, this `power` function, which does the same as the `**` (exponentiation) operator:
+Sasvim je u redu da funkcija pozove samu sebe, sve dok to ne radi toliko često da prelije stek. Funkcija koja poziva samu sebe se naziva _rekurzivna_. Rekurzija omogućava nekim funkcijama da budu napisane na drugačiji način. Na primer, pogledajte ovu `power` funkciju, koja radi isto što i `**` (stepenovanje) operator:
 
 ```{test: wrap}
 function power(base, exponent) {
@@ -418,25 +420,25 @@ console.log(power(2, 3));
 
 {{index loop, readability, mathematics}}
 
-This is rather close to the way mathematicians define exponentiation and arguably describes the concept more clearly than the loop we used in [Chapter ?](program_structure). The function calls itself multiple times with ever smaller exponents to achieve the repeated multiplication.
+Ovo je prilično slično načinu na koji matematičari definišu stepenovanje i možda opisuje koncept jasnije nego petlja koju smo koristili u [Poglavlju ?](program_structure). Funkcija se poziva više puta sa sve manjim eksponentima kako bi postigla ponovljeno množenje.
 
 {{index [function, application], efficiency}}
 
-This implementation has one problem, however: in typical JavaScript implementations, it's about three times slower than a version using a `for` loop. Running through a simple loop is generally cheaper than calling a function multiple times.
+Međutim, ova implementacija ima jedan problem: u tipičnim JavaScript implementacijama, ona je otprilike tri puta sporija od verzije koja koristi `for` petlju. Pokretanje kroz jednostavnu petlju je generalno brže od višestrukog pozivanja funkcije.
 
 {{index optimization}}
 
-The dilemma of speed versus ((elegance)) is an interesting one. You can see it as a kind of continuum between human-friendliness and machine-friendliness. Almost any program can be made faster by making it bigger and more convoluted. The programmer has to find an appropriate balance.
+Dilema između brzine i ((elegantnosti)) je interesantna i veoma česta u programiranju. Možete je posmatrati kao vrstu kontinuiteta između prijateljske nastrojenosti prema čoveku i prijateljske nastrojenosti prema mašini. Skoro svaki program može postati brži ako ga učinite većim i složenijim. Programer mora pronaći odgovarajuću ravnotežu.
 
-In the case of the `power` function, an inelegant (looping) version is still fairly simple and easy to read. It doesn't make much sense to replace it with a recursive function. Often, though, a program deals with such complex concepts that giving up some efficiency in order to make the program more straightforward is helpful.
+U slučaju `power` funkcije, neelegantna (ona sa petljama) verzija je i dalje prilično jednostavna i lako čitljiva. Nema mnogo smisla zameniti je rekurzivnom funkcijom. Međutim, često se programi bave toliko složenim konceptima da odustajanje od neke efikasnosti kako bi se program učinio jednostavnijim može biti korisno.
 
 {{index profiling}}
 
-Worrying about efficiency can be a distraction. It's yet another factor that complicates program design, and when you're doing something that's already difficult, that extra thing to worry about can be paralyzing.
+Briga o efikasnosti može vas ometati. To je još jedan faktor koji komplikuje dizajn programa, i kada već radite nešto što je teško, dodatna stvar o kojoj treba brinuti može vas paralisati u radu.
 
 {{index "premature optimization"}}
 
-Therefore, you should generally start by writing something that's correct and easy to understand. If you're worried that it's too slow—which it usually isn't, since most code simply isn't executed often enough to take any significant amount of time—you can measure afterward and improve it if necessary.
+Stoga, generalno je najbolje početi tako što ćete napisati nešto što je ispravno i lako razumljivo. Ako brinete da je previše sporo - što obično nije slučaj, jer većina kôda jednostavno nije dovoljno često izvršena da bi oduzela značajno vreme - možete kasnije izmeriti i poboljšati ga ako je potrebno.
 
 {{index "branching recursion"}}
 
