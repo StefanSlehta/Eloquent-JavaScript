@@ -442,14 +442,14 @@ Stoga, generalno je najbolje početi tako što ćete napisati nešto što je isp
 
 {{index "branching recursion"}}
 
-Recursion is not always just an inefficient alternative to looping. Some problems really are easier to solve with recursion than with loops. Most often these are problems that require exploring or processing several "branches", each of which might branch out again into even more branches.
+Rekurzija nije baš uvek samo neefikasnija alternativa petaljama. Neki problemi se zaista jednostavnije rešavaju korištenjem rekurzije umesto petlji. Najčešće to su problemi koji zahtevaju istraživanje ili obrađivanje više "grana", od kojih bi se svaka mogla dodatno razgranavati na još dodatnih grana.
 
 {{id recursive_puzzle}}
 {{index recursion, "number puzzle example"}}
 
-Consider this puzzle: by starting from the number 1 and repeatedly either adding 5 or multiplying by 3, an infinite set of numbers can be produced. How would you write a function that, given a number, tries to find a sequence of such additions and multiplications that produces that number? For example, the number 13 could be reached by first multiplying by 3 and then adding 5 twice, whereas the number 15 cannot be reached at all.
+Razmislite o sledećem zadatku: počinjući od broja 1, konstantno dodavajući mu broj 5, ili množeći ga sa 3, možemo konstruisati beskonačan skup brojeva. Kako biste napisali funkciju koja, za dati broj, pokušava da pronađe sekvencu takvih sabiranja i množenja, koje će proizvesti dati broj? Na primer, broj 13 se može postići tako što prvo pomnožimo sa 3, pa onda saberemo sa 5, dva puta, a broj 15 se ne može dostići nikada.
 
-Here is a recursive solution:
+Evo rekurzivnog rešenja:
 
 ```
 function findSolution(target) {
@@ -470,64 +470,64 @@ console.log(findSolution(24));
 // → (((1 * 3) + 5) * 3)
 ```
 
-Note that this program doesn't necessarily find the _shortest_ sequence of operations. It is satisfied when it finds any sequence at all.
+Napomena da ovaj program ne mora nužno da pronađe _najkraći_ niz operacija. On je zadovoljan kada pronađe bilo koji niz operacija.
 
-It's okay if you don't see how this code works right away. Let's work through it, since it makes for a great exercise in recursive thinking.
+U redu je ako odmah ne vidite kako ovaj kod funkcioniše. Hajde da radimo na njemu, pošto je odlična vežba za rekurzivno razmišljanje.
 
-The inner function `find` does the actual recursing. It takes two ((argument))s: the current number and a string that records how we reached this number. If it finds a solution, it returns a string that shows how to get to the target. If it can find no solution starting from this number, it returns `null`.
+Unutrašnja funkcija `find` vrši stvarnu rekurziju. Ona uzima dva ((argumenta)): trenutni broj i string koji beleži kako smo došli do ovog broja. Ako pronađe rešenje, vraća string koji pokazuje kako doći do cilja. Ako ne može pronaći rešenje počevši od ovog broja, vraća `null`.
 
 {{index null, "?? operator", "short-circuit evaluation"}}
 
-To do this, the function performs one of three actions. If the current number is the target number, the current history is a way to reach that target, so it is returned. If the current number is greater than the target, there's no sense in further exploring this branch because both adding and multiplying will only make the number bigger, so it returns `null`. Finally, if we're still below the target number, the function tries both possible paths that start from the current number by calling itself twice, once for addition and once for multiplication. If the first call returns something that is not `null`, it is returned. Otherwise, the second call is returned, regardless of whether it produces a string or `null`.
+Da bi ovo postigla, naša funkcija obavlja 3 operacije. Ako je trenutni broj onaj koji tražimo, onda je trenutna istorija način na koji smo došli do tog broja, pa vraćamo to kao rezultat. Ako je trenutni broj veći od broja koji tražimo, nema poente da dalje istražujemo ovu granu, jer i sabiranje i množenje će nas samo odvesti u još veće brojeve, pa u tom slučaju vraćamo `null`. Na kraju, ako smo na broju manjem od onog koji tražimo, funkcija će pokušati oba moguća grananja koja počinju od broja na kojem se trenutno nalazimo, tako što će pozvati sama sebe 2 puta - jednom za sabiranje, jednom za množenje. Ako nam prvi poziv vrati nešto što nije `null`, onda ćemo vratiti taj rezultat. U suprotnom, vratićemo ono što nam vraća drugi poziv funkcije, nezavisno od toga da li nam on vraća string ili `null`.
 
 {{index "call stack"}}
 
-To better understand how this function produces the effect we're looking for, let's look at all the calls to `find` that are made when searching for a solution for the number 13:
+Da bismo bolje razumeli kako ova funkcija proizvodi efekat koji tražimo, pogledajmo kako izgledaju pozivi `find` funkciji koje pravimo dok pretražujemo rešenje za broj 13:
 
 ```{lang: null}
 find(1, "1")
   find(6, "(1 + 5)")
     find(11, "((1 + 5) + 5)")
       find(16, "(((1 + 5) + 5) + 5)")
-        too big
+        preveliko
       find(33, "(((1 + 5) + 5) * 3)")
-        too big
+        preveliko
     find(18, "((1 + 5) * 3)")
-      too big
+      preveliko
   find(3, "(1 * 3)")
     find(8, "((1 * 3) + 5)")
       find(13, "(((1 * 3) + 5) + 5)")
-        found!
+        pronadjeno!
 ```
 
-The indentation indicates the depth of the call stack. The first time `find` is called, the function starts by calling itself to explore the solution that starts with `(1 + 5)`. That call will further recurse to explore _every_ continued solution that yields a number less than or equal to the target number. Since it doesn't find one that hits the target, it returns `null` back to the first call. There the `??` operator causes the call that explores `(1 * 3)` to happen. This search has more luck—its first recursive call, through yet _another_ recursive call, hits upon the target number. That innermost call returns a string, and each of the `??` operators in the intermediate calls passes that string along, ultimately returning the solution.
+Indentacija označava dubinu call stacka. Prvi put kada se `find` poziva, funkcija počinje pozivanjem same sebe da istraži rešenje koje počinje sa `(1 + 5)`. Taj poziv će rekurzivno istražiti _svako_ sledeće rešenje koje daje broj manji ili jednak ciljanom broju. Pošto ne nađe ono što traži, vraća `null` na prvi poziv. Tu operator `??` dovodi do poziva koji istražuje `(1 * 3)`. Ova pretraga ima više sreće—njen prvi rekurzivni poziv, preko još _jednog_ rekurzivnog poziva, pogađa ciljni broj. Taj najunutrašnji poziv vraća niz, i svaki od operatora `??` u posredničkim pozivima prosleđuje taj niz, na kraju vraćajući rešenje.
 
-## Growing functions
+## Rastuće funkcije
 
 {{index [function, definition]}}
 
-There are two more or less natural ways for functions to be introduced into programs.
+Postoje dva, manje više prirodna načina da se funkcije uvedu u program.
 
 {{index repetition}}
 
-The first occurs when you find yourself writing similar code multiple times. You'd prefer not to do that, as having more code means more space for mistakes to hide and more material to read for people trying to understand the program. So you take the repeated functionality, find a good name for it, and put it into a function.
+Prvi način je kada primetite da više puta pišete sličan kod. Ovo je bolje izbeći ako možete, jer više koda znači više prostora za skrivene greške i više materijala za čitanje ljudima koji pokušavaju da razumeju program. Zato uzimate funkcionalnost koja se ponavlja na više mesta, pronalazite dobro ime za nju i stavljate je u funkciju.
 
-The second way is that you find you need some functionality that you haven't written yet and that sounds like it deserves its own function. You start by naming the function, then write its body. You might even start writing code that uses the function before you actually define the function itself.
+Drugi način je kada primetite da vam je potrebna neka funkcionalnost koju još niste napisali i koja zvuči kao da zaslužuje svoju sopstvenu funkciju. Počinjete tako što imenujete funkciju, zatim pišete njeno telo. Čak možete početi pisati kod koji koristi funkciju pre nego što zapravo definišete samu funkciju.
 
 {{index [function, naming], [binding, naming]}}
 
-How difficult it is to find a good name for a function is a good indication of how clear a concept it is that you're trying to wrap. Let's go through an example.
+Koliko je teško pronaći adekvatno ime za funkciju može biti dobra indikacija koliko je razumljiv koncept koji pokušavate staviti u funkciju. Hajde da pogledamo primer.
 
 {{index "farm example"}}
 
-We want to write a program that prints two numbers: the numbers of cows and chickens on a farm, with the words `Cows` and `Chickens` after them and zeros padded before both numbers so that they are always three digits long:
+Želimo napisati program koji ispisuje dva broja: broj krava i kokoški na farmi, sa rečima `Cows` (eng. krave) i `Chickens` (eng. kokoške) nakon broja, i sa nulama ispred oba broja, tako da su brojevi uvek dugi tačno tri cifre:
 
 ```{lang: null}
 007 Cows
 011 Chickens
 ```
 
-This asks for a function of two arguments—the number of cows and the number of chickens. Let's get coding.
+Ovaj program zahteva funkciju sa dva argumenta - broj krava i broj kokoški. Ajmo na programiranje.
 
 ```
 function printFarmInventory(cows, chickens) {
@@ -547,13 +547,13 @@ printFarmInventory(7, 11);
 
 {{index ["length property", "for string"], "while loop"}}
 
-Writing `.length` after a string expression will give us the length of that string. Thus, the `while` loops keep adding zeros in front of the number strings until they are at least three characters long.
+Pisanje `.length` nakon stringa će nam dati dužinu tog stringa. `while` petlje dodaju nule ispred brojevnih stringova sve dok nisu dugački bar tri karaktera .
 
-Mission accomplished! But just as we are about to send the farmer the code (along with a hefty invoice), she calls and tells us she's also started keeping pigs, and couldn't we please extend the software to also print pigs?
+To je to! Ali baš kada smo spremni da pošaljemo farmeru kod (uz pristojan račun), on nas zove i kaže nam da je takođe počeo da čuva svinje, i da li bismo mogli proširiti softver da takođe štampa broj svinja?
 
 {{index "copy-paste programming"}}
 
-We sure can. But just as we're in the process of copying and pasting those four lines one more time, we stop and reconsider. There has to be a better way. Here's a first attempt:
+Naravno da možemo. Ali u sred procesa kopiranja i lepljenja te četiri linije koda još jedan put, zastaćemo i porazmisliti. Mora postojati bolji način. Evo prvog pokušaja:
 
 ```
 function printZeroPaddedWithLabel(number, label) {
@@ -575,11 +575,11 @@ printFarmInventory(7, 11, 3);
 
 {{index [function, naming]}}
 
-It works! But that name, `printZeroPaddedWithLabel`, is a little awkward. It conflates three things—printing, zero-padding, and adding a label—into a single function.
+Funkcioniše! Ali ovaj naziv `printZeroPaddedWithLabel` ("ispiši oznaku sa nulama ispred") je malo čudno. Ovo ime meša 3 različite stvari, ispisivanje, postavaljanje nula ispred i dodavanje oznake - sve u jednoj funkciji.
 
 {{index "zeroPad function"}}
 
-Instead of lifting out the repeated part of our program wholesale, let's try to pick out a single _concept_:
+Umesto da izvlačimo deo programa koji se ponavlja, hajde da pokušamo izvući jedan _koncept_ umesto toga:
 
 ```
 function zeroPad(number, width) {
@@ -601,68 +601,68 @@ printFarmInventory(7, 16, 3);
 
 {{index readability, "pure function"}}
 
-A function with a nice, obvious name like `zeroPad` makes it easier for someone who reads the code to figure out what it does. Such a function is also useful in more situations than just this specific program. For example, you could use it to help print nicely aligned tables of numbers.
+Funkcija sa lepim, očiglednim imenom kao što je `zeroPad`, "dodaj nule, olakšava onom ko čita kod da razazna šta ta funkcija zapravo radi. Takva funkcija je korisna u više situacija, ne samo u ovom specifičnom programu. Na primer, mogli bismo je iskorisiti za ispisivanje lepo poravnanih tabela brojeva.
 
 {{index [interface, design]}}
 
-How smart and versatile _should_ our function be? We could write anything, from a terribly simple function that can only pad a number to be three characters wide to a complicated generalized number-formatting system that handles fractional numbers, negative numbers, alignment of decimal dots, padding with different characters, and so on.
+Koliko pametna i svestrana jedna funkcija treba da bude? Mi možemo napisati bilo šta, od prejednostavne funkcije koja može samo formatirati broj da uvek ima 3 cifre, do nekih komplikovanih, generalizovanih formatera brojnih sistema, koji mogu da rade i sa razlomcima, negativnim brojevima, poravnanju decimalnih mesta, poravnanju sa različitim karakterima itd.
 
-A useful principle is to refrain from adding cleverness unless you are absolutely sure you're going to need it. It can be tempting to write general "((framework))s" for every bit of functionality you come across. Resist that urge. You won't get any real work done—you'll be too busy writing code that you never use.
+Jedan korisan princip koji bi trebalo da pratite je da ne dodajete neke dodatne funkcionalnosti ako niste zaista sigurni da ćete ih trebati. Može biti veoma primamljujuće da otkucate generalizovan "framework" za svaku funkcionalnost koja vam zatreba. Ali oduprite se tom porivu. Nećete zapravo uraditi ništa, a bićete prezauzeti pisanjem koda koji vam nikada neće trebati.
 
 {{id pure}}
-## Functions and side effects
+## Funkcije i sporedni efekti
 
 {{index "side effect", "pure function", [function, purity]}}
 
-Functions can be roughly divided into those that are called for their side effects and those that are called for their return value (though it is also possible to both have side effects and return a value).
+Funkcije se ugrubo mogu podeliti u one koje se pozivaju zbog sporednih efekata koje prave, i one koje se pozivaju zbog vrednosti koje vraćaju (ali je takođe moguće da proizvode i sporedne efekte, i vraćaju vrednost).
 
 {{index reuse}}
 
-The first helper function in the ((farm example)), `printZeroPaddedWithLabel`, is called for its side effect: it prints a line. The second version, `zeroPad`, is called for its return value. It is no coincidence that the second is useful in more situations than the first. Functions that create values are easier to combine in new ways than functions that directly perform side effects.
+Prva pomoćna funkcija u primeru frame `printZeroPaddedWithLabel` je pozivana zbog sporednih efekata koje proizvodi: ona ispisuje liniju. Druga verzija, `zeroPad` je pozvana zbog vrednosti koju vraća. Nije slučajnost da je druga funkcija korisnija u više situacija od prve. Funkcije koje vraćaju vrednosti se lakše kombinuju na nove načine nego funkcije koje direktno proizvode sporedne efekte.
 
 {{index substitution}}
 
-A _pure_ function is a specific kind of value-producing function that not only has no side effects but also doesn't rely on side effects from other code—for example, it doesn't read global bindings whose value might change. A pure function has the pleasant property that, when called with the same arguments, it always produces the same value (and doesn't do anything else). A call to such a function can be substituted by its return value without changing the meaning of the code. When you are not sure that a pure function is working correctly, you can test it by simply calling it and know that if it works in that context, it will work in any context. Nonpure functions tend to require more scaffolding to test.
+Čista ili _pure_ funkcija je specifičan tip funkcije koja proizvodi vrednost, koje ne samo da nema sporedne efekte, već se takođe ne oslanja na sporedne efekte drugog koda - na primer, ne čita globalne varijable čija se vrednost može promeniti. Čista funkcija ima veoma lepu osobinu da, kad je pozovete sa istim argumentima, uvek proizvodi istu vrednost (i ništa više). Poziv takvoj funkciji može se zameniti sa vrednošću koju ona vraća, bez da to promeni značenje koda. Kada niste sigurni da čista funkcija radi kako treba, možete je testirati tako što ćete je pozvati i znati da ako radi u tom kontekstu, radiće i u bilo kojem drugom kontekstu. Nečiste funkcije generalno zahtevaju više pripreme za testiranje.
 
 {{index optimization, "console.log"}}
 
-Still, there's no need to feel bad when writing functions that are not pure. Side effects are often useful. There's no way to write a pure version of `console.log`, for example, and `console.log` is good to have. Some operations are also easier to express in an efficient way when we use side effects.
+Nema potrebe da se osećate loše kada pišete funkcije koje nisu čiste. Sporedni efekti su često korisni. Na primer, nije moguće napisati čistu verziju `console.log`, a `console.log` je korisno imati. Neki operacije je takođe lakše izraziti na efikasan način kada koristimo sporedne efekte.
 
-## Summary
+## Da rezimiramo
 
-This chapter taught you how to write your own functions. The `function` keyword, when used as an expression, can create a function value. When used as a statement, it can be used to declare a binding and give it a function as its value. Arrow functions are yet another way to create functions.
+Ovo poglavlje vas je naučilo kako da pišete svoje funkcije. Ključna reč `function`, kada se koristi kao izraz, može stvoriti vrednost funkcije. Kada se koristi kao izjava, može se koristiti za deklarisanje varijabli i davanje funkcije kao njene vrednosti. Streličaste funkcije su još jedan način za kreiranje funkcija.
 
 ```
-// Define f to hold a function value
+// Definise f koja za vrednost drzi tip funkcije
 const f = function(a) {
   console.log(a + 2);
 };
 
-// Declare g to be a function
+// Definise g funkciju
 function g(a, b) {
   return a * b * 3.5;
 }
 
-// A less verbose function value
+// Manje verbozna vrednost tipa funkcije
 let h = a => a % 3;
 ```
 
-A key part of understanding functions is understanding scopes. Each block creates a new scope. Parameters and bindings declared in a given scope are local and not visible from the outside. Bindings declared with `var` behave differently—they end up in the nearest function scope or the global scope.
+Važan deo razumevanja funkcija je razumevanje opsega. Svaki blok kreira novi opseg. Parametri i varijable deklarisane u datom opsegu su lokalni i nisu vidljivi spolja. Varijable deklarisane sa `var` se ponašaju drugačije - završavaju u najbližem opsegu funkcije ili globalnom opsegu.
 
-Separating the tasks your program performs into different functions is helpful. You won't have to repeat yourself as much, and functions can help organize a program by grouping code into pieces that do specific things.
+Razdvajanje zadataka koje vaš program obavlja u različite funkcije je korisno. Nećete morati toliko da ponavljate iste stvari, a funkcije mogu pomoći u organizaciji programa grupisanjem koda u delove koji rade određene stvari.
 
-## Exercises
+## Zadaci
 
 ### Minimum
 
 {{index "Math object", "minimum (exercise)", "Math.min function", minimum}}
 
-The [previous chapter](program_structure#return_values) introduced the standard function `Math.min` that returns its smallest argument. We can write a function like that ourselves now. Define the function `min` that takes two arguments and returns their minimum.
+[Prethodno poglavlje](program_structure#return_values) vas je upoznalo sa standardnom funkcijom `Math.min` koja vraća svoj najmanji argument. Možemo napisati takvu funkciju i sami. Definišite funkciju `min` koja uzima dva argumenta i vraća manji od njih.
 
 {{if interactive
 
 ```{test: no}
-// Your code here.
+// Vas kod ovde.
 
 console.log(min(0, 10));
 // → 0
@@ -675,36 +675,36 @@ if}}
 
 {{index "minimum (exercise)"}}
 
-If you have trouble putting braces and parentheses in the right place to get a valid function definition, start by copying one of the examples in this chapter and modifying it.
+Ako imate problem sa postavljanjem vitičastih i malih zagrada na pravo mesto da dobijete validnu definiciju funkcije, započnite kopiranjem jednog od prethodnih primera iz ovog poglavlja, i modifikujte to.
 
 {{index "return keyword"}}
 
-A function may contain multiple `return` statements.
+Funkcija može sadržati više `return` izjava.
 
 hint}}
 
-### Recursion
+### Rekurzija
 
 {{index recursion, "isEven (exercise)", "even number"}}
 
-We've seen that we can use `%` (the remainder operator) to test whether a number is even or odd by using `% 2` to see whether it's divisible by two. Here's another way to define whether a positive whole number is even or odd:
+Videli smo da možemo koristiti `%` (operator ostataka) da bismo testirali da li je broj paran ili neparan tako što koristimo `% 2` da bismo videli da li je deljiv sa dva. Evo još jednog načina da definišemo da li je pozitivan ceo broj paran ili neparan:
 
-- Zero is even.
+- Nula je paran broj.
 
-- One is odd.
+- Jedan je neparan broj.
 
-- For any other number _N_, its evenness is the same as _N_ - 2.
+- Za bilo koji drugi broj _N_, njegova parnost je ista kao i _N_ - 2.
 
-Define a recursive function `isEven` corresponding to this description. The function should accept a single parameter (a positive, whole number) and return a Boolean.
+Napišite rekurzivnu funkciju `isEven` koja odgovara ovoj definiciji. Funkcija treba da prihvati jedan parametar (pozitivan ceo broj) i da vrati boolean vrednost da li je taj broj paran.
 
 {{index "stack overflow"}}
 
-Test it on 50 and 75. See how it behaves on -1. Why? Can you think of a way to fix this?
+Testirajte sa 50 i 75. Pogledajte kako se ponaša sa -1? Zašto? Možete li naći način da to popravite?
 
 {{if interactive
 
 ```{test: no}
-// Your code here.
+// Vas kod ovde.
 
 console.log(isEven(50));
 // → true
@@ -720,28 +720,28 @@ if}}
 
 {{index "isEven (exercise)", ["if keyword", chaining], recursion}}
 
-Your function will likely look somewhat similar to the inner `find` function in the recursive `findSolution` [example](functions#recursive_puzzle) in this chapter, with an `if`/`else if`/`else` chain that tests which of the three cases applies. The final `else`, corresponding to the third case, makes the recursive call. Each of the branches should contain a `return` statement or in some other way arrange for a specific value to be returned.
+Vaša funkcija će verovatno izgledati slično unutrašnjoj funkciji `find` u rekurzivnom primeru `findSolution` [ovde](functions#recursive_puzzle) u ovom poglavlju, sa lancom `if`/`else if`/`else` koji testira koji od tri slučaja se primenjuje. Konačno `else`, što odgovara trećem slučaju, čini rekurzivni poziv. Svaka grana treba da sadrži `return` izjavu ili na neki drugi način organizuje da se vrati određena vrednost.
 
 {{index "stack overflow"}}
 
-When given a negative number, the function will recurse again and again, passing itself an ever more negative number, thus getting further and further away from returning a result. It will eventually run out of stack space and abort.
+Kada se funkciji prosledi negativan broj, ona će rekurzivno pozivati sebe sve više i više, prosleđujući sebi sve negativnije brojeve, čime će se udaljavati od vraćanja rezultata. Na kraju će potrošiti sav prostor za stek i prekinuti izvršavanje.
 
 hint}}
 
-### Bean counting
+### Brojanje zrna
 
 {{index "bean counting (exercise)", [string, indexing], "zero-based counting", ["length property", "for string"]}}
 
-You can get the *N*th character, or letter, from a string by writing `[N]` after the string (for example, `string[2]`). The resulting value will be a string containing only one character (for example, `"b"`). The first character has position 0, which causes the last one to be found at position `string.length - 1`. In other words, a two-character string has length 2, and its characters have positions 0 and 1.
+Možete dobiti *N*-ti karakter, ili slovo, iz stringa tako što ćete nakon stringa napisati `[N]` (na primer, `string[2]`). Dobijena vrednost će biti string koji sadrži samo jedan karakter (na primer, `"b"`). Prvi karakter ima poziciju 0, što uzrokuje da se poslednji nalazi na poziciji `string.length - 1`. Drugim rečima, string sa dva karaktera ima dužinu 2, a njegovi karakteri imaju pozicije 0 i 1.
 
-Write a function `countBs` that takes a string as its only argument and returns a number that indicates how many uppercase B characters there are in the string.
+Napišite funkciju `countBs` koja kao svoj jedini argument uzima string i vraća broj koji ukazuje na to koliko velikih slova B ima u stringu.
 
-Next, write a function called `countChar` that behaves like `countBs`, except it takes a second argument that indicates the character that is to be counted (rather than counting only uppercase B characters). Rewrite `countBs` to make use of this new function.
+Zatim napišite funkciju nazvanu `countChar` koja se ponaša kao `countBs`, osim što uzima drugi argument koji ukazuje na karakter koji treba brojati (umesto brojanja samo velikih slova B). Prepravite funkciju `countBs` da koristi ovu novu funkciju.
 
 {{if interactive
 
 ```{test: no}
-// Your code here.
+// Vas kod ovde.
 
 console.log(countBs("BOB"));
 // → 2
@@ -755,10 +755,10 @@ if}}
 
 {{index "bean counting (exercise)", ["length property", "for string"], "counter variable"}}
 
-Your function will need a ((loop)) that looks at every character in the string. It can run an index from zero to one below its length (`< string.length`). If the character at the current position is the same as the one the function is looking for, it adds 1 to a counter variable. Once the loop has finished, the counter can be returned.
+Vašoj funkciji će trebati petlja koja pregleda svaki karakter u stringu. Može pokretati indeks od nula do jedan manje od dužine stringa (`< string.length`). Ako je karakter na trenutnoj poziciji isti kao onaj koji funkcija traži, dodaje 1 varijabli brojača. Kada se petlja završi, brojač se može vratiti.
 
 {{index "local binding"}}
 
-Take care to make all the bindings used in the function _local_ to the function by properly declaring them with the `let` or `const` keyword.
+Pobrinite se za to da vam sve varijable korištene u funkciji budu _lokalne_ funkciji tako što ćete ih pravilno deklarisati korištenjem `let` ili `const` ključnih reči.
 
 hint}}
