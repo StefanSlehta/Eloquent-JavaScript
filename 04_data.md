@@ -1,60 +1,60 @@
 {{meta {load_files: ["code/journal.js", "code/chapter/04_data.js"], zip: "node/html"}}}
 
-# Data Structures: Objects and Arrays
+# Strukture podataka: Objekti i nizovi
 
 {{quote {author: "Charles Babbage", title: "Passages from the Life of a Philosopher (1864)", chapter: true}
 
-On two occasions I have been asked, 'Pray, Mr. Babbage, if you put into the machine wrong figures, will the right answers come out?' [...] I am not able rightly to apprehend the kind of confusion of ideas that could provoke such a question.
+U dva navrata su me pitali, 'Gospodine Babidž, ako stavite pogrešne brojeve u mašinu, da li će izaći tačni odgovori?' [...] Nisam u mogućnosti pravilno da shvatim vrstu konfuzije ideja koja bi mogla izazvati takvo pitanje.
 
 quote}}
 
 {{index "Babbage, Charles"}}
 
-{{figure {url: "img/chapter_picture_4.jpg", alt: "Illustration of a squirrel next to a pile of books and a pair of glasses. A moon and stars are visible in the background.", chapter: framed}}}
+{{figure {url: "img/chapter_picture_4.jpg", alt: "Ilustracija veverice pored gomile knjiga i para naočara. Mesec i zvezde su vidljivi u pozadini.", chapter: framed}}}
 
 {{index object, "data structure"}}
 
-Numbers, Booleans, and strings are the atoms from which ((data)) structures are built. Many types of information require more than one atom, though. _Objects_ allow us to group values—including other objects—to build more complex structures.
+Brojevi, Boolean i stringovi su atomi od kojih se grade strukture podataka. Međutim, mnoge vrste informacija zahtevaju više od jednog atoma. _Objekti_ nam omogućavaju da grupišemo vrednosti — uključujući i druge objekte — kako bismo izgradili složenije strukture.
 
-The programs we have built so far have been limited by the fact that they were operating only on simple data types. After learning the basics of data structures in this chapter, you'll know enough to start writing useful programs.
+Programi koje smo dosad gradili su bili ograničeni činjenicom da su radili samo sa jednostavnim tipovima podataka. Nakon što naučite osnove struktura podataka u ovom poglavlju, imaćete dovoljno znanja da počnete da pišete još korisnije programe.
 
-The chapter will work through a more or less realistic programming example, introducing concepts as they apply to the problem at hand. The example code will often build on functions and bindings introduced earlier in the book.
+Ovo poglavlje će proći kroz više manje realističan programski uvod, uvodeći koncepte i načine na se primenjuju na dati problem. Primeri koda često će se oslanjati na funkcije i varijable koja su ranije predstavljena u knjizi.
 
 {{if book
 
-The online coding ((sandbox)) for the book ([_https://eloquentjavascript.net/code_](https://eloquentjavascript.net/code)) provides a way to run code in the context of a particular chapter. If you decide to work through the examples in another environment, be sure to first download the full code for this chapter from the sandbox page.
+Online sandbox za knjigu ([_https://eloquentjavascript.net/code_](https://eloquentjavascript.net/code)) pruža način da se kod pokreće u kontekstu određenog poglavlja. Ako odlučite da radite kroz primere u drugom okruženju, prvo preuzmite sav kod za ovo poglavlje sa stranice.
 
 if}}
 
-## The weresquirrel
+## Weresquirrel (igra reči na vukodlak, gdje umesto "vuk" koristimo "veverica")
 
 {{index "weresquirrel example", lycanthropy}}
 
-Every now and then, usually between 8 p.m. and 10 p.m., ((Jacques)) finds himself transforming into a small furry rodent with a bushy tail.
+S vremena na vreme, obično između 20h i 22h, ((Žak)) primeti kako se pretvara u malog dlakavog glodara sa bujnim repom.
 
-On one hand, Jacques is quite glad that he doesn't have classic lycanthropy. Turning into a squirrel does cause fewer problems than turning into a wolf. Instead of having to worry about accidentally eating the neighbor (_that_ would be awkward), he worries about being eaten by the neighbor's cat. After two occasions of waking up on a precariously thin branch in the crown of an oak, naked and disoriented, he has taken to locking the doors and windows of his room at night and putting a few walnuts on the floor to keep himself busy.
+S jedne strane, Žak je prilično srećan što nema klasičnu likantropiju. Pretvaranje u vevericu izaziva manje problema nego pretvaranje u vuka. Umesto što bi morao da brine o tome da slučajno ne pojede komšiju (_to_ bi bilo neugodno), mora da se brine da ga ne pojede mačka komšije. Nakon dva puta kada se probudio na nestabilno tankoj grani u krošnji hrasta, go i dezorijentisan, navikao je da noću zaključava vrata i prozore svoje sobe i ostavlja nekoliko oraha na podu da bi se zabavio.
 
-But Jacques would prefer to get rid of his condition entirely. The irregular occurrences of the transformation make him suspect that they might be triggered by something. For a while, he believed that it happened only on days when he had been near oak trees. However, avoiding oak trees did not solve the problem.
+Ali Žaku bi više odgovaralo da se potpuno oslobodi svog stanja. Neregularna pojava transformacije navodi ga da posumnja da bi mogla biti izazvana nečim. Neko vreme je verovao da se to dešava samo onih dana kada je bio blizu hrastova. Međutim, izbegavanje hrastova nije rešilo problem.
 
 {{index journal}}
 
-Switching to a more scientific approach, Jacques has started keeping a daily log of everything he does on a given day and whether he changed form. With this data he hopes to narrow down the conditions that trigger the transformations.
+Prebacujući se na naučni pristup, Žak je počeo da vodi dnevnik svega što radi u toku jednog dana i da beleži da li je promenio oblik. Sa ovim podacima nada se da će suziti uslove koji pokreću transformacije.
 
-The first thing he needs is a data structure to store this information.
+Prva stvar koja mu je potrebna je struktura podataka za čuvanje ovih informacija.
 
-## Data sets
+## Skupovi podataka
 
 {{index ["data structure", collection], [memory, organization]}}
 
-To work with a chunk of digital data, we first have to find a way to represent it in our machine's memory. Say, for example, that we want to represent a ((collection)) of the numbers 2, 3, 5, 7, and 11.
+Da bismo radili sa skupom digitalnih podataka, prvo moramo pronaći način da ih predstavimo u memoriji našeg računara. Recimo, na primer, da želimo da predstavimo ((kolekciju)) brojeva 2, 3, 5, 7 i 11.
 
 {{index string}}
 
-We could get creative with strings—after all, strings can have any length, so we can put a lot of data into them—and use `"2 3 5 7 11"` as our representation. But this is awkward. We'd have to somehow extract the digits and convert them back to numbers to access them.
+Mogli bismo biti kreativni sa stringovima — stringovi mogu imati bilo koju dužinu, pa u njih možemo staviti mnogo podataka — i koristiti `"2 3 5 7 11"` kao jedan način predstavljanja podataka. Ali ovo je nepraktično. Morali bismo na neki način izdvojiti cifre i pretvoriti ih nazad u brojeve da bismo im pristupili.
 
 {{index [array, creation], "[] (array)"}}
 
-Fortunately, JavaScript provides a data type specifically for storing sequences of values. It is called an _array_ and is written as a list of values between ((square brackets)), separated by commas:
+Srećom, JavaScript pruža tip podataka specifičan za čuvanje sekvenci vrednosti. Naziva se _niz_ i piše se kao lista vrednosti između ((uglastih zagrada)), razdvojenih zarezima:
 
 ```
 let listOfNumbers = [2, 3, 5, 7, 11];
@@ -68,24 +68,24 @@ console.log(listOfNumbers[2 - 1]);
 
 {{index "[] (subscript)", [array, indexing]}}
 
-The notation for getting at the elements inside an array also uses ((square brackets)). A pair of square brackets immediately after an expression, with another expression inside of them, will look up the element in the left-hand expression that corresponds to the _((index))_ given by the expression in the brackets.
+Notacija za pristupanje elementima unutar niza takođe koristi ((uglaste zagrade)). Par uglastih zagrada odmah nakon izraza, sa još jednim izrazom unutar njih, tražiće element u izrazu sa leve strane zagrade, koji odgovara _((indeksu))_ koji se dobije računanjem izraza unutar zagrada. 
 
 {{id array_indexing}}
 {{index "zero-based counting"}}
 
-The first index of an array is zero, not one, so the first element is retrieved with `listOfNumbers[0]`. Zero-based counting has a long tradition in technology and in certain ways makes a lot of sense, but it takes some getting used to. Think of the index as the number of items to skip, counting from the start of the array.
+Prvi indeks niza je nula, a ne jedan, tako da se prvi element dobija sa `listOfNumbers[0]`. Brojanje koje počinje od nule ima dugu tradiciju u tehnologiji i na određene načine ima smisla, ali zahteva malo navikavanja. Zamislite indeks kao broj stavki koje treba preskočiti, brojeći od početka niza.
 
 {{id properties}}
 
-## Properties
+## Properties (svojstva)
 
 {{index "Math object", "Math.max function", ["length property", "for string"], [object, property], "period character", [property, access]}}
 
-We've seen a few expressions like `myString.length` (to get the length of a string) and `Math.max` (the maximum function) in past chapters. These expressions access a _property_ of some value. In the first case, we access the `length` property of the value in `myString`. In the second, we access the property named `max` in the `Math` object (which is a collection of mathematics-related constants and functions).
+Videli smo nekoliko izraza poput `myString.length` (za dobijanje dužine stringa) i `Math.max` (funkcija za maksimum) u prošlim poglavljima. Ovi izrazi pristupaju _svojstvu_ neke vrednosti. U prvom slučaju, pristupamo svojstvu `length` vrednosti u `myString`. U drugom slučaju, pristupamo svojstvu nazvanom `max` u objektu `Math` (koji je kolekcija matematičkih konstanti i funkcija).
 
 {{index [property, access], null, undefined}}
 
-Almost all JavaScript values have properties. The exceptions are `null` and `undefined`. If you try to access a property on one of these nonvalues, you get an error:
+Skoro sve JavaScript vrednosti imaju svojstva. Iznimke su `null` i `undefined`. Ako pokušate pristupiti svojstvu nekoj od ovih vrednosti, dobićete grešku:
 
 ```{test: no}
 null.length;
@@ -95,23 +95,23 @@ null.length;
 {{indexsee "dot character", "period character"}}
 {{index "[] (subscript)", "period character", "square brackets", "computed property", [property, access]}}
 
-The two main ways to access properties in JavaScript are with a dot and with square brackets. Both `value.x` and `value[x]` access a property on `value`—but not necessarily the same property. The difference is in how `x` is interpreted. When using a dot, the word after the dot is the literal name of the property. When using square brackets, the expression between the brackets is _evaluated_ to get the property name. Whereas `value.x` fetches the property of `value` named "x", `value[x]` takes the value of the variable named `x` and uses that, converted to a string, as the property name.
+Dva glavna načina pristupa svojstvima u JavaScript-u su tačkom i uglastim zagradama. Oba načina `value.x` i `value[x]` pristupaju svojstvu na `value` — ali ne nužno istom svojstvu. Razlika je u tome kako se `x` tumači. Kada koristimo tačku, reč nakon tačke je doslovno ime svojstva. Kada koristimo uglaste zagrade, izraz između njih se _evaluira_ kako bi se dobilo ime svojstva. Dok `value.x` uzima svojstvo iz `value` nazvano "x", `value[x]` uzima vrednost promenljive nazvane `x` i koristi je, konvertovanu u string, kao ime svojstva.
 
-If you know that the property in which you are interested is called _color_, you say `value.color`. If you want to extract the property named by the value held in the binding `i`, you say `value[i]`. Property names are strings. They can be any string, but the dot notation works only with names that look like valid binding names—starting with a letter or underscore, and containing only letters, numbers, and underscores. If you want to access a property named _2_ or _John Doe_, you must use square brackets: `value[2]` or `value["John Doe"]`.
+Ako znate da je svojstvo koje vas zanima nazvano _color_, kucate `value.color`. Ako želite da izdvojite svojstvo nazvano vrednošću varijable `i`, kažete `value[i]`. Imena svojstava su stringovi. Mogu biti bilo koji string, ali tačkasta notacija radi samo sa imenima koja izgledaju kao validna imena varijabli — počevši sa slovom ili donjom crtom, i sadržeći samo slova, brojeve i donje crte. Ako želite da pristupite svojstvu nazvanom _2_ ili _John Doe_, morate koristiti uglaste zagrade: `value[2]` ili `value["John Doe"]`.
 
-The elements in an ((array)) are stored as the array's properties, using numbers as property names. Because you can't use the dot notation with numbers and usually want to use a binding that holds the index anyway, you have to use the bracket notation to get at them.
+Elementi u nizu se čuvaju kao svojstva niza, koristeći brojeve kao imena svojstava. Zato što ne možete koristiti tačkastu notaciju sa brojevima a i obično želite koristiti varijablu koja drži indeks, morate koristiti notaciju uglastim zagradama da biste im pristupili.
 
 {{index ["length property", "for array"], [array, "length of"]}}
 
-Just like strings, arrays have a `length` property that tells us how many elements the array has.
+Baš kao i stringovi, nizovi imaju svojstvo `length` koje nam govori koliko elemenata niz sadrži.
 
 {{id methods}}
 
-## Methods
+## Metode
 
 {{index [function, "as property"], method, string}}
 
-Both string and array values contain, in addition to the `length` property, a number of properties that hold function values.
+I stringovi i nizovi sadrže, pored svojstva `length`, niz drugih svojstava koja drže vrednosti tipa funkcija.
 
 ```
 let doh = "Doh";
@@ -123,17 +123,17 @@ console.log(doh.toUpperCase());
 
 {{index "case conversion", "toUpperCase method", "toLowerCase method"}}
 
-Every string has a `toUpperCase` property. When called, it will return a copy of the string in which all letters have been converted to uppercase. There is also `toLowerCase`, going the other way.
+Svaki string ima svojstvo `toUpperCase`. Kada se pozove, vratiće kopiju stringa u kojoj su sva slova pretvorena u velika slova. Takođe postoji i `toLowerCase`, koji ide u suprotnom smeru.
 
 {{index "this binding"}}
 
-Interestingly, even though the call to `toUpperCase` does not pass any arguments, the function somehow has access to the string `"Doh"`, the value whose property we called. You'll find out how this works in [Chapter ?](object#obj_methods).
+Interesantno je da, iako poziv funkciji `toUpperCase` ne prosleđuje nikakve argumente, funkcija na neki način ima pristup stringu `"Doh"`, vrednosti čije svojstvo smo pozvali. Saznaćete kako ovo funkcioniše u [Poglavlju ?](object#obj_methods).
 
-Properties that contain functions are generally called _methods_ of the value they belong to, as in "`toUpperCase` is a method of a string".
+Svojstva koja sadrže funkcije, obično se nazivaju _metodama_ vrednosti kojoj pripadaju, dakle "`toUpperCase` je metoda stringa".
 
 {{id array_methods}}
 
-This example demonstrates two methods you can use to manipulate arrays:
+Ovaj primer demonstrira dve metode koje možete koristiti za manipulaciju nizovima:
 
 ```
 let sequence = [1, 2, 3];
@@ -149,21 +149,21 @@ console.log(sequence);
 
 {{index collection, array, "push method", "pop method"}}
 
-The `push` method adds values to the end of an array. The `pop` method does the opposite, removing the last value in the array and returning it.
+`push` metoda dodaje vrednosti na kraj niza. Metoda `pop` radi suprotno, uklanja poslednju vrednost u nizu i vraća je.
 
 {{index ["data structure", stack]}}
 
-These somewhat silly names are the traditional terms for operations on a _((stack))_. A stack, in programming, is a data structure that allows you to push values into it and pop them out again in the opposite order so that the thing that was added last is removed first. Stacks are common in programming—you might remember the function ((call stack)) from [the previous chapter](functions#stack), which is an instance of the same idea.
+Ovi pomalo smešni nazivi su tradicionalni termini za operacije na _((steku))_. Stek, u programiranju, je struktura podataka koja vam omogućava da gurate vrednosti u nju i izvlačite ih ponovo u obrnutom redosledu, tako da se ono što je dodato poslednje uklanja se prvo. Stekovi su česti u programiranju — možda se sećate ((call stack))-a iz [prethodnog poglavlja](functions#stack), što je instanca iste ideje.
 
-## Objects
+## Objekti
 
 {{index journal, "weresquirrel example", array, record}}
 
-Back to the weresquirrel. A set of daily log entries can be represented as an array, but the entries do not consist of just a number or a string—each entry needs to store a list of activities and a Boolean value that indicates whether Jacques turned into a squirrel or not. Ideally, we would like to group these together into a single value and then put those grouped values into an array of log entries.
+Vratimo se veverici - čoveku. Skup dnevnih unosa može se predstaviti kao niz, ali unosi se ne sastoje samo od broja ili stringa — svaki unos mora da čuva listu aktivnosti i boolean vrednost koja označava da li se Žak pretvorio u vevericu ili ne. Idealno bi bilo da ove vrednosti grupišemo zajedno u jednu vrednost, a zatim te grupisane vrednosti stavimo u niz dnevnika unosa.
 
 {{index [syntax, object], [property, definition], [braces, object], "{} (object)"}}
 
-Values of the type _((object))_ are arbitrary collections of properties. One way to create an object is by using braces as an expression:
+Vrednosti koje su tipa _((objekat))_ su suštinski kolekcija svojstava. Jedan način da kreirate objekat je korištenjem vitičastih zagrada kao izraz:
 
 ```
 let day1 = {
@@ -181,7 +181,7 @@ console.log(day1.wolf);
 
 {{index [quoting, "of object properties"], "colon character"}}
 
-Inside the braces, you write a list of properties separated by commas. Each property has a name followed by a colon and a value. When an object is written over multiple lines, indenting it as shown in this example helps with readability. Properties whose names aren't valid binding names or valid numbers must be quoted:
+Unutar vitičastih zagrada, pišete listu svojstava razdvojenih zarezima. Svako svojstvo ima ime, zatim dvotačku i vrednost. Kada se objekat piše preko više linija, uvlačenje kao što je prikazano u ovom primeru pomaže u čitljivosti. Svojstva čija imena nisu validna imena varijabli ili validni brojevi moraju biti u navodnicima:
 
 ```
 let descriptions = {
@@ -192,23 +192,23 @@ let descriptions = {
 
 {{index [braces, object]}}
 
-This means that braces have _two_ meanings in JavaScript. At the start of a ((statement)), they begin a ((block)) of statements. In any other position, they describe an object. Fortunately, it is rarely useful to start a statement with an object in braces, so the ambiguity between these two is not much of a problem. The one case where this does come up is when you want to return an object from a short-hand arrow function—you can't write `n => {prop: n}`, since the braces will be interpreted as a function body. Instead, you have to put a set of parentheses around the object to make it clear that it is an expression.
+Ovo znači da vitičaste zagrade imaju _dva_ značenja u JavaScript-u. Na početku ((izjave)), one započinju ((blok)) izjava. Na bilo kojoj drugoj poziciji, opisuju objekat. Srećom, retko je korisno započeti izjavu sa objektom u vitičastim zagradama, tako da nedoslednost između ovo dvoje nije veliki problem. Jedan slučaj kada se ovo pojavi je kada želite da vratite objekat iz skraćene funkcije sa strelicom—ne možete napisati `n => {prop: n}`, jer će se vitičaste zagrade tumačiti kao telo funkcije. Umesto toga, morate staviti skup zagrada oko objekta da biste jasno naznačili da je to izraz.
 
 {{index undefined}}
 
-Reading a property that doesn't exist will give you the value `undefined`.
+Čitanje svojstva koje ne postoji će vam dati vrednost `undefined`.
 
 {{index [property, assignment], mutability, "= operator"}}
 
-It is possible to assign a value to a property expression with the `=` operator. This will replace the property's value if it already existed or create a new property on the object if it didn't.
+Moguće je dodeliti vrednost izrazu svojstva operatorom `=`. Ovo će zameniti vrednost svojstva ako već postoji ili kreirati novo svojstvo na objektu ako ne postoji.
 
 {{index "tentacle (analogy)", [property, "model of"], [binding, "model of"]}}
 
-To briefly return to our tentacle model of ((binding))s—property bindings are similar. They _grasp_ values, but other bindings and properties might be holding onto those same values. You can think of objects as octopuses with any number of tentacles, each of which has a name written on it.
+Da se kratko vratimo na naš model ((vezivanja)) — veza sa svojstvima je slična. One _hvataju_ vrednosti, ali druge veze i svojstva mogu držati te iste vrednosti. Možete zamisliti objekte kao hobotnice sa bilo kojim brojem pipaka, pri čemu svaki ima ime napisano na njemu.
 
 {{index "delete operator", [property, deletion]}}
 
-The `delete` operator cuts off a tentacle from such an octopus. It is a unary operator that, when applied to an object property, will remove the named property from the object. This is not a common thing to do, but it is possible.
+Operator `delete` otkida pipak sa takve hobotnice. To je unarni operator koji, kada se primeni na svojstvo objekta, ukloniće nazvano svojstvo iz objekta. Ovo nije uobičajena radnja, ali je moguća.
 
 ```
 let anObject = {left: 1, right: 2};
@@ -225,18 +225,18 @@ console.log("right" in anObject);
 
 {{index "in operator", [property, "testing for"], object}}
 
-The binary `in` operator, when applied to a string and an object, tells you whether that object has a property with that name. The difference between setting a property to `undefined` and actually deleting it is that in the first case, the object still _has_ the property (it just doesn't have a very interesting value), whereas in the second case the property is no longer present and `in` will return `false`.
+Binarni operator `in`, kada se primeni na string i objekat, govori vam da li taj objekat ima svojstvo sa tim imenom. Razlika između postavljanja svojstva na `undefined` i stvarnog brisanja je u tome što u prvom slučaju objekat još uvek _ima_ svojstvo (samo nema veoma zanimljivu vrednost), dok u drugom slučaju svojstvo više nije prisutno i `in` će vratiti `false`.
 
 {{index "Object.keys function"}}
 
-To find out what properties an object has, you can use the `Object.keys` function. Give the function an object and it will return an array of strings—the object's property names:
+Da biste saznali koja sve svojstva objekat ima, možete koristiti funkciju `Object.keys`. Dajte funkciji objekat i ona će vratiti niz stringova—imenа svojstava objekta:
 
 ```
 console.log(Object.keys({x: 0, y: 0, z: 2}));
 // → ["x", "y", "z"]
 ```
 
-There's an `Object.assign` function that copies all properties from one object into another:
+Postoji funkcija `Object.assign` koja kopira sva svojstva iz jednog objekta u drugi:
 
 ```
 let objectA = {a: 1, b: 2};
@@ -247,11 +247,11 @@ console.log(objectA);
 
 {{index array, collection}}
 
-Arrays, then, are just a kind of object specialized for storing sequences of things. If you evaluate `typeof []`, it produces `"object"`. You can visualize arrays as long, flat octopuses with all their tentacles in a neat row, labeled with numbers.
+Nizovi su samo vrsta objekata specijalizovana za čuvanje sekvenci stvari. Ako evaluirate `typeof []`, proizvodi `"object"`. Možete vizualizovati nizove kao dugačke, ravne hobotnice sa svim svojim pipcima u urednom redu, označenim brojevima.
 
 {{index journal, "weresquirrel example"}}
 
-Jacques will represent the journal that Jacques keeps as an array of objects:
+Naš prijatelj Žak će predstaviti dnevnik koji vodi kao niz objekata:
 
 ```{test: wrap}
 let journal = [
@@ -268,19 +268,19 @@ let journal = [
 ];
 ```
 
-## Mutability
+## Promenjivost
 
-We will get to actual programming soon, but first, there's one more piece of theory to understand.
+Uskoro ćemo preći na stvarno programiranje, ali prvo, postoji još jedan teorijski deo koji treba razumeti.
 
 {{index mutability, "side effect", number, string, Boolean, [object, mutability]}}
 
-We saw that object values can be modified. The types of values discussed in earlier chapters, such as numbers, strings, and Booleans, are all _((immutable))_—it is impossible to change values of those types. You can combine them and derive new values from them, but when you take a specific string value, that value will always remain the same. The text inside it cannot be changed. If you have a string that contains `"cat"`, it is not possible for other code to change a character in your string to make it spell `"rat"`.
+Videli smo da se vrednosti objekata mogu menjati. Tipovi vrednosti o kojima je bilo reči u ranijim poglavljima, kao što su brojevi, stringovi i Booleans, su svi _((nepromenljivi))_ — nemoguće je promeniti vrednosti tih tipova. Možete ih kombinovati i izvoditi nove vrednosti iz njih, ali kada uzmete određenu string vrednost, ta vrednost će uvek ostati ista. Tekst unutar nje ne može se promeniti. Ako imate string koji sadrži `"pas"`, nije moguće da drugi kod promeni karakter u vašem stringu da bi ga pretvorio u `"pad"`.
 
-Objects work differently. You _can_ change their properties, causing a single object value to have different content at different times.
+Objekti rade drugačije. _Možete_ promeniti njihova svojstva, uzrokujući da jedna objektna vrednost ima različiti sadržaj u različito vreme.
 
 {{index [object, identity], identity, [memory, organization], mutability}}
 
-When we have two numbers, 120 and 120, we can consider them precisely the same number, whether or not they refer to the same physical bits. With objects, there is a difference between having two references to the same object and having two different objects that contain the same properties. Consider the following code:
+Kada imamo dva broja, 120 i 120, možemo ih smatrati tačno istim brojem, bez obzira da li se odnose na iste fizičke bitove. Sa objektima, postoji razlika između imanja dva referenciranja na isti objekat i imanja dva različita objekta koji sadrže ista svojstva. Razmotrite sledeći kod:
 
 ```
 let object1 = {value: 10};
@@ -301,29 +301,29 @@ console.log(object3.value);
 
 {{index "tentacle (analogy)", [binding, "model of"]}}
 
-The `object1` and `object2` bindings grasp the _same_ object, which is why changing `object1` also changes the value of `object2`. They are said to have the same _identity_. The binding `object3` points to a different object, which initially contains the same properties as `object1` but lives a separate life.
+Varijable `object1` i `object2` drže _isti_ objekat, zbog čega promena `object1` takođe menja vrednost `object2`. Kaže se da imaju isti _identitet_. Vezivanje `object3` pokazuje na drugačiji objekat, koji inicialno sadrži ista svojstva kao `object1`, ali živi odvojenim životom.
 
 {{index "const keyword", "let keyword", [binding, "as state"]}}
 
-Bindings can also be changeable or constant, but this is separate from the way their values behave. Even though number values don't change, you can use a `let` binding to keep track of a changing number by changing the value at which the binding points. Similarly, though a `const` binding to an object can itself not be changed and will continue to point at the same object, the _contents_ of that object might change.
+Varijable takođe mogu biti promenljive ili konstantne, ali ovo je odvojeno od načina na koji se njihove vrednosti ponašaju. Iako se vrednosti brojeva ne menjaju, možete koristiti `let` varijablu da pratite promenljiv broj menjanjem vrednosti na koju varijabla pokazuje. Slično tome, iako `const` varijabla za objekat ne može biti promenjena i nastaviće da pokazuje na isti objekat, _sadržaj_ tog objekta može da se menja.
 
 ```{test: no}
 const score = {visitors: 0, home: 0};
-// This is okay
+// Ovo je uredu
 score.visitors = 1;
-// This isn't allowed
+// Ovo nije dozvoljeno
 score = {visitors: 1, home: 1};
 ```
 
 {{index "== operator", [comparison, "of objects"], "deep comparison"}}
 
-When you compare objects with JavaScript's `==` operator, it compares by identity: it will produce `true` only if both objects are precisely the same value. Comparing different objects will return `false`, even if they have identical properties. There is no "deep" comparison operation built into JavaScript that compares objects by contents, but it is possible to write it yourself (which is one of the [exercises](data#exercise_deep_compare) at the end of this chapter).
+Kada poredite objekte pomoću `==` operatora u JavaScript-u, oni se porede po identitetu: proizvešće `true` samo ako su oba objekta tačno ista vrednost. Upoređivanje različitih objekata će vratiti `false`, čak i ako imaju identična svojstva. Zamislite da poredite osobe na osnovu svojstva imena i prezimena. Iako dve osobe mogu imati identično ime i prezime, to mogu biti dve potpuno različite osobe. Ne postoji "duboka" operacija poređenja ugrađena u JavaScript koja upoređuje objekte po sadržaju, ali je moguće da je napišete sami (što je jedan od [zadataka](data#exercise_deep_compare) na kraju ovog poglavlja).
 
-## The lycanthrope's log
+## Dnevnik vukodlaka
 
 {{index "weresquirrel example", lycanthropy, "addEntry function"}}
 
-Jacques starts up his JavaScript interpreter and sets up the environment he needs to keep his ((journal)):
+Žak pokreće svoj JavaScript interpreter i postavlja okruženje koje mu je potrebno da čuva svoj ((dnevnik)):
 
 ```{includeCode: true}
 let journal = [];
@@ -335,9 +335,9 @@ function addEntry(events, squirrel) {
 
 {{index [braces, object], "{} (object)", [property, definition]}}
 
-Note that the object added to the journal looks a little odd. Instead of declaring properties like `events: events`, it just gives a property name: `events`. This is shorthand that means the same thing—if a property name in brace notation isn't followed by a value, its value is taken from the binding with the same name.
+Napomena da objekat dodat u dnevnik izgleda malo čudno. Umesto deklarisanja svojstava kao `events: events`, samo daje ime svojstva: `events`. Ovo je skraćenica koja znači istu stvar — ako ime svojstva u notaciji vitičastih zagrada nije praćeno vrednošću, njegova vrednost se uzima iz varijable sa istim imenom.
 
-Every evening at 10 p.m.—or sometimes the next morning, after climbing down from the top shelf of his bookcase—Jacques records the day:
+Svake večeri u 22 časa — ili ponekad sledećeg jutra, nakon što siđe sa gornje police svoje biblioteke — Žak zabeležava dan:
 
 ```
 addEntry(["work", "touched tree", "pizza", "running",
@@ -348,21 +348,21 @@ addEntry(["weekend", "cycling", "break", "peanuts",
           "beer"], true);
 ```
 
-Once he has enough data points, he intends to use statistics to find out which of these events may be related to the squirrelifications.
+Kada prikupi dovoljno podataka, Žak namerava da koristi statistiku kako bi saznao koje od ovih događaja mogu biti povezani sa pretvaranjem u vevericu.
 
 {{index correlation}}
 
-_Correlation_ is a measure of ((dependence)) between statistical variables. A statistical variable is not quite the same as a programming variable. In statistics you typically have a set of _measurements_, and each variable is measured for every measurement. Correlation between variables is usually expressed as a value that ranges from -1 to 1. Zero correlation means the variables are not related. A correlation of 1 indicates that the two are perfectly related—if you know one, you also know the other. Negative 1 also means that the variables are perfectly related but are opposites—when one is true, the other is false.
+_Korelacija_ je mera _zavisnosti_ između statističkih promenljivih. Statistička promenljiva nije baš isto što i programerska promenljiva. U statistici obično imate skup _merenja_, i svaka promenljiva se meri za svako merenje. Korelacija između promenljivih obično se izražava kao vrednost koja varira od -1 do 1. Nula korelacija znači da promenljive nisu povezane. Korelacija od 1 ukazuje da su dve promenljive savršeno povezane — ako znate jednu, znate i drugu. Negativna 1 takođe znači da su promenljive savršeno povezane ali su suprotnosti — kada je jedna tačna, druga je netačna.
 
 {{index "phi coefficient"}}
 
-To compute the measure of correlation between two Boolean variables, we can use the _phi coefficient_ (_ϕ_). This is a formula whose input is a ((frequency table)) containing the number of times the different combinations of the variables were observed. The output of the formula is a number between -1 and 1 that describes the correlation.
+Da bismo izračunali meru korelacije između dve booleovske promenljive, možemo koristiti _phi koeficijent_ (_ϕ_). Ovo je formula čiji je ulaz _tabela frekvencija_ koja sadrži broj puta kada su različite kombinacije promenljivih posmatrane. Izlaz formule je broj između -1 i 1 koji opisuje korelaciju.
 
-We could take the event of eating ((pizza)) and put that in a frequency table like this, where each number indicates the number of times that combination occurred in our measurements.
+Mogli bismo uzeti događaj jedenja ((pice)) i staviti ga u tabelu frekvencija ovako, gde svaki broj označava broj puta kada se ta kombinacija pojavila u našim merenjima.
 
-{{figure {url: "img/pizza-squirrel.svg", alt: "A two-by-two table showing the pizza variable on the horizontal, and the squirrel variable on the vertical axis. Each cell show how many time that combination occurred. In 76 cases, neither happened. In 9 cases, only pizza was true. In 4 cases only squirrel was true. And in one case both occurred.", width: "7cm"}}}
+{{figure {url: "img/pizza-squirrel.svg", alt: "Tabela dva sa dva koja prikazuje promenljivu za pizzu na horizontalnoj, a promenljivu za vevericu na vertikalnoj osi. Svaka ćelija pokazuje koliko puta se ta kombinacija pojavila. U 76 slučajeva, ni jedna nije bila istinita. U 9 slučajeva, samo je pica bila istinita. U 4 slučaja, samo je veverica bila istinita. I u jednom slučaju su se oba desila.", width: "7cm"}}}
 
-If we call that table _n_, we can compute _ϕ_ using the following formula:
+Ako nazovemo tu tabelu _n_, možemo izračunati _ϕ_ koristeći sledeću formulu:
 
 {{if html
 
@@ -376,27 +376,27 @@ if}}
 
 if}}
 
-(If at this point you're putting the book down to focus on a terrible flashback to 10th grade math class—hold on! I do not intend to torture you with endless pages of cryptic notation—it's just this one formula for now. And even with this one, all we do is turn it into JavaScript.)
+(Ako u ovom trenutku ostavljate knjigu po strani da se fokusirate na užasni flashback iz matematike u 2. razredu srednje — držite se! Ne nameravam da vas mučim beskrajnim stranicama kriptične notacije — samo je ova jedna formula sada. I čak i sa ovom jednom, sve što radimo je pretvaranje u JavaScript.)
 
-The notation [_n_~01~]{if html}[[$n_{01}$]{latex}]{if tex} indicates the number of measurements where the first variable (squirrelness) is false (0) and the second variable (pizza) is true (1). In the pizza table, [_n_~01~]{if html}[[$n_{01}$]{latex}]{if tex} is 9.
+Oznaka [_n_~01~]{if html}[[$n_{01}$]{latex}]{if tex} označava broj merenja gde je prva promenljiva (veveričenost) lažna (0) i druga promenljiva (pica) istinita (1). U tabeli za picu, [_n_~01~]{if html}[[$n_{01}$]{latex}]{if tex} je 9.
 
-The value [_n_~1•~]{if html}[[$n_{1\bullet}$]{latex}]{if tex} refers to the sum of all measurements where the first variable is true, which is 5 in the example table. Likewise, [_n_~•0~]{if html}[[$n_{\bullet0}$]{latex}]{if tex} refers to the sum of the measurements where the second variable is false.
+Vrednost [_n_~1•~]{if html}[[$n_{1\bullet}$]{latex}]{if tex} se odnosi na zbir svih merenja gde je prva promenljiva istinita, što je 5 u primeru tabele. Slično tome, [_n_~•0~]{if html}[[$n_{\bullet0}$]{latex}]{if tex} se odnosi na zbir merenja gde je druga promenljiva lažna.
 
 {{index correlation, "phi coefficient"}}
 
-So for the pizza table, the part above the division line (the dividend) would be 1×76−4×9 = 40, and the part below it (the divisor) would be the square root of 5×85×10×80, or [√340,000]{if html}[[$\sqrt{340,000}$]{latex}]{if tex}. This comes out to _ϕ_ ≈ 0.069, which is tiny. Eating ((pizza)) does not appear to have influence on the transformations.
+Dakle, za tabelu za picu, deo iznad linije deljenja (deljenik) bio bi 1×76−4×9 = 40, a deo ispod nje (delilac) bio bi kvadratni koren od 5×85×10×80, ili [√340,000]{if html}[[$\sqrt{340,000}$]{latex}]{if tex}. To iznosi _ϕ_ ≈ 0.069, što je veoma malo. Jedenje ((pice)) se čini da nema uticaja na transformacije.
 
-## Computing correlation
+## Računanje korelacije
 
 {{index [array, "as table"], [nesting, "of arrays"]}}
 
-We can represent a two-by-two ((table)) in JavaScript with a four-element array (`[76, 9, 4, 1]`). We could also use other representations, such as an array containing two two-element arrays (`[[76, 9], [4, 1]]`) or an object with property names like `"11"` and `"01"`, but the flat array is simple and makes the expressions that access the table pleasantly short. We'll interpret the indices to the array as two-((bit)) ((binary number))s, where the leftmost (most significant) digit refers to the squirrel variable and the rightmost (least significant) digit refers to the event variable. For example, the binary number `10` refers to the case where Jacques did turn into a squirrel, but the event (say, "pizza") didn't occur. This happened four times. And since binary `10` is 2 in decimal notation, we will store this number at index 2 of the array.
+Dva puta dva ((tabelu)) možemo predstaviti u JavaScript-u pomoću četvoroelementnog niza (`[76, 9, 4, 1]`). Takođe možemo koristiti i druge reprezentacije, poput niza koji sadrži dva niza od po dva elementa (`[[76, 9], [4, 1]]`) ili objekat sa imenima svojstava poput `"11"` i `"01"`, ali ravni niz je jednostavan i čini izraze koji pristupaju tabeli prijatno kratkim. Tumačićemo indekse niza kao dvo-((bitne)) ((binarne brojeve)), gde se levi (najznačajniji) bit odnosi na promenljivu za vevericu, a desni (najmanje značajan) bit se odnosi na promenljivu za događaj. Na primer, binarni broj `10` se odnosi na slučaj kada se Žak pretvorio u vevericu, ali se događaj (recimo, "pica") nije dogodio. To se dogodilo četiri puta. A pošto binarni `10` predstavlja broj 2 u decimalnom zapisu, ovaj broj ćemo sačuvati na indeksu 2 u nizu.
 
 {{index "phi coefficient", "phi function"}}
 
 {{id phi_function}}
 
-This is the function that computes the _ϕ_ coefficient from such an array:
+Ovo je funkcija koja izračunava koeficijent _ϕ_ iz takvog niza:
 
 ```{includeCode: strip_log, test: clip}
 function phi(table) {
@@ -413,15 +413,15 @@ console.log(phi([76, 9, 4, 1]));
 
 {{index "square root", "Math.sqrt function"}}
 
-This is a direct translation of the _ϕ_ formula into JavaScript. `Math.sqrt` is the square root function, as provided by the `Math` object in a standard JavaScript environment. We have to add two fields from the table to get fields like [n~1•~]{if html}[[$n_{1\bullet}$]{latex}]{if tex} because the sums of rows or columns are not stored directly in our data structure.
+Ovo je direktna konverzija _ϕ_ formule u JavaScript. `Math.sqrt` je funkcija korena kvadratnog, koja je obezbeđena od strane `Math` objekta u standardnom JavaScript okruženju. Moramo dodati dva polja iz tabele kako bismo dobili polja poput [n~1•~]{if html}[[$n_{1\bullet}$]{latex}]{if tex} jer sume redova ili kolona nisu direktno sačuvane u našoj strukturi podataka.
 
 {{index "JOURNAL data set"}}
 
-Jacques keeps his journal for three months. The resulting ((data set)) is available in the [coding sandbox](https://eloquentjavascript.net/code#4) for this chapter[ ([_https://eloquentjavascript.net/code#4_](https://eloquentjavascript.net/code#4))]{if book}, where it is stored in the `JOURNAL` binding, and in a downloadable [file](https://eloquentjavascript.net/code/journal.js).
+Žak vodi svoj dnevnik tri meseca. Rezultirajući ((skup podataka)) dostupan je u [sanboxu za kodiranje](https://eloquentjavascript.net/code#4) za ovo poglavlje[ ([_https://eloquentjavascript.net/code#4_](https://eloquentjavascript.net/code#4))]{if book}, gde je sačuvan u varijabli `JOURNAL`, i u [fajlu](https://eloquentjavascript.net/code/journal.js) za preuzimanje.
 
 {{index "tableFor function"}}
 
-To extract a two-by-two ((table)) for a specific event from the journal, we must loop over all the entries and tally how many times the event occurs in relation to squirrel transformations:
+Da bismo izvukli dvobajtnu ((tabelu)) za određeni događaj iz dnevnika, moramo proći kroz sve unose i prebrojati koliko puta se događaj pojavljuje u odnosu na transformacije u vevericu:
 
 ```{includeCode: strip_log}
 function tableFor(event, journal) {
@@ -441,32 +441,32 @@ console.log(tableFor("pizza", JOURNAL));
 
 {{index [array, searching], "includes method"}}
 
-Arrays have an `includes` method that checks whether a given value exists in the array. The function uses that to determine whether the event name it is interested in is part of the event list for a given day.
+Nizovi imaju `includes` metod koji proverava da li određena vrednost postoji u nizu. Funkcija koristi to da bi utvrdila da li je ime događaja koji je zanima deo liste događaja za određeni dan.
 
 {{index [array, indexing]}}
 
-The body of the loop in `tableFor` figures out which box in the table each journal entry falls into by checking whether the entry contains the specific event it's interested in and whether the event happens alongside a squirrel incident. The loop then adds one to the correct box in the table.
+Telo petlje u `tableFor` određuje u koju kutiju u tabeli svaki unos u dnevnik pada proverom da li unos sadrži određeni događaj koji ga zanima i da li se događaj dešava zajedno sa incidentom veverice. Zatim petlja dodaje jedan u odgovarajuću kutiju u tabeli.
 
-We now have the tools we need to compute individual ((correlation))s. The only step remaining is to find a correlation for every type of event that was recorded and see whether anything stands out.
+Sada imamo alate koji su nam potrebni da izračunamo pojedinačne ((korelacije)). Jedini korak koji preostaje je da pronađemo korelaciju za svaki tip događaja koji je zabeležen i vidimo da li se nešto ističe.
 
 {{id for_of_loop}}
 
-## Array loops
+## Petlje za nizove
 
 {{index "for loop", loop, [array, iteration]}}
 
-In the `tableFor` function, there's a loop like this:
+U funkciji `tableFor`, postoji ova petlja:
 
 ```
 for (let i = 0; i < JOURNAL.length; i++) {
   let entry = JOURNAL[i];
-  // Do something with entry
+  // Uradi nesto sa unosom
 }
 ```
 
-This kind of loop is common in classical JavaScript—going over arrays one element at a time is something that comes up a lot, and to do that you'd run a counter over the length of the array and pick out each element in turn.
+Ovaj tip petlje je čest u klasičnom JavaScript-u — prolazak kroz nizove po jedan element je nešto što se često javlja, i da biste to uradili, koristili biste brojač dužine niza i izabrali svaki element redom.
 
-There is a simpler way to write such loops in modern JavaScript:
+Postoji jednostavniji način pisanja takvih petlji u modernom JavaScript-u:
 
 ```
 for (let entry of JOURNAL) {
@@ -476,15 +476,15 @@ for (let entry of JOURNAL) {
 
 {{index "for/of loop"}}
 
-When a `for` loop uses the word `of` after its variable definition, it will loop over the elements of the value given after `of`. This works not only for arrays but also for strings and some other data structures. We'll discuss _how_ it works in [Chapter ?](object).
+Kada `for` petlja koristi reč `of` nakon definicije svoje promenljive, petlja će prolaziti kroz elemente vrednosti date posle `of`. Ovo radi ne samo za nizove već i za stringove i neke druge strukture podataka. Razmotrićemo _kako_ to funkcioniše u [Poglavlje ?](object).
 
 {{id analysis}}
 
-## The final analysis
+## Finalna analiza
 
 {{index journal, "weresquirrel example", "journalEvents function"}}
 
-We need to compute a correlation for every type of event that occurs in the data set. To do that, we first need to _find_ every type of event.
+Potrebno je izračunati korelaciju za svaki tip događaja koji se pojavljuje u skupu podataka. Da bismo to uradili, prvo moramo _pronaći_ svaki tip događaja.
 
 {{index "includes method", "push method"}}
 
@@ -505,9 +505,9 @@ console.log(journalEvents(JOURNAL));
 // → ["carrot", "exercise", "weekend", "bread", …]
 ```
 
-By adding any event names that aren't already in it to the `events` array, the function collects every type of event.
+Dodavanjem svih imena događaja koji već nisu u nizu `events`, funkcija prikuplja svaki tip događaja.
 
-Using that function, we can see all the ((correlation))s:
+Koristeći tu funkciju, možemo videti sve ((korelacije)):
 
 ```{test: no}
 for (let event of journalEvents(JOURNAL)) {
@@ -518,10 +518,10 @@ for (let event of journalEvents(JOURNAL)) {
 // → weekend:  0.1371988681
 // → bread:   -0.0757554019
 // → pudding: -0.0648203724
-// and so on...
+// itd...
 ```
 
-Most correlations seem to lie close to zero. Eating carrots, bread, or pudding apparently does not trigger squirrel-lycanthropy. The transformations _do_ seem to occur somewhat more often on weekends. Let's filter the results to show only correlations greater than 0.1 or less than -0.1:
+Većina korelacija izgleda da leže blizu nule. Čini se da konzumiranje šargarepe, hleba ili pudinga očigledno ne pokreće veveričju likantropiju. Transformacije se, čini se dešavaju nešto češće vikendom. Filtrirajmo rezultate da prikažemo samo korelacije veće od 0.1 ili manje od -0.1:
 
 ```{test: no, startCode: true}
 for (let event of journalEvents(JOURNAL)) {
@@ -539,9 +539,9 @@ for (let event of journalEvents(JOURNAL)) {
 // → peanuts:        0.5902679812
 ```
 
-Aha! There are two factors with a ((correlation)) clearly stronger than the others. Eating ((peanuts)) has a strong positive effect on the chance of turning into a squirrel, whereas brushing teeth has a significant negative effect.
+Aha! Postoje dva faktora sa korelacijom jasno jačom od ostalih. Konzumiranje ((kikirikija)) ima snažan pozitivan uticaj na šansu da se pretvori u vevericu, dok četkanje zuba ima značajan negativan efekat.
 
-Interesting. Let's try something:
+Interesantno. Hajde da pokušamo nešto:
 
 ```
 for (let entry of JOURNAL) {
@@ -554,23 +554,23 @@ console.log(phi(tableFor("peanut teeth", JOURNAL)));
 // → 1
 ```
 
-That's a strong result. The phenomenon occurs precisely when Jacques eats ((peanuts)) and fails to brush his teeth. If only he weren't such a slob about dental hygiene, he'd never even have noticed his affliction.
+Ovo je snažan rezultat. Fenomen se dešava tačno kada Žak jede ((kikiriki)) i propusti da opere zube. Da nije toliko nemaran po pitanju dentalne higijene, nikada ne bi ni primetio svoje oboljenje.
 
-Knowing this, Jacques stops eating peanuts altogether and finds that his transformations stop.
+Znajući ovo, Žak potpuno prestaje da jede kikiriki i primeti da se njegove transformacije zaustavljaju.
 
 {{index "weresquirrel example"}}
 
-But it only takes a few months for him to notice that something is missing from this entirely human way of living. Without his feral adventures, Jacques hardly feels alive at all. He decides he'd rather be a full-time wild animal. After building a beautiful little tree house in the forest and equipping it with a peanut butter dispenser and a ten-year supply of peanut butter, he changes form one last time, and lives the short and energetic life of a squirrel.
+Ali treba mu samo nekoliko meseci da primeti da nešto nedostaje iz ovog potpuno ljudskog načina života. Bez svojih divljih avantura, Žak se jedva oseća živim. Odlučuje da radije bude stalno divlja životinja. Nakon što izgradi prelepu malu kućicu na drvetu u šumi i opremi je dozatorom kikiriki putera i desetogodišnjim zalihama kikirikija, poslednji put menja oblik i živi kratki i energični život veverice.
 
-## Further arrayology
+## Terminologija nizova
 
 {{index [array, methods], [method, array]}}
 
-Before finishing the chapter, I want to introduce you to a few more object-related concepts. I'll start by introducing some generally useful array methods.
+Pre nego što završim poglavlje, želim da vas upoznam sa još nekoliko koncepata vezanih za objekte. Počeću tako što ću predstaviti nekoliko općenito korisnih metoda nizova.
 
 {{index "push method", "pop method", "shift method", "unshift method"}}
 
-We saw `push` and `pop`, which add and remove elements at the end of an array, [earlier](data#array_methods) in this chapter. The corresponding methods for adding and removing things at the start of an array are called `unshift` and `shift`.
+Videli smo `push` i `pop`, koji dodaju i uklanjaju elemente na kraju niza, [ranije](data#array_methods) u ovom poglavlju. Odgovarajuće metode za dodavanje i uklanjanje stvari na početku niza nazivaju se `unshift` i `shift`.
 
 ```
 let todoList = [];
@@ -587,11 +587,11 @@ function rememberUrgently(task) {
 
 {{index "task management example"}}
 
-This program manages a queue of tasks. You add tasks to the end of the queue by calling `remember("groceries")`, and when you're ready to do something, you call `getTask()` to get (and remove) the front item from the queue. The `rememberUrgently` function also adds a task but adds it to the front instead of the back of the queue.
+Ovaj program upravlja redom zadataka. Zadatke dodajete na kraj reda pozivom `remember("groceries")`, a kada ste spremni da nešto uradite, pozivate `getTask()` da biste dobili (i uklonili) prvi element iz reda. Funkcija `rememberUrgently` takođe dodaje zadatak, ali ga dodaje na početak umesto na kraj reda.
 
 {{index [array, searching], "indexOf method", "lastIndexOf method"}}
 
-To search for a specific value, arrays provide an `indexOf` method. The method searches through the array from the start to the end and returns the index at which the requested value was found—or -1 if it wasn't found. To search from the end instead of the start, there's a similar method called `lastIndexOf`:
+Za pretragu određene vrednosti, nizovi pružaju `indexOf` metodu. Ova metoda pretražuje niz od početka do kraja i vraća indeks na kojem je pronađena tražena vrednost — ili -1 ako nije pronađena. Za pretragu od kraja umesto od početka, postoji slična metoda koja se zove `lastIndexOf`:
 
 ```
 console.log([1, 2, 3, 2, 1].indexOf(2));
@@ -600,11 +600,11 @@ console.log([1, 2, 3, 2, 1].lastIndexOf(2));
 // → 3
 ```
 
-Both `indexOf` and `lastIndexOf` take an optional second argument that indicates where to start searching.
+I `indexOf` i `lastIndexOf` uzimaju opcioni drugi argument koji označava odakle počinje pretraga.
 
 {{index "slice method", [array, indexing]}}
 
-Another fundamental array method is `slice`, which takes start and end indices and returns an array that has only the elements between them. The start index is inclusive, the end index exclusive.
+Još jedan osnovni metod nizova je `slice`, koji uzima početni i krajnji indeks i vraća niz koji sadrži samo elemente između njih. Početni indeks je uključen, a krajnji indeks je isključen.
 
 ```
 console.log([0, 1, 2, 3, 4].slice(2, 4));
@@ -615,13 +615,13 @@ console.log([0, 1, 2, 3, 4].slice(2));
 
 {{index [string, indexing]}}
 
-When the end index is not given, `slice` will take all of the elements after the start index. You can also omit the start index to copy the entire array.
+Kada krajnji indeks nije dat, `slice` će uzeti sve elemente posle početnog indeksa. Takođe možete izostaviti početni indeks da biste kopirali ceo niz.
 
 {{index concatenation, "concat method"}}
 
-The `concat` method can be used to append arrays together to create a new array, similar to what the `+` operator does for strings.
+Metoda `concat` može se koristiti za spajanje nizova kako bi se stvorio novi niz, slično tome kako operator `+` radi za stringove.
 
-The following example shows both `concat` and `slice` in action. It takes an array and an index and returns a new array that is a copy of the original array with the element at the given index removed:
+U sledećem primeru su prikazane i `concat` i `slice` u akciji. U ovom primeru uzimamo niz i indeks i vraća novi niz koji je kopija originalnog niza sa elementom na datom indeksu uklonjenim:
 
 ```
 function remove(array, index) {
@@ -632,13 +632,13 @@ console.log(remove(["a", "b", "c", "d", "e"], 2));
 // → ["a", "b", "d", "e"]
 ```
 
-If you pass `concat` an argument that is not an array, that value will be added to the new array as if it were a one-element array.
+Ako metodi `concat` prosledite argument koji nije niz, ta vrednost će biti dodata u novi niz kao da je niz od jednog elementa.
 
-## Strings and their properties
+## Stringovi i njihova svojstva
 
 {{index [string, properties]}}
 
-We can read properties like `length` and `toUpperCase` from string values. But if we try to add a new property, it doesn't stick.
+Možemo pročitati svojstva iz stringova poput `length` i `toUpperCase`, ali ne možemo im dodati novo svojstvo.
 
 ```
 let kim = "Kim";
@@ -647,11 +647,11 @@ console.log(kim.age);
 // → undefined
 ```
 
-Values of type string, number, and Boolean are not objects, and though the language doesn't complain if you try to set new properties on them, it doesn't actually store those properties. As mentioned earlier, such values are immutable and cannot be changed.
+Vrednosti tipa string, number i boolean nisu objekti, i iako jezik ne prigovara ako pokušate postaviti nove osobine na njih, zapravo ne čuva te osobine. Kao što je ranije pomenuto, ovi tipovi vrednosti su nepromenljivi.
 
 {{index [string, methods], "slice method", "indexOf method", [string, searching]}}
 
-But these types do have built-in properties. Every string value has a number of methods. Some very useful ones are `slice` and `indexOf`, which resemble the array methods of the same name:
+Ali ovi tipovi imaju ugrađene osobine koje dolaze uz njih. Svaka vrednost stringa ima određeni broj metoda. Neke veoma korisne su `slice` i `indexOf`, koje podsećaju na metode niza istog imena:
 
 ```
 console.log("coconuts".slice(4, 7));
@@ -660,7 +660,7 @@ console.log("coconut".indexOf("u"));
 // → 5
 ```
 
-One difference is that a string's `indexOf` can search for a string containing more than one character, whereas the corresponding array method looks only for a single element:
+Jedna razlika je što `indexOf` stringa može tražiti string koji sadrži više od jednog karaktera, dok odgovarajuća metoda niza traži samo pojedinačni element:
 
 ```
 console.log("one two three".indexOf("ee"));
@@ -669,7 +669,7 @@ console.log("one two three".indexOf("ee"));
 
 {{index [whitespace, trimming], "trim method"}}
 
-The `trim` method removes whitespace (spaces, newlines, tabs, and similar characters) from the start and end of a string:
+Metoda `trim` uklanja whitespace karaktere (razmake, nove linije, tabulacije i slične karaktere) sa početka i kraja stringa:
 
 ```
 console.log("  okay \n ".trim());
@@ -678,7 +678,7 @@ console.log("  okay \n ".trim());
 
 {{id padStart}}
 
-The `zeroPad` function from the [previous chapter](functions) also exists as a method. It is called `padStart` and takes the desired length and padding character as arguments:
+Funkcija `zeroPad` iz [prethodnog poglavlja](functions) takođe postoji kao metoda. Zove se `padStart` i prima željenu dužinu i karakter za dopunu kao argumente:
 
 ```
 console.log(String(6).padStart(3, "0"));
@@ -689,7 +689,7 @@ console.log(String(6).padStart(3, "0"));
 
 {{index "split method"}}
 
-You can split a string on every occurrence of another string with `split` and join it again with `join`:
+Možete razdvojiti string na svako pojavljivanje drugog podstringa pomoću `split` i ponovo ga spojiti sa `join`:
 
 ```
 let sentence = "Secretarybirds specialize in stomping";
@@ -702,7 +702,7 @@ console.log(words.join(". "));
 
 {{index "repeat method"}}
 
-A string can be repeated with the `repeat` method, which creates a new string containing multiple copies of the original string, glued together:
+String se može ponoviti pomoću metode `repeat`, koja stvara novi string koji sadrži višestruke kopije originalnog stringa, zalepljene zajedno:
 
 ```
 console.log("LA".repeat(3));
@@ -711,7 +711,7 @@ console.log("LA".repeat(3));
 
 {{index ["length property", "for string"], [string, indexing]}}
 
-We have already seen the string type's `length` property. Accessing the individual characters in a string looks like accessing array elements (with a complication that we'll discuss in [Chapter ?](higher_order#code_units)).
+Već smo videli svojstvo `length` za tip string. Pristupanje pojedinačnim karakterima u stringu izgleda kao pristupanje elementima niza (sa komplikacijom o kojoj ćemo diskutovati u [Poglavlju ?](higher_order#code_units)).
 
 ```
 let string = "abc";
@@ -723,11 +723,11 @@ console.log(string[1]);
 
 {{id rest_parameters}}
 
-## Rest parameters
+## Rest parametar
 
 {{index "Math.max function", "period character", "max example", spread, [array, "of rest arguments"]}}
 
-It can be useful for a function to accept any number of ((argument))s. For example, `Math.max` computes the maximum of _all_ the arguments it is given. To write such a function, you put three dots before the function's last ((parameter)), like this:
+Može biti korisno da funkcija prihvati bilo koji broj argumenata. Na primer, `Math.max` računa maksimum _svih_ argumenata koje dobije. Da biste napisali takvu funkciju, stavite tri tačke pre poslednjeg ((parametra)) funkcije, na ovaj način:
 
 ```{includeCode: strip_log}
 function max(...numbers) {
@@ -741,11 +741,11 @@ console.log(max(4, 1, 9, -2));
 // → 9
 ```
 
-When such a function is called, the _((rest parameter))_ is bound to an array containing all further arguments. If there are other parameters before it, their values aren't part of that array. When, as in `max`, it is the only parameter, it will hold all arguments.
+Kada se takva funkcija pozove, _((rest parametar))_ je vezan za niz koji sadrži sve dalje argumente. Ako postoje drugi parametri pre njega, njihove vrednosti nisu deo tog niza. Kada je, kao u `max`, jedini parametar, sadržaće sve argumente.
 
 {{index [function, application]}}
 
-You can use a similar three-dot notation to _call_ a function with an array of arguments:
+Možete koristiti sličnu notaciju sa tri tačke i za _poziv_ funkcije sa nizom argumenata:
 
 ```
 let numbers = [5, 1, 7];
@@ -753,11 +753,11 @@ console.log(max(...numbers));
 // → 7
 ```
 
-This "((spread))s" out the array into the function call, passing its elements as separate arguments. It is possible to include an array like that along with other arguments, as in `max(9, ...numbers, 2)`.
+Ovo "((spread))uje" (raširuje) niz u poziv funkcije, prosleđujući njegove elemente kao odvojene argumente. Moguće je uključiti takav niz zajedno sa drugim argumentima, kao u `max(9, ...numbers, 2)`.
 
 {{index "[] (array)"}}
 
-Square bracket array notation similarly allows the triple-dot operator to spread another array into the new array:
+Notacija niza uglastih zagrada takođe omogućava trostruki operator tačaka da "((spread))uje" drugi niz u novi niz:
 
 ```
 let words = ["never", "fully"];
@@ -767,7 +767,7 @@ console.log(["will", ...words, "understand"]);
 
 {{index "{} (object)"}}
 
-This works even in curly brace objects, where it adds all properties from another object. If a property is added multiple times, the last value to be added wins:
+Ovo radi čak i u objektima vitičastih zagrada, gde dodaje sve osobine iz drugog objekta. Ako se ista osobina dodaje više puta, poslednja dodata vrednost pobeđuje:
 
 ```
 let coordinates = {x: 10, y: 0};
@@ -775,29 +775,29 @@ console.log({...coordinates, y: 5, z: 1});
 // → {x: 10, y: 5, z: 1}
 ```
 
-## The Math object
+## Math objekat
 
 {{index "Math object", "Math.min function", "Math.max function", "Math.sqrt function", minimum, maximum, "square root"}}
 
-As we've seen, `Math` is a grab bag of number-related utility functions such as `Math.max` (maximum), `Math.min` (minimum), and `Math.sqrt` (square root).
+Kao što smo videli, `Math` je kutija alatki za funkcije vezane za rad sa brojevima kao što su `Math.max` (maksimum), `Math.min` (minimum) i `Math.sqrt` (kvadratni koren).
 
 {{index namespace, [object, property]}}
 
 {{id namespace_pollution}}
 
-The `Math` object is used as a container to group a bunch of related functionality. There is only one `Math` object, and it is almost never useful as a value. Rather, it provides a _namespace_ so that all these functions and values do not have to be global bindings.
+Objekat `Math` se koristi kao kontejner za grupisanje velikog broja povezanih funkcionalnosti. Postoji samo jedan objekat `Math`, i gotovo nikada nije koristan kao vrednost. Umesto toga, pruža _namespace_ tako da sve ove funkcije i vrednosti ne moraju biti globalne varijable.
 
 {{index [binding, naming]}}
 
-Having too many global bindings "pollutes" the namespace. The more names have been taken, the more likely you are to accidentally overwrite the value of some existing binding. For example, it's not unlikely you'll want to name something `max` in one of your programs. Since JavaScript's built-in `max` function is tucked safely inside the `Math` object, you don't have to worry about overwriting it.
+Imati previše globalnih varijabli "zagađuje" namespace. Što više imena bude zauzeto, veća je verovatnoća da ćete slučajno prepisati vrednost neke postojeće veze. Na primer, nije nemoguće da ćete poželeti da nazovete nešto `max` u jednom od svojih programa. Budući da je ugrađena JavaScript-ova funkcija `max` sigurno smeštena unutar objekta `Math`, ne morate da brinete o tome da ćete napisati svoju funkciju preko nje, i time obisati JavaScript `max` iz svog programa.
 
 {{index "let keyword", "const keyword"}}
 
-Many languages will stop you, or at least warn you, when you are defining a binding with a name that is already taken. JavaScript does this for bindings you declared with `let` or `const` but—perversely—not for standard bindings nor for bindings declared with `var` or `function`.
+Mnogi jezici će vas zaustaviti, ili bar upozoriti, kada definišete varijablu, funkciju ili objekat sa imenom koje već postoji. JavaScript to radi za bindinge koje ste deklarisali sa `let` ili `const`, ali paradoksalno ne radi to za standardne bindinge niti za bindinge deklarisane sa `var` ili `function`.
 
 {{index "Math.cos function", "Math.sin function", "Math.tan function", "Math.acos function", "Math.asin function", "Math.atan function", "Math.PI constant", cosine, sine, tangent, "PI constant", pi}}
 
-Back to the `Math` object. If you need to do ((trigonometry)), `Math` can help. It contains `cos` (cosine), `sin` (sine), and `tan` (tangent), as well as their inverse functions, `acos`, `asin`, and `atan`, respectively. The number π (pi)—or at least the closest approximation that fits in a JavaScript number—is available as `Math.PI`. There is an old programming tradition of writing the names of ((constant)) values in all caps:
+Povratak na `Math` objekat. Ako vam je potrebna trigonometrija, `Math` može pomoći. Sadrži `cos` (kosinus), `sin` (sinus) i `tan` (tangens), kao i njihove inverzne funkcije, `acos`, `asin` i `atan`, redom. Broj π (pi) - ili barem najbliža aproksimacija koja stane u JavaScript broj - dostupan je kao `Math.PI`. Stara programerska tradicija je da se imena ((konstantnih)) vrednosti pišu velikim slovima:
 
 ```{test: no}
 function randomPointOnCircle(radius) {
@@ -809,11 +809,11 @@ console.log(randomPointOnCircle(2));
 // → {x: 0.3667, y: 1.966}
 ```
 
-If you're not familiar with sines and cosines, don't worry. I'll explain them when they are used in this book, in [Chapter ?](dom#sin_cos).
+Ako niste upoznati sa sinusima i kosinusima, nemojte brinuti. Objasniću ih kada se budu koristili u ovoj knjizi, u [Poglavlju ?](dom#sin_cos).
 
 {{index "Math.random function", "random number"}}
 
-The previous example used `Math.random`. This is a function that returns a new pseudorandom number between zero (inclusive) and one (exclusive) every time you call it:
+Prethodni primer koristio je `Math.random`. Ovo je funkcija koja vraća novi pseudo - radnom (nasumičan, slučajan) broj između nula (uključivo) i jedan (isključivo) svaki put kada je pozovete:
 
 ```{test: no}
 console.log(Math.random());
@@ -826,28 +826,28 @@ console.log(Math.random());
 
 {{index "pseudorandom number", "random number"}}
 
-Though computers are deterministic machines—they always react the same way if given the same input—it is possible to have them produce numbers that appear random. To do that, the machine keeps some hidden value, and whenever you ask for a new random number, it performs complicated computations on this hidden value to create a new value. It stores a new value and returns some number derived from it. That way, it can produce ever new, hard-to-predict numbers in a way that _seems_ random.
+Iako su računari determinističke mašine - uvek reaguju na isti način ako im se pruži isti ulaz - moguće je da proizvedu brojeve koji deluju nasumično. Da bi to postigao, računar čuva neku skrivenu vrednost, i svaki put kada zatražite novi nasumičan broj, izvodi komplikovane računske operacije nad ovom skrivenom vrednošću da bi stvorio novu vrednost. Čuva novu vrednost i vraća neki broj izveden iz nje. Na taj način može proizvoditi nove, teško predvidive brojeve na način koji _izgleda_ nasumično.
 
 {{index rounding, "Math.floor function"}}
 
-If we want a whole random number instead of a fractional one, we can use `Math.floor` (which rounds down to the nearest whole number) on the result of `Math.random`:
+Ako želimo ceo slučajni broj umesto decimalnog, možemo koristiti `Math.floor` (koji zaokružuje nadole na najbliži ceo broj) na rezultat `Math.random`:
 
 ```{test: no}
 console.log(Math.floor(Math.random() * 10));
 // → 2
 ```
 
-Multiplying the random number by 10 gives us a number greater than or equal to 0 and below 10. Since `Math.floor` rounds down, this expression will produce, with equal chance, any number from 0 through 9.
+Množenjem random broja sa 10 dobijamo broj veći ili jednak 0 i manji od 10. Pošto `Math.floor` zaokružuje nadole, ovaj izraz će proizvesti, sa jednakom šansom, bilo koji broj od 0 do 9.
 
 {{index "Math.ceil function", "Math.round function", "Math.abs function", "absolute value"}}
 
-There are also the functions `Math.ceil` (for "ceiling", which rounds up to a whole number), `Math.round` (to the nearest whole number), and `Math.abs`, which takes the absolute value of a number, meaning it negates negative values but leaves positive ones as they are.
+Postoje i funkcije `Math.ceil` (za "plafon", koja zaokružuje na gore na ceo broj), `Math.round` (zaokružuje na najbliži ceo broj) i `Math.abs`, koja uzima apsolutnu vrednost broja, što znači da negira negativne vrednosti ali ostavlja pozitivne vrednosti kao takve.
 
-## Destructuring
+## Destruktuisanje
 
 {{index "phi function"}}
 
-Let's return to the `phi` function for a moment.
+Vratimo se `phi` funkciji na momenat.
 
 ```{test: wrap}
 function phi(table) {
@@ -861,7 +861,7 @@ function phi(table) {
 
 {{index "destructuring binding", parameter}}
 
-One reason this function is awkward to read is that we have a binding pointing at our array, but we'd much prefer to have bindings for the _elements_ of the array—that is, `let n00 = table[0]` and so on. Fortunately, there is a succinct way to do this in JavaScript:
+Jedan razlog zašto je ova funkcija nezgodna za čitanje je taj što imamo ime koje pokazuje na naš niz, ali bismo radije imali imena za _elemente_ niza - to jest, `let n00 = table[0]` i tako dalje. Srećom, postoji sažet način da se to uradi u JavaScriptu:
 
 ```
 function phi([n00, n01, n10, n11]) {
@@ -873,11 +873,11 @@ function phi([n00, n01, n10, n11]) {
 
 {{index "let keyword", "var keyword", "const keyword", [binding, destructuring]}}
 
-This also works for bindings created with `let`, `var`, or `const`. If you know that the value you are binding is an array, you can use ((square brackets)) to "look inside" of the value, binding its contents.
+Ovo takođe radi za varijable kreirane sa `let`, `var`, ili `const`. Ako znate da je vrednost koju vezujete tipa niz, možete koristiti ((uglaste zagrade)) da "zagledate unutar" vrednosti, vezujući njen sadržaj.
 
 {{index [object, property], [braces, object]}}
 
-A similar trick works for objects, using braces instead of square brackets:
+Sličan trik radi i na objektima, korištenjem vitičastih zagrada umesto uglastih:
 
 ```
 let {name} = {name: "Faraji", age: 23};
@@ -887,27 +887,27 @@ console.log(name);
 
 {{index null, undefined}}
 
-Note that if you try to destructure `null` or `undefined`, you get an error, much as you would if you directly try to access a property of those values.
+Važno je napomenuti da ako pokušate da destrukturirate `null` ili `undefined`, dobićete grešku, baš kao i kada direktno pokušate da pristupite svojstvu tih vrednosti.
 
-## Optional property access
+## Opcioni pristup osobinama
 
 {{index "optional chaining", "period character"}}
 
-When you aren't sure whether a given value produces an object but still want to read a property from it when it does, you can use a variant of the dot notation: `object?.property`.
+Kada niste sigurni da li određena vrednost proizvodi objekat, ali ipak želite da pročitate osobinu iz nje u slučaju da jeste, možete koristiti varijantu tačkaste notacije: `object?.property`.
 
 ```
 function city(object) {
   return object.address?.city;
 }
-console.log(city({address: {city: "Toronto"}}));
-// → Toronto
+console.log(city({address: {city: "Banja Luka"}}));
+// → Banja Luka
 console.log(city({name: "Vera"}));
 // → undefined
 ```
 
-The expression `a?.b` means the same `a.b` when `a` isn't null or undefined. When it is, it evaluates to undefined. This can be convenient when, as in the example, you aren't sure that a given property exists or when a variable might hold an undefined value.
+Izraz `a?.b` znači isto što i `a.b` kada `a` nije `null` ili `undefined`. Kada jeste, evaluira se u `undefined`. Ovo može biti korisno kada, kao u primeru, niste sigurni da određena osobina postoji ili kada promenljiva može sadržati vrednost `undefined`.
 
-A similar notation can be used with square bracket access, and even with function calls, by putting `?.` in front of the parentheses or brackets:
+Slična notacija može se koristiti i sa pristupom uglastim zagradama, čak i sa pozivima funkcija, stavljajući `?.` ispred zagrada ili uglastih zagrada:
 
 ```
 console.log("string".notAMethod?.());
@@ -920,21 +920,21 @@ console.log({}.arrayProp?.[0]);
 
 {{index [array, representation], [object, representation], "data format", [memory, organization]}}
 
-Because properties grasp their value rather than contain it, objects and arrays are stored in the computer's memory as sequences of bits holding the _((address))es_—the place in memory—of their contents. An array with another array inside of it consists of (at least) one memory region for the inner array and another for the outer array, containing (among other things) a number that represents the address of the inner array.
+Zato što osobine objekta "hvataju" svoju vrednost umesto što je sadrže, objekti i nizovi se čuvaju u memoriji računara kao sekvence bitova koji drže _((adrese))_ - mesto u memoriji - njihovog sadržaja. "Hvatanje" vrednosti znači da se neka vrednost, recimo broj 120, nalazi na određenoj memorijskoj adresi u računaru, a osobina koja "pokazuje" na tu vrednost može biti na totalno drugoj adresi. Ta osobina samo treba da zna na kojoj memorijskoj adresi pronalazi vrednost na koju pokazuje. Niz sa drugim nizom unutar njega sastoji se (barem) od jedne memorijske regije za unutrašnji niz i još jedne za spoljni niz, koji sadrži (između ostalog) broj koji predstavlja memorijsku adresu unutrašnjeg niza.
 
-If you want to save data in a file for later or send it to another computer over the network, you have to somehow convert these tangles of memory addresses to a description that can be stored or sent. You _could_ send over your entire computer memory along with the address of the value you're interested in, I suppose, but that doesn't seem like the best approach.
+Ako želite da sačuvate podatke u datoteku za kasnije ili ih pošaljete na drugi računar putem mreže, morate nekako pretvoriti ove gomile memorijskih adresa u opis koji može biti sačuvan ili poslat. _Mogli biste_ poslati celokupnu memoriju računara zajedno sa adresom vrednosti koja vas zanima, pretpostavljam, ali to ne izgleda kao najbolji pristup.
 
 {{indexsee "JavaScript Object Notation", JSON}}
 
 {{index serialization, "World Wide Web"}}
 
-What we can do is _serialize_ the data. That means it is converted into a flat description. A popular serialization format is called _((JSON))_ (pronounced "Jason"), which stands for JavaScript Object Notation. It is widely used as a data storage and communication format on the Web, even in languages other than JavaScript.
+Ono što možemo uraditi je _serializovati_ podatke. Popularan format za serializaciju se zove _((JSON))_ (izgovara se "Džejson"), što predstavlja JavaScript Object Notation. Jako često se koristi kao format za skladištenje podataka i komunikaciju na vebu, čak i u jezicima koji nisu JavaScript. JSON je jedna od ključnih stvari koju trebate znati kao web developer.
 
 {{index [array, notation], [object, creation], [quoting, "in JSON"], comment}}
 
-JSON looks similar to JavaScript's way of writing arrays and objects, with a few restrictions. All property names have to be surrounded by double quotes, and only simple data expressions are allowed—no function calls, bindings, or anything that involves actual computation. Comments are not allowed in JSON.
+JSON izgleda slično JavaScript-ovom načinu pisanja nizova i objekata, sa nekoliko ograničenja. Sva imena svojstava moraju biti okružena dvostrukim navodnicima, i dozvoljeni su samo jednostavni izrazi podataka - nema poziva funkcija, varijabli ili bilo čega što uključuje stvarno računanje. Komentari nisu dozvoljeni u JSON-u.
 
-A journal entry might look like this when represented as JSON data:
+Ulaz u dnevnik može izgledati ovako kada je predstavljen kao JSON podatak:
 
 ```{lang: "json"}
 {
@@ -945,7 +945,7 @@ A journal entry might look like this when represented as JSON data:
 
 {{index "JSON.stringify function", "JSON.parse function", serialization, deserialization, parsing}}
 
-JavaScript gives us the functions `JSON.stringify` and `JSON.parse` to convert data to and from this format. The first takes a JavaScript value and returns a JSON-encoded string. The second takes such a string and converts it to the value it encodes:
+JavaScript nam pruža funkcije `JSON.stringify` i `JSON.parse` za konverziju podataka u ovaj format i iz ovog formata. Prva uzima JavaScript vrednost i vraća JSON enkodiran string. Druga uzima takav string i konvertuje ga u JavaScript vrednost koju enkodira:
 
 ```
 let string = JSON.stringify({squirrel: false,
@@ -956,23 +956,23 @@ console.log(JSON.parse(string).events);
 // → ["weekend"]
 ```
 
-## Summary
+## Siže
 
-Objects and arrays provide ways to group several values into a single value. This allows us to put a bunch of related things in a bag and run around with the bag instead of wrapping our arms around all of the individual things and trying to hold on to them separately.
+Objekti i nizovi pružaju načine da se nekoliko vrednosti grupiše u jednu vrednost. To nam omogućava da stavimo grupu povezanih stvari u torbu i trčimo sa torbom umesto da obavijamo ruke oko svih pojedinačnih stvari i pokušavamo da ih držimo odvojeno.
 
-Most values in JavaScript have properties, with the exceptions being `null` and `undefined`. Properties are accessed using `value.prop` or `value["prop"]`. Objects tend to use names for their properties and store more or less a fixed set of them. Arrays, on the other hand, usually contain varying amounts of conceptually identical values and use numbers (starting from 0) as the names of their properties.
+Većina vrednosti u JavaScriptu ima osobine (properties), s izuzecima `null` i `undefined`. Osobine se pristupaju koristeći `value.prop` ili `value["prop"]`. Objekti obično koriste imena za svoje osobine i čuvaju više ili manje fiksni skup njih. Nizovi obično sadrže promenljive količine konceptualno identičnih vrednosti i koriste brojeve (počevši od 0) kao imena svojih osobina.
 
-There _are_ some named properties in arrays, such as `length` and a number of methods. Methods are functions that live in properties and (usually) act on the value of which they are a property.
+Postoje neke osobine sa imenom u nizovima, poput `length` i brojnih metoda. Metode su funkcije koje žive u osobinama i (obično) deluju na vrednost čija su osobina. Recimo `length` je osobina niza, i nalazi dužinu niza, jer je osobina te vrednosti.
 
-You can iterate over arrays using a special kind of `for` loop: `for (let element of array)`.
+Možete iterirati preko nizova koristeći poseban tip `for` petlje: `for (let element of array)`.
 
-## Exercises
+## Zadaci
 
-### The sum of a range
+### Zbir opsega
 
 {{index "summing (exercise)"}}
 
-The [introduction](intro) of this book alluded to the following as a nice way to compute the sum of a range of numbers:
+U uvodu ove knjige je aludirano na sledeći kod kao lep način za izračunavanje zbira opsega brojeva:
 
 ```{test: no}
 console.log(sum(range(1, 10)));
@@ -980,18 +980,18 @@ console.log(sum(range(1, 10)));
 
 {{index "range function", "sum function"}}
 
-Write a `range` function that takes two arguments, `start` and `end`, and returns an array containing all the numbers from `start` up to and including `end`.
+Napišite funkciju `range` koja prima dva argumenta, `start` i `end`, i vraća niz koji sadrži sve brojeve od `start` do, i uključujući `end`.
 
-Next, write a `sum` function that takes an array of numbers and returns the sum of these numbers. Run the example program and see whether it does indeed return 55.
+Zatim, napišite funkciju `sum` koja prima niz brojeva i vraća zbir tih brojeva. Pokrenite primer programa i proverite da li zaista vraća 55.
 
 {{index "optional argument"}}
 
-As a bonus assignment, modify your `range` function to take an optional third argument that indicates the "step" value used when building the array. If no step is given, the elements should go up by increments of one, corresponding to the old behavior. The function call `range(1, 10, 2)` should return `[1, 3, 5, 7, 9]`. Make sure this also works with negative step values so that `range(5, 2, -1)` produces `[5, 4, 3, 2]`.
+Kao dodatni zadatak, modifikujte vašu funkciju `range` tako da prihvata opcioni treći argument koji označava "korak" vrednost korišćenu prilikom kreiranja niza. Ako korak nije dat, elementi bi trebalo da idu u koracima od jedan, što odgovara originalnom ponašanju. Poziv funkcije `range(1, 10, 2)` treba da vrati `[1, 3, 5, 7, 9]`. Dakle korak za koji se povećava svaki sledeći broj u ovom slučaju je 2. Proverite da li ovo takođe radi sa negativnim vrednostima koraka tako da `range(5, 2, -1)` proizvodi `[5, 4, 3, 2]`.
 
 {{if interactive
 
 ```{test: no}
-// Your code here.
+// Vas kod ovde.
 
 console.log(range(1, 10));
 // → [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -1007,38 +1007,38 @@ if}}
 
 {{index "summing (exercise)", [array, creation], "square brackets"}}
 
-Building up an array is most easily done by first initializing a binding to `[]` (a fresh, empty array) and repeatedly calling its `push` method to add a value. Don't forget to return the array at the end of the function.
+Izgradnja niza se najlakše vrši prvo inicijalizovanjem varijable na `[]` (nov, prazan niz) i ponovnim pozivom njegove metode `push` da dodate vrednost. Ne zaboravite da vratite niz na kraju funkcije.
 
 {{index [array, indexing], comparison}}
 
-Since the end boundary is inclusive, you'll need to use the `<=` operator rather than `<` to check for the end of your loop.
+S obzirom da je gornja granica uključujuća, moraćete koristiti operator `<=` umesto `<` da biste proverili kraj vaše petlje.
 
 {{index "arguments object"}}
 
-The step parameter can be an optional parameter that defaults (using the `=` operator) to 1.
+Parametar koraka može biti opcioni parametar koji podrazumevano (koristeći operator `=`) ima vrednost 1.
 
 {{index "range function", "for loop"}}
 
-Having `range` understand negative step values is probably best done by writing two separate loops—one for counting up and one for counting down—because the comparison that checks whether the loop is finished needs to be `>=` rather than `<=` when counting downward.
+Verovatno je najbolje da `range` razume negativne vrednosti koraka tako što će se napisati dve odvojene petlje - jedna za brojanje nagore i jedna za brojanje nadole - jer poređenje koje proverava da li je petlja završena treba da bude `>=` umesto `<=` kada se broji nadole.
 
-It might also be worthwhile to use a different default step, namely, -1, when the end of the range is smaller than the start. That way, `range(5, 2)` returns something meaningful, rather than getting stuck in an ((infinite loop)). It is possible to refer to previous parameters in the default value of a parameter.
+Takođe bi bilo korisno koristiti drugačiju podrazumevanu vrednost koraka, na primer, -1, kada je kraj opsega manji od početka. Na taj način, `range(5, 2)` vraća nešto smisleno, umesto da se zaglavi u beskonačnoj petlji. Moguće je pozvati se na prethodne parametre u podrazumevanoj vrednosti parametra.
 
 hint}}
 
-### Reversing an array
+### Obrtanje redosleda niza
 
 {{index "reversing (exercise)", "reverse method", [array, methods]}}
 
-Arrays have a `reverse` method that changes the array by inverting the order in which its elements appear. For this exercise, write two functions, `reverseArray` and `reverseArrayInPlace`. The first, `reverseArray`, should take an array as argument and produce a _new_ array that has the same elements in the inverse order. The second, `reverseArrayInPlace`, should do what the `reverse` method does: _modify_ the array given as argument by reversing its elements. Neither may use the standard `reverse` method.
+Nizovi imaju metod `reverse` koji menja niz tako što invertuje redosled pojavljivanja njegovih elemenata. Za ovu vežbu, napišite dve funkcije, `reverseArray` i `reverseArrayInPlace`. Prva, `reverseArray`, treba da uzme niz kao argument i proizvede _novi_ niz koji ima iste elemente u inverznom redosledu. Druga, `reverseArrayInPlace`, treba da radi ono što i metod `reverse`: _modifikuje_ niz dat kao argument tako što invertuje njegove elemente. Nijedna funkcija ne sme da koristi standardni metod `reverse`.
 
 {{index efficiency, "pure function", "side effect"}}
 
-Thinking back to the notes about side effects and pure functions in the [previous chapter](functions#pure), which variant do you expect to be useful in more situations? Which one runs faster?
+Razmislite o napomenama o sporednim efektima i čistim funkcijama koje smo pominjali u [prethodnom poglavlju](functions#pure), koju varijantu očekujete da će biti korisna u više situacija? Koja varijanta se izvršava brže?
 
 {{if interactive
 
 ```{test: no}
-// Your code here.
+// Vas kod ovde.
 
 let myArray = ["A", "B", "C"];
 console.log(reverseArray(myArray));
@@ -1057,23 +1057,23 @@ if}}
 
 {{index "reversing (exercise)"}}
 
-There are two obvious ways to implement `reverseArray`. The first is to simply go over the input array from front to back and use the `unshift` method on the new array to insert each element at its start. The second is to loop over the input array backwards and use the `push` method. Iterating over an array backwards requires a (somewhat awkward) `for` specification, like `(let i = array.length - 1; i >= 0; i--)`.
+Postoje dva očigledna načina za implementaciju `reverseArray`. Prvi je jednostavno prolazak kroz ulazni niz od početka do kraja i korišćenje metode `unshift` na novom nizu da bismo svaki element umetnuli na početak. Drugi način je prolazak kroz ulazni niz unazad i korišćenje metode `push`. Iteriranje kroz niz unazad zahteva (pomalo nezgodnu) specifikaciju `for` petlje, kao što je `(let i = array.length - 1; i >= 0; i--)`.
 
 {{index "slice method"}}
 
-Reversing the array in place is harder. You have to be careful not to overwrite elements that you will later need. Using `reverseArray` or otherwise copying the whole array (`array.slice()` is a good way to copy an array) works but is cheating.
+Obrtanje niza na licu mesta je teže. Morate biti oprezni da ne prepišete elemente koje ćete kasnije trebati. Korišćenje `reverseArray` ili na bilo koji drugi način kopiranje celog niza (`array.slice()` je dobar način kopiranja niza) radi ali je varanje.
 
-The trick is to _swap_ the first and last elements, then the second and second-to-last, and so on. You can do this by looping over half the length of the array (use `Math.floor` to round down—you don't need to touch the middle element in an array with an odd number of elements) and swapping the element at position `i` with the one at position `array.length - 1 - i`. You can use a local binding to briefly hold on to one of the elements, overwrite that one with its mirror image, and then put the value from the local binding in the place where the mirror image used to be.
+Trik je u tome da _zamenite_ prvi i poslednji element, zatim drugi i predposlednji, i tako dalje. Možete to uraditi prolaskom kroz polovinu dužine niza (koristite `Math.floor` da zaokružite nadole - nije potrebno da dodirnete srednji element u nizu sa neparnim brojem elemenata) i zamenom elementa na poziciji `i` sa onim na poziciji `array.length - 1 - i`. Možete koristiti lokalnu varijablu da privremeno zadržite jedan od elemenata, prepišete taj element njegovim parom, a zatim stavite vrednost iz lokalne varijable na mesto gde je njegov par nekada bio.
 
 hint}}
 
 {{id list}}
 
-### A list
+### Lista
 
 {{index ["data structure", list], "list (exercise)", "linked list", array, collection}}
 
-As generic blobs of values, objects can be used to build all sorts of data structures. A common data structure is the _list_ (not to be confused with arrays). A list is a nested set of objects, with the first object holding a reference to the second, the second to the third, and so on:
+Kao generički blokovi vrednosti, objekti se mogu koristiti za izgradnju različitih struktura podataka. Česta struktura podataka je _lista_ (ne treba je mešati sa nizovima). Lista je ugnežđeni set objekata, pri čemu prvi objekat drži referencu na drugi, drugi na treći, i tako dalje:
 
 ```{includeCode: true}
 let list = {
@@ -1088,24 +1088,24 @@ let list = {
 };
 ```
 
-The resulting objects form a chain, as shown in the following diagram:
+Rezultirajući objekti formiraju lanac, kao što je prikazano na sledećem dijagramu:
 
-{{figure {url: "img/linked-list.svg", alt: "A diagram showing the memory structure of a linked list. There are 3 cells, each with a value field holding a number, and a 'rest' field with an arrow to the rest of the list. The first cell's arrow points at the second cell, the second cell's arrow at the last cell, and the last cell's 'rest' field holds null.",width: "8cm"}}}
+{{figure {url: "img/linked-list.svg", alt: "Dijagram koji prikazuje strukturu memorije povezane liste. Postoje 3 ćelije, svaka sa poljem vrednosti koje sadrži broj, i poljem 'rest' sa strelicom ka ostatku liste. Strelica prve ćelije pokazuje na drugu ćeliju, strelica druge ćelije na poslednju ćeliju, a polje 'rest' poslednje ćelije sadrži null.",width: "8cm"}}}
 
 {{index "structure sharing", [memory, structure sharing]}}
 
-A nice thing about lists is that they can share parts of their structure. For example, if I create two new values `{value: 0, rest: list}` and `{value: -1, rest: list}` (with `list` referring to the binding defined earlier), they are both independent lists, but they share the structure that makes up their last three elements. The original list is also still a valid three-element list.
+Lepa stvar kod listi je što mogu deliti delove svoje strukture. Na primer, ako kreiram dve nove vrednosti `{value: 0, rest: list}` i `{value: -1, rest: list}` (gde `list` referiše na vezu definisanu ranije), one su obe nezavisne liste, ali dele strukturu koja čini njihova poslednja tri elementa. Originalna lista i dalje predstavlja validnu listu od tri elementa.
 
-Write a function `arrayToList` that builds up a list structure like the one shown when given `[1, 2, 3]` as argument. Also write a `listToArray` function that produces an array from a list. Add the helper functions `prepend`, which takes an element and a list and creates a new list that adds the element to the front of the input list, and `nth`, which takes a list and a number and returns the element at the given position in the list (with zero referring to the first element) or `undefined` when there is no such element.
+Napišite funkciju `arrayToList` koja gradi strukturu liste kao što je prikazano kada joj se prosledi `[1, 2, 3]` kao argument. Takođe napišite funkciju `listToArray` koja proizvodi niz iz liste. Dodajte pomoćne funkcije `prepend`, koja uzima element i listu i kreira novu listu koja dodaje element na početak ulazne liste, i `nth`, koja uzima listu i broj i vraća element na datoj poziciji u listi (gde nula označava prvi element) ili `undefined` kada takav element ne postoji.
 
 {{index recursion}}
 
-If you haven't already, also write a recursive version of `nth`.
+Ako već niste, napišite i rekurzivnu verziju funkcije `nth`.
 
 {{if interactive
 
 ```{test: no}
-// Your code here.
+// Vas kod ovde.
 
 console.log(arrayToList([10, 20]));
 // → {value: 10, rest: {value: 20, rest: null}}
@@ -1123,46 +1123,46 @@ if}}
 
 {{index "list (exercise)", "linked list"}}
 
-Building up a list is easier when done back to front. So `arrayToList` could iterate over the array backwards (see the previous exercise) and, for each element, add an object to the list. You can use a local binding to hold the part of the list that was built so far and use an assignment like `list = {value: X, rest: list}` to add an element.
+Izgradnja liste je lakša kada se radi od nazad ka napred. Dakle, `arrayToList` može iterirati unazad kroz niz (videti prethodnu vežbu) i za svaki element dodati objekat u listu. Možete koristiti lokalnu varijablu da zadržite deo liste koji je do sada izgrađen i koristiti dodelu poput `list = {value: X, rest: list}` da biste dodali element.
 
 {{index "for loop"}}
 
-To run over a list (in `listToArray` and `nth`), a `for` loop specification like this can be used:
+Da biste iterirali kroz listu (u `listToArray` i `nth`), možete koristiti `for` petlju na sledeći način:
 
 ```
 for (let node = list; node; node = node.rest) {}
 ```
 
-Can you see how that works? Every iteration of the loop, `node` points to the current sublist, and the body can read its `value` property to get the current element. At the end of an iteration, `node` moves to the next sublist. When that is null, we have reached the end of the list, and the loop is finished.
+Možete li videti kako ovo funkcioniše? Svaka iteracija petlje, `node` pokazuje na trenutnu podlistu, a telo petlje može čitati njeno svojstvo `value` kako bi dobilo trenutni element. Na kraju iteracije, `node` se premešta na sledeću podlistu. Kada je to null, dostigli smo kraj liste, i petlja je završena.
 
 {{index recursion}}
 
-The recursive version of `nth` will, similarly, look at an ever smaller part of the "tail" of the list and at the same time count down the index until it reaches zero, at which point it can return the `value` property of the node it is looking at. To get the zeroth element of a list, you simply take the `value` property of its head node. To get element _N_ + 1, you take the *N*th element of the list that's in this list's `rest` property.
+Rekurzivna verzija funkcije `nth` će, slično tome, posmatrati sve manji deo "repa" liste i istovremeno smanjivati indeks dok ne dođe do nule, u kom trenutku može vratiti svojstvo `value` čvora na koji gleda. Da biste dobili nulti element liste, jednostavno uzmete svojstvo `value` njenog glavnog čvora. Da biste dobili element _N_ + 1, uzimate *N*-ti element liste koji se nalazi u svojstvu `rest` ove liste.
 
 hint}}
 
 {{id exercise_deep_compare}}
 
-### Deep comparison
+### Duboko uporedjivanje
 
 {{index "deep comparison (exercise)", [comparison, deep], "deep comparison", "== operator"}}
 
-The `==` operator compares objects by identity, but sometimes you'd prefer to compare the values of their actual properties.
+Operator `==` upoređuje objekte po identitetu, ali ponekad biste želeli da uporedite vrednosti njihovih stvarnih svojstava.
 
-Write a function `deepEqual` that takes two values and returns true only if they are the same value or are objects with the same properties, where the values of the properties are equal when compared with a recursive call to `deepEqual`.
+Napišite funkciju `deepEqual` koja uzima dve vrednosti i vraća true samo ako su ista vrednost ili su objekti sa istim svojstvima, gde su vrednosti svojstava jednake kada se uporede rekurzivnim pozivom funkcije `deepEqual`.
 
 {{index null, "=== operator", "typeof operator"}}
 
-To find out whether values should be compared directly (using the `===` operator for that) or have their properties compared, you can use the `typeof` operator. If it produces `"object"` for both values, you should do a deep comparison. But you have to take one silly exception into account: because of a historical accident, `typeof null` also produces `"object"`.
+Da biste saznali da li vrednosti treba uporediti direktno (koristeći operator `===` za to) ili uporediti svojstva, možete koristiti operator `typeof`. Ako on proizvodi `"object"` za obe vrednosti, trebalo bi da uradite duboku poređenje. Ali morate uzeti u obzir jedan smešan izuzetak: zbog istorijske slučajnosti, `typeof null` takođe proizvodi `"object"`.
 
 {{index "Object.keys function"}}
 
-The `Object.keys` function will be useful when you need to go over the properties of objects to compare them.
+Funkcija `Object.keys` će biti korisna kada trebate proći kroz svojstva objekata da biste ih uporedili.
 
 {{if interactive
 
 ```{test: no}
-// Your code here.
+// Vas kod ovde.
 
 let obj = {here: {is: "an"}, object: 2};
 console.log(deepEqual(obj, obj));
@@ -1179,14 +1179,14 @@ if}}
 
 {{index "deep comparison (exercise)", [comparison, deep], "typeof operator", "=== operator"}}
 
-Your test for whether you are dealing with a real object will look something like `typeof x == "object" && x != null`. Be careful to compare properties only when _both_ arguments are objects. In all other cases you can just immediately return the result of applying `===`.
+Vaš test da li imate posla sa pravim objektom izgledaće nešto poput ovog `typeof x == "object" && x != null`. Gledajte da uporedite svojstva samo kada su _oba_ argumenta objekti. U svim ostalim slučajevima možete odmah vratiti rezultat primene `===`.
 
 {{index "Object.keys function"}}
 
-Use `Object.keys` to go over the properties. You need to test whether both objects have the same set of property names and whether those properties have identical values. One way to do that is to ensure that both objects have the same number of properties (the lengths of the property lists are the same). And then, when looping over one of the object's properties to compare them, always first make sure the other actually has a property by that name. If they have the same number of properties and all properties in one also exist in the other, they have the same set of property names.
+Koristite `Object.keys` da prođete kroz sva svojstva. Treba da testirate da li oba objekta imaju isti skup imena svojstava i da li ta svojstva imaju identične vrednosti. Jedan način da to uradite je da obezbedite da oba objekta imaju isti broj svojstava (dužine liste svojstava su iste). Zatim, kada prolazite kroz svojstva jednog objekta da biste ih uporedili, uvek prvo proverite da li drugi objekat zapravo ima svojstvo tim imenom. Ako imaju isti broj svojstava i sva svojstva u jednom takođe postoje u drugom, imaju isti skup imena svojstava.
 
 {{index "return value"}}
 
-Returning the correct value from the function is best done by immediately returning false when a mismatch is found and returning true at the end of the function.
+Vraćanje tačne vrednosti iz funkcije najbolje je uraditi tako što ćete odmah vratiti false kada pronađete neusaglašenost i vratiti true na kraju funkcije ukoliko nema nijedne nusaglasenosti.
 
 hint}}
